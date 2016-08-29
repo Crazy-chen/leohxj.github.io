@@ -1,0 +1,201 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>GoogleStaticMap的使用 | FinalHome | 最初的梦想</title>
+
+  
+  <meta name="author" content="Leo Hui">
+  
+
+  
+  <meta name="description" content="description by Leo">
+  
+
+  
+  
+  <meta name="keywords" content="google,Map">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="GoogleStaticMap的使用"/>
+
+  <meta property="og:site_name" content="FinalHome"/>
+
+  
+  <meta property="og:image" content="/favicon.ico"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="FinalHome" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+</head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">FinalHome</a>
+    </h1>
+    <p class="site-description">最初的梦想</p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
+      
+        <li><a href="/">主页</a></li>
+      
+        <li><a href="/archives">归档</a></li>
+      
+        <li><a href="/about">关于</a></li>
+      
+        <li><a href="/projects">项目</a></li>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>GoogleStaticMap的使用</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/Google相关/GoogleStaticMap的使用/" rel="bookmark">
+        <time class="entry-date published" datetime="2014-11-21T05:36:46.000Z">
+          2014-11-21
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <p>做前端不可避免的会接触到地图服务，Google Map是面试应用中的佼佼者。它提供的功能很全面，也方便定制。<a id="more"></a></p>
+<h2 id="Google-Maps-Image-APIs"><a href="#Google-Maps-Image-APIs" class="headerlink" title="Google Maps Image APIs"></a>Google Maps Image APIs</h2><p><a href="https://developers.google.com/maps/documentation/imageapis/" target="_blank" rel="external">Google Maps Image APIs</a>, 顾名思义，就是提供静态图片的服务。可以传递坐标，尺寸等信息。</p>
+<p>提供了两种API：</p>
+<ul>
+<li><a href="https://developers.google.com/maps/documentation/staticmaps/" target="_blank" rel="external">Static Maps</a></li>
+<li><a href="https://developers.google.com/maps/documentation/streetview/" target="_blank" rel="external">Street View</a></li>
+</ul>
+<h2 id="一个需求"><a href="#一个需求" class="headerlink" title="一个需求"></a>一个需求</h2><p>昨日帮同事做个小功能，给定三个地点的经纬度以及尺寸，输出三个地点在所输出的图片上的坐标。所用的是<code>Static Map</code>API。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>根据给出的点获取合适的zoom级别的图片，这个方法google直接就可以用，只需要把zoom设置为auto即可。比如:<br><img src="https://maps.googleapis.com/maps/api/staticmap?center=40.744907,-73.997144&amp;zoom=auto&amp;size=350x265&amp;maptype=roadmap&amp;markers=color:blue%7Clabel:S%7C40.764083,-73.995767&amp;markers=color:green%7Clabel:G%7C40.753933,-73.900254&amp;markers=color:red%7Clabel:C%7C40.716705,-74.095413" alt="zoom auto"></p>
+<p>但解决这个需求，有几个关键的点：</p>
+<ul>
+<li>求出正确的zoom级别</li>
+<li>求出在256x256下的坐标</li>
+<li>更具zoom求出对应尺寸下的坐标</li>
+</ul>
+<p>在线预览如下：<a href="http://jsfiddle.net/leohxj/Lga46rx1/" target="_blank" rel="external">jsfiddle</a></p>
+<h3 id="求出zoom-levels"><a href="#求出zoom-levels" class="headerlink" title="求出zoom levels"></a>求出zoom levels</h3><p>由于我暂时还没理解，只能直接贴出代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div></pre></td><td class="code"><pre><div class="line">// getZoom.js</div><div class="line">function getBoundsZoomLevel(points, mapDim) &#123;</div><div class="line">    var WORLD_DIM = &#123; height: 256, width: 256 &#125;;</div><div class="line">    var ZOOM_MAX = 21;</div><div class="line"></div><div class="line">    function latRad(lat) &#123;</div><div class="line">        var sin = Math.sin(lat * Math.PI / 180);</div><div class="line">        var radX2 = Math.log((1 + sin) / (1 - sin)) / 2;</div><div class="line">        return Math.max(Math.min(radX2, Math.PI), -Math.PI) / 2;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    function zoom(mapPx, worldPx, fraction) &#123;</div><div class="line">        return Math.floor(Math.log(mapPx / worldPx / fraction) / Math.LN2);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    var ne = getNorthEast(points);</div><div class="line">    var sw = getSouthWest(points);</div><div class="line"></div><div class="line">    var latFraction = (latRad(ne.lat) - latRad(sw.lat)) / Math.PI;</div><div class="line">    </div><div class="line">    var lngDiff = ne.lng - sw.lng;</div><div class="line">    var lngFraction = ((lngDiff &lt; 0) ? (lngDiff + 360) : lngDiff) / 360;</div><div class="line">    </div><div class="line">    var latZoom = zoom(mapDim.height, WORLD_DIM.height, latFraction);</div><div class="line">    var lngZoom = zoom(mapDim.width, WORLD_DIM.width, lngFraction);</div><div class="line">    </div><div class="line">    return Math.min(latZoom, lngZoom, ZOOM_MAX)-1;</div><div class="line">&#125;</div><div class="line"></div><div class="line">function getBoundsCenter(points) &#123;</div><div class="line">    var centerX = 0;</div><div class="line">    var centerY = 0;</div><div class="line">    for (var i = 0, len = points.length; i &lt; len; i++) &#123;</div><div class="line">        centerX += points[i].lat;</div><div class="line">        centerY += points[i].lng;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    return &#123;</div><div class="line">        lat: (centerX/3),</div><div class="line">        lng: (centerY/3)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">function getNorthEast(points) &#123;</div><div class="line">    var neLat = points[0].lat;</div><div class="line">    var neLng = points[0].lng;</div><div class="line"></div><div class="line">    for (var i = 1, len = points.length; i &lt; len; i++) &#123;</div><div class="line">        neLat = Math.max(neLat, points[i].lat);</div><div class="line">        neLng = Math.max(neLng, points[i].lng);</div><div class="line">    &#125;</div><div class="line">    return &#123;</div><div class="line">        lat: neLat,</div><div class="line">        lng: neLng</div><div class="line">    &#125; </div><div class="line">&#125;</div><div class="line"></div><div class="line">function getSouthWest(points) &#123;</div><div class="line">    var swLat = points[0].lat;</div><div class="line">    var swLng = points[0].lng;</div><div class="line"></div><div class="line">    for (var i = 1, len = points.length; i &lt; len; i++) &#123;</div><div class="line">        swLat = Math.min(swLat, points[i].lat);</div><div class="line">        swLng = Math.min(swLng, points[i].lng);</div><div class="line">    &#125;</div><div class="line">    return &#123;</div><div class="line">        lat: swLat,</div><div class="line">        lng: swLng</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">function formatPoint2Str(point) &#123;</div><div class="line">    return point.lat + &quot;,&quot; + point.lng;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="求出256x256下坐标"><a href="#求出256x256下坐标" class="headerlink" title="求出256x256下坐标"></a>求出256x256下坐标</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line">// MercatorProjection.js</div><div class="line">var MERCATOR_RANGE = 256;</div><div class="line"></div><div class="line">function bound(value, opt_min, opt_max) &#123;</div><div class="line">  if (opt_min != null) value = Math.max(value, opt_min);</div><div class="line">  if (opt_max != null) value = Math.min(value, opt_max);</div><div class="line">  return value;</div><div class="line">&#125;</div><div class="line"></div><div class="line">function degreesToRadians(deg) &#123;</div><div class="line">  return deg * (Math.PI / 180);</div><div class="line">&#125;</div><div class="line"></div><div class="line">function radiansToDegrees(rad) &#123;</div><div class="line">  return rad / (Math.PI / 180);</div><div class="line">&#125;</div><div class="line"></div><div class="line">function MercatorProjection() &#123;</div><div class="line">  this.pixelOrigin_ = &#123;x:MERCATOR_RANGE/2, y:MERCATOR_RANGE/2&#125;;</div><div class="line">  this.pixelsPerLonDegree_ = MERCATOR_RANGE / 360;</div><div class="line">  this.pixelsPerLonRadian_ = MERCATOR_RANGE / (2 * Math.PI);</div><div class="line">&#125;;</div><div class="line"></div><div class="line">MercatorProjection.prototype.fromLatLngToPoint = function(latLng, opt_point) &#123;</div><div class="line">  var me = this;</div><div class="line"></div><div class="line">  var point = opt_point || &#123;x:0, y:0&#125;;</div><div class="line"></div><div class="line">  var origin = me.pixelOrigin_;</div><div class="line">  point.x = origin.x + latLng.lng * me.pixelsPerLonDegree_;</div><div class="line">  // NOTE(appleton): Truncating to 0.9999 effectively limits latitude to</div><div class="line">  // 89.189.  This is about a third of a tile past the edge of the world tile.</div><div class="line">  var siny = bound(Math.sin(degreesToRadians(latLng.lat)), -0.9999, 0.9999);</div><div class="line">  point.y = origin.y + 0.5 * Math.log((1 + siny) / (1 - siny)) * -me.pixelsPerLonRadian_;</div><div class="line">  return point;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">MercatorProjection.prototype.fromPointToLatLng = function(point) &#123;</div><div class="line">  var me = this;</div><div class="line"></div><div class="line">  var origin = me.pixelOrigin_;</div><div class="line">  var lng = (point.x - origin.x) / me.pixelsPerLonDegree_;</div><div class="line">  var latRadians = (point.y - origin.y) / -me.pixelsPerLonRadian_;</div><div class="line">  var lat = radiansToDegrees(2 * Math.atan(Math.exp(latRadians)) - Math.PI / 2);</div><div class="line">  return new google.maps.LatLng(lat, lng);</div><div class="line">&#125;;</div><div class="line"></div><div class="line">//pixelCoordinate = worldCoordinate * Math.pow(2,zoomLevel)</div></pre></td></tr></table></figure>
+<h3 id="求出对应指定尺寸下的坐标"><a href="#求出对应指定尺寸下的坐标" class="headerlink" title="求出对应指定尺寸下的坐标"></a>求出对应指定尺寸下的坐标</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">function getCorners(center,point,zoom,mapWidth,mapHeight)&#123;</div><div class="line">    var scale = Math.pow(2,zoom);</div><div class="line">    var centerPx = proj.fromLatLngToPoint(center);</div><div class="line">    var point = proj.fromLatLngToPoint(point);</div><div class="line"></div><div class="line">    var result = &#123;x:(point.x-centerPx.x)*scale+mapWidth/2,y:(-centerPx.y+point.y)*scale+mapHeight/2&#125;</div><div class="line"></div><div class="line">    return result;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="http://jsfiddle.net/john_s/BHHs8/6/" target="_blank" rel="external">jsfiddle: calc zoom</a></li>
+<li><a href="http://stackoverflow.com/questions/6048975/google-maps-v3-how-to-calculate-the-zoom-level-for-a-given-bounds" target="_blank" rel="external">Google Maps V3 - How to calculate the zoom level for a given bounds</a></li>
+<li><a href="http://stackoverflow.com/questions/12507274/how-to-get-bounds-of-a-google-static-map" target="_blank" rel="external">How to get bounds of a google static map?</a></li>
+</ul>
+
+      
+    </div>
+
+  </div>
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+      
+
+    <span class="post-categories">
+      <i class="icon-categories"></i>
+        <a href="/categories/google相关/">google相关</a>
+    </span>
+    
+
+    
+    
+
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/google/">google</a><a href="/tags/Map/">Map</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+  
+	<div id="comment">
+	
+	
+	<!-- 多说评论框 start -->
+	 <div class="ds-thread" data-thread-key="/Google相关/GoogleStaticMap的使用/" data-title="GoogleStaticMap的使用" data-url="http://finalhome.org/Google相关/GoogleStaticMap的使用/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"leohxj"};
+	  (function() {
+	    var ds = document.createElement('script');
+	    ds.type = 'text/javascript';ds.async = true;
+	    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+	    ds.charset = 'UTF-8';
+	    (document.getElementsByTagName('head')[0] 
+	     || document.getElementsByTagName('body')[0]).appendChild(ds);
+	  })();
+	  </script>
+	<!-- 多说公共JS代码 end -->
+	
+	</div>
+
+
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    </br>
+    
+    &copy; 2016 Leo Hui
+    
+  </p>
+</footer>
+    
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-42849828-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+
+  </div>
+</div>
+</body>
+</html>

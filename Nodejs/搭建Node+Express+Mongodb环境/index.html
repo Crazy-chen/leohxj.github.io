@@ -1,0 +1,201 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>搭建Node+Express+Mongodb环境 | FinalHome | 最初的梦想</title>
+
+  
+  <meta name="author" content="Leo Hui">
+  
+
+  
+  <meta name="description" content="description by Leo">
+  
+
+  
+  
+  <meta name="keywords" content="nodejs,express,mongodb">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="搭建Node+Express+Mongodb环境"/>
+
+  <meta property="og:site_name" content="FinalHome"/>
+
+  
+  <meta property="og:image" content="/favicon.ico"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="FinalHome" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+</head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">FinalHome</a>
+    </h1>
+    <p class="site-description">最初的梦想</p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
+      
+        <li><a href="/">主页</a></li>
+      
+        <li><a href="/archives">归档</a></li>
+      
+        <li><a href="/about">关于</a></li>
+      
+        <li><a href="/projects">项目</a></li>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>搭建Node+Express+Mongodb环境</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/Nodejs/搭建Node+Express+Mongodb环境/" rel="bookmark">
+        <time class="entry-date published" datetime="2014-05-19T06:16:05.000Z">
+          2014-05-19
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <p>每次搭建都要查一遍，不如记录一下。<br><a id="more"></a></p>
+<h2 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h2><p>先说下Windows下必要的开发环境，最好安装上<code>Microsoft Visual Studio</code>， 保证系统有<code>python 2.7.x</code>。因为很多npm的包，需要这些编译环境。</p>
+<h3 id="Nodejs"><a href="#Nodejs" class="headerlink" title="Nodejs"></a>Nodejs</h3><p>window下node直接通过官网下载, <a href="http://nodejs.org/download/" target="_blank" rel="external">下载地址</a>。下载msi文件直接安装即可，它会自动添加<code>node</code>和<code>npm</code>到系统环境变量中。</p>
+<p>以后如果要切换版本，直接下载对应版本，重新安装即可。</p>
+<h3 id="Express"><a href="#Express" class="headerlink" title="Express"></a>Express</h3><p>截至2014年5月19日， Express的版本维持在4.X。不同于之前的express，4.x分割出去很多模块，比如<code>connect</code>和<code>generator</code>。</p>
+<p>安装方法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">npm install -g express</div><div class="line"></div><div class="line"># 如果需要安装之前的版本, 加个@符号和版本即可</div><div class="line">npm install -g express@3</div><div class="line"></div><div class="line"># 4.x版本无法直接通过express命名新建项目，所以需要安装</div><div class="line">npm install -g express-generator</div></pre></td></tr></table></figure></p>
+<h3 id="Mongodb"><a href="#Mongodb" class="headerlink" title="Mongodb"></a>Mongodb</h3><p>先给一个官方的文档：<a href="http://docs.mongodb.org/manual/" target="_blank" rel="external">点我</a>。里面有各个系统的安装方式。</p>
+<p>下面说说我的安装方式：</p>
+<p>第一，在<code>D:</code>根目录下创建一个<code>DB/MongoDB</code>文件夹， 把对应版本的mongodb文件加载到此目录下的一个目录中。比如我这里的<code>MongoDB-2.6.0</code>。然后分别建立两个目录存放数据库和日志:<code>MongoDB-2.6.0-db</code>和<code>MongoDB-2.6.0-log</code>。并且保证<code>MongoDB--2.6.0-log</code>下有一个<code>mongodb.log</code>文件。</p>
+<p>第二，使用管理员权限打开cmd， <code>win+X -&gt; A</code>。然后:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">echo logpath=D:\DB\MongoDB\MongoDB-2.6.0-log\mongo.log&gt; &quot;D:\DB\MongoDB\MongoDB-2.6.0\mongod.cfg&quot;</div><div class="line">echo dbpath=D:\DB\MongoDB\MongoDB-2.6.0-db&gt;&gt; &quot;D:\DB\MongoDB\MongoDB-2.6.0\mongod.cfg&quot;</div></pre></td></tr></table></figure></p>
+<p>这一步是写安装配置文件，正确处理后，会在<code>D:\DB\MongoDB\MongoDB-2.6.0</code>目录下多个<code>mongod.cfg</code>文件，里面内容如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">logpath=D:\DB\MongoDB\MongoDB-2.6.0-log\mongo.log</div><div class="line">dbpath=D:\DB\MongoDB\MongoDB-2.6.0-db</div></pre></td></tr></table></figure></p>
+<p>最后，安装使用命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sc.exe create MongoDB binPath= &quot;\&quot;E:\DB\MongoDB\MongoDB-2.6.0\bin\mongod.exe\&quot; --service --config=\&quot;E:\DB\MongoDB\MongoDB-2.6.0\mongod.cfg\&quot;&quot; DisplayName= &quot;MongoDB 2.6 Standard&quot; start= &quot;auto&quot;</div></pre></td></tr></table></figure></p>
+<p>安装结束会提示<code>[SC] CreateService SUCCESS</code>, 然后可以通过<code>net start MongoDB</code>启动。默认是会自动启动的。如果出问题，可以重启先看看，不行再重新安装。</p>
+<h4 id="默认的使用方法"><a href="#默认的使用方法" class="headerlink" title="默认的使用方法"></a>默认的使用方法</h4><p>如果不添加系统服务，启动<code>mongodb</code>的步骤是这样的：</p>
+<p>打开cmd命令行，进入D:/DB/MongoDB/MongoDB-2.6.0/bin目录，输入如下的命令启动mongodb服务， 需要指定数据库位置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">D:/DB/MongoDB/MongoDB-2.6.0/bin&gt;mongod.exe --dbpath D:/DB/MongoDB/MongoDB-2.6.0-db</div></pre></td></tr></table></figure></p>
+<p>保持这个cmd窗口不关闭，再打开一个cmd窗口， 输入：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">D:/DB/MongoDB/MongoDB-2.6.0/bin&gt;mongo</div></pre></td></tr></table></figure></p>
+<p>这样才能运行mongo服务。</p>
+<h2 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h2><p>Linux下首先需要必要的环境:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install -y dkms build-essential linux-headers-generic linux-headers-$(uname -r)</div><div class="line"></div><div class="line">sudo apt-get install python-software-properties python g++ make</div><div class="line"></div><div class="line">sudo apt-get install git</div></pre></td></tr></table></figure></p>
+<h3 id="Nodejs-1"><a href="#Nodejs-1" class="headerlink" title="Nodejs"></a>Nodejs</h3><p>通过 PPA 在 Ubuntu 上安装最新版本的 node.js：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install python-software-properties python g++ make</div><div class="line">sudo add-apt-repository ppa:chris-lea/node.js</div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install nodejs</div></pre></td></tr></table></figure></p>
+<p>可能会存在命名冲突，是的安装之后使用<code>nodejs</code>而非<code>node</code>，如果需要修改，创建链接：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo ln -s /usr/bin/nodejs /usr/bin/node</div></pre></td></tr></table></figure></p>
+<p>其实使用<code>nodejs</code>也没关系，我修改主要是想windows和linux下命名统一。</p>
+<h3 id="NPM"><a href="#NPM" class="headerlink" title="NPM"></a>NPM</h3><p>Linux下npm好像不是随着<code>node</code>安装的，需要:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install npm</div></pre></td></tr></table></figure></p>
+<h3 id="Express-1"><a href="#Express-1" class="headerlink" title="Express"></a>Express</h3><p>安装了<code>npm</code>之后，安装方式和windows下一致：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">npm install -g express</div><div class="line"></div><div class="line"># 如果需要安装之前的版本, 加个@符号和版本即可</div><div class="line">npm install -g express@3</div><div class="line"></div><div class="line"># 4.x版本无法直接通过express命名新建项目，所以需要安装</div><div class="line">npm install -g express-generator</div></pre></td></tr></table></figure></p>
+<h3 id="Mongodb-1"><a href="#Mongodb-1" class="headerlink" title="Mongodb"></a>Mongodb</h3><p>这个还是推荐看官方文档：<a href="http://docs.mongodb.org/manual/" target="_blank" rel="external">点我</a>。</p>
+<p>我的安装方式是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10</div><div class="line"></div><div class="line">echo &apos;deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen&apos; | sudo tee /etc/apt/sources.list.d/mongodb.list</div><div class="line"></div><div class="line">sudo apt-get update</div><div class="line"></div><div class="line"></div><div class="line">sudo apt-get install mongodb-org</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+  </div>
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+      
+
+    <span class="post-categories">
+      <i class="icon-categories"></i>
+        <a href="/categories/Nodejs/">Nodejs</a>
+    </span>
+    
+
+    
+    
+
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/nodejs/">nodejs</a><a href="/tags/express/">express</a><a href="/tags/mongodb/">mongodb</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+  
+	<div id="comment">
+	
+	
+	<!-- 多说评论框 start -->
+	 <div class="ds-thread" data-thread-key="/Nodejs/搭建Node+Express+Mongodb环境/" data-title="搭建Node+Express+Mongodb环境" data-url="http://finalhome.org/Nodejs/搭建Node+Express+Mongodb环境/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"leohxj"};
+	  (function() {
+	    var ds = document.createElement('script');
+	    ds.type = 'text/javascript';ds.async = true;
+	    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+	    ds.charset = 'UTF-8';
+	    (document.getElementsByTagName('head')[0] 
+	     || document.getElementsByTagName('body')[0]).appendChild(ds);
+	  })();
+	  </script>
+	<!-- 多说公共JS代码 end -->
+	
+	</div>
+
+
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    </br>
+    
+    &copy; 2016 Leo Hui
+    
+  </p>
+</footer>
+    
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-42849828-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>SublimeText2 使用总结 | FinalHome | 最初的梦想</title>
+
+  
+  <meta name="author" content="Leo Hui">
+  
+
+  
+  <meta name="description" content="description by Leo">
+  
+
+  
+  
+  <meta name="keywords" content="SublimeText">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="SublimeText2 使用总结"/>
+
+  <meta property="og:site_name" content="FinalHome"/>
+
+  
+  <meta property="og:image" content="/favicon.ico"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="FinalHome" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+</head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">FinalHome</a>
+    </h1>
+    <p class="site-description">最初的梦想</p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
+      
+        <li><a href="/">主页</a></li>
+      
+        <li><a href="/archives">归档</a></li>
+      
+        <li><a href="/about">关于</a></li>
+      
+        <li><a href="/projects">项目</a></li>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>SublimeText2 使用总结</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/开发工具/SublimeText2使用总结/" rel="bookmark">
+        <time class="entry-date published" datetime="2013-07-20T14:22:22.000Z">
+          2013-07-20
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <p>SublimeText是我现在主要使用的编辑器,它有很多优点，如果你有兴趣，可以慢慢看完。<br><a id="more"></a></p>
+<h1 id="初次使用"><a href="#初次使用" class="headerlink" title="初次使用"></a>初次使用</h1><p>安装好了SublimeText之后，我一般会调节一下基本设置。包括主题，配色，字体等。在安装主题之前，一般还是要安装下package control来进行插件管理。安装地址<a href="http://wbond.net/sublime_packages/package_control/installation" target="_blank" rel="external">Sublime Package Control</a>。安装完成之后，通过<code>ctrl+shift+p</code>开打控制面板，使用<code>install package</code>安装主题和配色。主题是SublimeText的外观，配色是代码的高亮方案。我推荐的主题是Theme - Phoenix, 配色方案是Dayle Rees Color Schemes, 字体我使用的yaheiconsolashybrid。贴个图片大家欣赏下吧:<br><img src="http://ww3.sinaimg.cn/large/6810c776jw1e6tqzlz33nj20sg0gr0vi.jpg" alt="sublime"></p>
+<h1 id="配置设置"><a href="#配置设置" class="headerlink" title="配置设置"></a>配置设置</h1><p>首先说明配置文件的路径，点击Preferences-&gt;Browse Packages打开目录，找到<code>User</code>目录，这里的文件就是自己的配置文件，最好备份，方便下次替换。</p>
+<p>具体的配置，一般是Preferences-&gt;Settings-Default和Key Bindings-Default。这两个最好不要修改，如果要替换，把相应的参数写入到Settings-User和Key Bindings-User里，会自动覆盖Default相同属性。</p>
+<h1 id="特色功能"><a href="#特色功能" class="headerlink" title="特色功能"></a>特色功能</h1><ol>
+<li>ctrl+p，搜索。这个搜索可以左侧的Folders里所以文件，而且是模糊搜索，不需要完整的文件名。配合<code>#</code>, <code>@</code>, <code>:</code>可以搜索变量，函数，行数。</li>
+<li>多行编辑。按住ctrl加左击，可以出现多个光标位置。</li>
+<li>多重选择， <code>ctrl+d</code>可以多重选择，结合光标键，可以批量修改。</li>
+<li>多屏编辑，alt+shift+数字键。</li>
+<li>Projects，通过View-&gt;Side Bar-&gt;show Side Bar左侧文件结构管理。</li>
+<li>snippet, 不同格式的文件，可以设置不同的snippet,就是简写，通过tab扩展成相应的内容。</li>
+<li>各种插件支持</li>
+<li>正则表达式搜索,比如我要删除所有的空行，可以使用<code>^[\s]*\n</code>来选择所有空行。可以使用<code>(?&lt;=&lt;h2&gt;).+(?=&lt;/h2&gt;)</code>来匹配h2标签内的内容。</li>
+<li>ctrl+shift+p，功能菜单。只有你想不到，没有做不到的事情。</li>
+</ol>
+<h1 id="技巧"><a href="#技巧" class="headerlink" title="技巧"></a>技巧</h1><h2 id="操作技巧"><a href="#操作技巧" class="headerlink" title="操作技巧"></a>操作技巧</h2><ol>
+<li>选择多行，按ctrl+shift+L使得光标在每一行最后。</li>
+<li>被包裹的文本，可以直接添加括号，引号等。</li>
+<li>ctrl+shift+光标左右移动，选择文本到行首、行末。</li>
+<li>对于左边的side bar，可以新建Projects, 管理文件夹。参数path为路径，file_exclude_patterns为不需要添加的文件, folder_exclude_patterns为不需要添加的目录。</li>
+<li>善用功能搜索，比如<code>copy</code>。</li>
+</ol>
+<h2 id="创建snippet"><a href="#创建snippet" class="headerlink" title="创建snippet"></a>创建snippet</h2><p>通过Tools-&gt;new snippet创建新的snippet, 保存的时候，文件名后缀为.sublime-snippet，注意内容里面<code>$0</code>是光标最后出现的位置。我一般会保存到User目录下，方便同步。给出一个jquery的实例：</p>
+<pre><code>&lt;snippet&gt;
+    &lt;content&gt;&lt;![CDATA[
+\$(&apos;#${1:function_name}&apos;)${0};
+]]&gt;&lt;/content&gt;
+    &lt;!-- Optional: Set a tabTrigger to define how to trigger the snippet --&gt;
+    &lt;tabTrigger&gt;jqi&lt;/tabTrigger&gt;
+    &lt;!-- Optional: Set a scope to limit where the snippet will trigger --&gt;
+    &lt;scope&gt;source.js&lt;/scope&gt;
+    &lt;description&gt;$(&apos;#&apos;)&lt;/description&gt;
+&lt;/snippet&gt;
+</code></pre><p>作用是通过<code>jqi</code>扩展成为<code>$(&#39;#&#39;);</code>的样子。</p>
+<h2 id="创建Build命令"><a href="#创建Build命令" class="headerlink" title="创建Build命令"></a>创建Build命令</h2><p>通过Tools-&gt;build-&gt;new ，创建一个build命令，保存在User下，可以建立一个build文件夹管理。</p>
+
+      
+    </div>
+
+  </div>
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+      
+
+    <span class="post-categories">
+      <i class="icon-categories"></i>
+        <a href="/categories/开发工具/">开发工具</a>
+    </span>
+    
+
+    
+    
+
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/SublimeText/">SublimeText</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+  
+	<div id="comment">
+	
+	
+	<!-- 多说评论框 start -->
+	 <div class="ds-thread" data-thread-key="/开发工具/SublimeText2使用总结/" data-title="SublimeText2 使用总结" data-url="http://finalhome.org/开发工具/SublimeText2使用总结/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"leohxj"};
+	  (function() {
+	    var ds = document.createElement('script');
+	    ds.type = 'text/javascript';ds.async = true;
+	    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+	    ds.charset = 'UTF-8';
+	    (document.getElementsByTagName('head')[0] 
+	     || document.getElementsByTagName('body')[0]).appendChild(ds);
+	  })();
+	  </script>
+	<!-- 多说公共JS代码 end -->
+	
+	</div>
+
+
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    </br>
+    
+    &copy; 2016 Leo Hui
+    
+  </p>
+</footer>
+    
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-42849828-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+
+  </div>
+</div>
+</body>
+</html>
