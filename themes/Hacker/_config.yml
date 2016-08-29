@@ -1,0 +1,15 @@
+menu:
+  Home: /
+  Archives: /archives
+  About: /about
+
+# duoshuo comment
+duoshuo: true
+duoshuo_name: leohxj
+
+# disqus comment
+disqus: false
+disqus_shortname:
+
+# google analytics
+googleTrackId: UA-42849828-1
