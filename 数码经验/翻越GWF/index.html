@@ -1,0 +1,190 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>翻越GWF | FinalHome | 最初的梦想</title>
+
+  
+  <meta name="author" content="Leo Hui">
+  
+
+  
+  <meta name="description" content="description by Leo">
+  
+
+  
+  
+  <meta name="keywords" content="Windows">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="翻越GWF"/>
+
+  <meta property="og:site_name" content="FinalHome"/>
+
+  
+  <meta property="og:image" content="/favicon.ico"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="FinalHome" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+</head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">FinalHome</a>
+    </h1>
+    <p class="site-description">最初的梦想</p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
+      
+        <li><a href="/">主页</a></li>
+      
+        <li><a href="/archives">归档</a></li>
+      
+        <li><a href="/about">关于</a></li>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>翻越GWF</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/数码经验/翻越GWF/" rel="bookmark">
+        <time class="entry-date published" datetime="2014-04-15T06:16:17.000Z">
+          2014-04-15
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <p>在国内，特别是程序员，是需要查阅很多国外资料的。但是国内的限制你懂的。今天就来说说如何绕过这些限制。<br><a id="more"></a></p>
+<h2 id="免费的方案"><a href="#免费的方案" class="headerlink" title="免费的方案"></a>免费的方案</h2><p><code>goagent</code>, <a href="https://code.google.com/p/goagent/" target="_blank" rel="external">goagent项目地址</a>。这是利用Google Appengine设置代理，好处就是免费，达到浏览器翻墙的效果。很久以前，我一直是用它，很稳定，适合学生。</p>
+<p>具体使用方法，项目里面介绍的很详细，按步骤来就可以。</p>
+<h2 id="SSH"><a href="#SSH" class="headerlink" title="SSH"></a>SSH</h2><p><code>Secure Shell</code>的缩写，是一种建立在应用层和传输层基础上的安全协议。主要用来远程连接，也可以作为代理使用，推荐配合clowwindy的<code>shadowsocks</code>使用。<a href="https://github.com/clowwindy/shadowsocks/wiki/Ports-and-Clients" target="_blank" rel="external">shadowsocks项目地址</a>。</p>
+<p>shadowsocks连接方式配合chrome插件<code>proxy switchSharp</code>，能很好的实现分流（翻墙的才走代理）。</p>
+<p>我有一点疑问关于SSH的连接，貌似不用输入用户名。只提供ip，端口和密码即可？</p>
+<h2 id="VPN"><a href="#VPN" class="headerlink" title="VPN"></a>VPN</h2><p>这个是最普遍的翻墙方式，但是所有代理都会走VPN。对于有流量限制和下载的情况来说，需要来回切换，很麻烦。所以我找到了一下如果让VPN实现分流的操作，这里提供一些方式：</p>
+<h3 id="PAC"><a href="#PAC" class="headerlink" title="PAC"></a>PAC</h3><p>pac是系统级别的代理配置，属于应用层，所以所有应用都会走代理，通过PAC进行判断，可以实现分流操作。开启之后，所有请求会先走VPN再PAC判断，走两层代理。</p>
+<p>这里有一个更优的<code>GFWList</code>，也是由clowwindy大神提供的，<a href="https://github.com/clowwindy/gfwlist2pac" target="_blank" rel="external">gwflist2pac</a>。</p>
+<h3 id="修改路由表"><a href="#修改路由表" class="headerlink" title="修改路由表"></a>修改路由表</h3><p>如果让VPN做动态判断，只能在开启VPN后，修改系统的路由表。可以查看chnroutes, <a href="https://github.com/fivesheep/chnroutes/wiki" target="_blank" rel="external">chnroutes项目地址</a>。MacTalk君有一篇<a href="http://macshuo.com/?tag=chnroutes" target="_blank" rel="external">文章</a>可以参考.</p>
+<p>chnroutes会定期更新，这里提供一个下载地址<a href="http://chnroutes-dl.appspot.com/" target="_blank" rel="external">chnroutes定期更新下载</a>。</p>
+<h2 id="一些资源"><a href="#一些资源" class="headerlink" title="一些资源"></a>一些资源</h2><ul>
+<li><a href="https://github.com/cyfdecyf/cow" target="_blank" rel="external">Cow</a></li>
+<li><a href="https://vpnso.com/" target="_blank" rel="external">东哥的服务</a></li>
+<li><a href="https://www.runos.us/" target="_blank" rel="external">目前自用的VPN</a></li>
+</ul>
+
+      
+    </div>
+
+  </div>
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+      
+
+    <span class="post-categories">
+      <i class="icon-categories"></i>
+        <a href="/categories/数码经验/">数码经验</a>
+    </span>
+    
+
+    
+    
+
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/Windows/">Windows</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+  
+	<div id="comment">
+	
+	
+	<!-- 多说评论框 start -->
+	 <div class="ds-thread" data-thread-key="/数码经验/翻越GWF/" data-title="翻越GWF" data-url="http://finalhome.org/数码经验/翻越GWF/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"leohxj"};
+	  (function() {
+	    var ds = document.createElement('script');
+	    ds.type = 'text/javascript';ds.async = true;
+	    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+	    ds.charset = 'UTF-8';
+	    (document.getElementsByTagName('head')[0] 
+	     || document.getElementsByTagName('body')[0]).appendChild(ds);
+	  })();
+	  </script>
+	<!-- 多说公共JS代码 end -->
+	
+	</div>
+
+
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    </br>
+    
+    &copy; 2016 Leo Hui
+    
+  </p>
+</footer>
+    
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-42849828-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+
+  </div>
+</div>
+</body>
+</html>

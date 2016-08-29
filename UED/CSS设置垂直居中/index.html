@@ -1,0 +1,221 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>CSS设置垂直居中 | FinalHome | 最初的梦想</title>
+
+  
+  <meta name="author" content="Leo Hui">
+  
+
+  
+  <meta name="description" content="description by Leo">
+  
+
+  
+  
+  <meta name="keywords" content="CSS">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="CSS设置垂直居中"/>
+
+  <meta property="og:site_name" content="FinalHome"/>
+
+  
+  <meta property="og:image" content="/favicon.ico"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="FinalHome" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+</head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">FinalHome</a>
+    </h1>
+    <p class="site-description">最初的梦想</p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
+      
+        <li><a href="/">主页</a></li>
+      
+        <li><a href="/archives">归档</a></li>
+      
+        <li><a href="/about">关于</a></li>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>CSS设置垂直居中</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/UED/CSS设置垂直居中/" rel="bookmark">
+        <time class="entry-date published" datetime="2013-08-16T06:13:21.000Z">
+          2013-08-16
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <p>让元素垂直居中有很多方法，这里挑选几个。<a id="more"></a></p>
+<h2 id="Negative-Margins"><a href="#Negative-Margins" class="headerlink" title="Negative Margins"></a>Negative Margins</h2><p>最常见的做法，给margin-top, margin-left设置负值，然后通过绝对定位设置top, left 为50%。</p>
+<p>固定宽高的情况下，浏览器缩小到一定尺寸时候，容器会跑出屏幕外。而设置高度height: auto的话，可以自适应撑满容器。</p>
+<p>html:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"Center-Container Clear"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"Center-Block is-Negative"</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">h4</span> <span class="attr">class</span>=<span class="string">"Title"</span>&gt;</span>Absolute Center,<span class="tag">&lt;<span class="name">br</span>&gt;</span> Negative Margins.<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">p</span>&gt;</span>This box is absolutely centered vertically within its container using negative margins.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>css:</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.is-Negative</span> &#123;</div><div class="line">        <span class="attribute">width</span>: <span class="number">300px</span>;</div><div class="line">        <span class="attribute">height</span>: <span class="number">200px</span>;</div><div class="line">        <span class="attribute">padding</span>: <span class="number">20px</span>;</div><div class="line">        <span class="attribute">position</span>: absolute;</div><div class="line">        <span class="attribute">top</span>: <span class="number">50%</span>; <span class="attribute">left</span>: <span class="number">50%</span>;</div><div class="line">        <span class="attribute">margin-left</span>: -<span class="number">170px</span>; <span class="comment">/* (width + padding)/2 */</span></div><div class="line">        <span class="attribute">margin-top</span>: -<span class="number">120px</span>; <span class="comment">/* (height + padding)/2 */</span></div><div class="line">        <span class="attribute">background</span>: <span class="number">#619271</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>宽高设置百分比的情况下，如果里面有文字，需要设置overflow来隐藏(hidden)或出现滚动条(auto)。</p>
+<p>html:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"Center-Container Clear"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"Center-Block is-Negative"</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">h4</span> <span class="attr">class</span>=<span class="string">"Title"</span>&gt;</span>Absolute Center,<span class="tag">&lt;<span class="name">br</span>&gt;</span> Negative Margins.<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">p</span>&gt;</span>This box is absolutely centered vertically within its container using negative margins.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>css:</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.is-Negative</span> &#123;</div><div class="line">        <span class="attribute">width</span>: <span class="number">30%</span>;</div><div class="line">        <span class="attribute">height</span>: <span class="number">20%</span>;</div><div class="line">        <span class="attribute">padding</span>: <span class="number">2%</span>;</div><div class="line">        <span class="attribute">position</span>: absolute;</div><div class="line">        <span class="attribute">top</span>: <span class="number">50%</span>; <span class="attribute">left</span>: <span class="number">50%</span>;</div><div class="line">        <span class="attribute">margin-left</span>: -<span class="number">16%</span>; <span class="comment">/* (width + padding)/2 */</span></div><div class="line">        <span class="attribute">margin-top</span>: -<span class="number">11%</span>; <span class="comment">/* (height + padding)/2 */</span></div><div class="line">        <span class="attribute">background</span>: <span class="number">#619271</span>;</div><div class="line">        <span class="attribute">overflow</span>: auto; <span class="comment">/* hidden */</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>兼容性好</li>
+<li>代码少</li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>固定宽度的时候，不可以设置min-/max-</li>
+<li>内容不能自适应撑满容器</li>
+</ul>
+<h2 id="table-cell"><a href="#table-cell" class="headerlink" title="table-cell"></a>table-cell</h2><p>需要设置容器包裹，兼容性较好。</p>
+<p>html:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"Center-Container is-Table Clear"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"Table-Cell"</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"Center-Block"</span>&gt;</span></div><div class="line">              <span class="tag">&lt;<span class="name">h4</span>&gt;</span>Header 44444<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></div><div class="line">              <span class="tag">&lt;<span class="name">p</span>&gt;</span>This is header border<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">          <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>css:</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.Center-Container</span><span class="selector-class">.is-Table</span> &#123;</div><div class="line">    <span class="attribute">color</span>: <span class="number">#4fa46b</span>;</div><div class="line">    <span class="attribute">width</span>: <span class="number">100%</span>;</div><div class="line">    <span class="attribute">height</span>: <span class="number">100%</span>;</div><div class="line">    <span class="attribute">clear</span>: both;</div><div class="line">    <span class="attribute">display</span>: table;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.is-Table</span> <span class="selector-class">.Table-Cell</span> &#123;</div><div class="line">  <span class="attribute">display</span>: table-cell;</div><div class="line">  <span class="attribute">vertical-align</span>: middle;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.is-Table</span> <span class="selector-class">.Center-Block</span> &#123;</div><div class="line">  <span class="attribute">width</span>: <span class="number">50%</span>;</div><div class="line">  <span class="attribute">height</span>: auto;</div><div class="line">  <span class="attribute">margin</span>: <span class="number">0</span> auto;</div><div class="line">  <span class="attribute">background</span>: <span class="number">#2e5f3e</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>高度可以自动变化</li>
+<li>兼容性好</li>
+</ul>
+<h3 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>需要额外的标签包裹</li>
+</ul>
+<h2 id="inline-block"><a href="#inline-block" class="headerlink" title="inline-block"></a>inline-block</h2><p>感觉最高端的写法，美观大气！</p>
+<p>html:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"Center-Container is-Inline"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"Center-Block"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">p</span> <span class="attr">id</span>=<span class="string">"more"</span>&gt;</span>Discover more you can do it with xxxxxxxx<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>css:</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.Center-Container</span><span class="selector-class">.is-Inline</span> &#123;</div><div class="line">    <span class="attribute">text-align</span>: center;</div><div class="line">    <span class="attribute">width</span>: <span class="number">100%</span>;</div><div class="line">    <span class="attribute">height</span>: <span class="number">100%</span>;</div><div class="line">    <span class="attribute">position</span>: absolute;</div><div class="line">    <span class="attribute">top</span>: <span class="number">0</span>;</div><div class="line">    <span class="attribute">right</span>: <span class="number">0</span>;</div><div class="line">    <span class="attribute">bottom</span>: <span class="number">0</span>;</div><div class="line">    <span class="attribute">left</span>: <span class="number">0</span>;</div><div class="line">    <span class="attribute">font-size</span>: <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="selector-class">.Center-Container</span><span class="selector-class">.is-Inline</span><span class="selector-pseudo">:after</span> &#123;</div><div class="line">    <span class="attribute">text-align</span>: center;</div><div class="line">    <span class="attribute">content</span>: <span class="string">''</span>;</div><div class="line">    <span class="attribute">display</span>: inline-block;</div><div class="line">    <span class="attribute">height</span>: <span class="number">100%</span>;</div><div class="line">    <span class="attribute">vertical-align</span>: middle;</div><div class="line">    <span class="attribute">margin-right</span>: -.<span class="number">25em</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-class">.is-Inline</span> <span class="selector-class">.Center-Block</span> &#123;</div><div class="line">  <span class="attribute">display</span>: inline-block;</div><div class="line">  <span class="attribute">vertical-align</span>: middle;</div><div class="line">  <span class="attribute">width</span>: <span class="number">90%</span>;</div><div class="line">  <span class="attribute">background</span>: <span class="number">#2E5F3E</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-id">#more</span> &#123;</div><div class="line">    <span class="attribute">font-size</span>: <span class="number">32px</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="优点-2"><a href="#优点-2" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>标签结构层次少</li>
+<li>兼容性强, IE7都可以</li>
+</ul>
+<h3 id="缺点-2"><a href="#缺点-2" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>最外层需要设置<code>font-size:0</code>，里面元素需要重新定义<code>font-size</code></li>
+</ul>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="http://codepen.io/shshaw/full/gEiDt" target="_blank" rel="external">绝对居中神文</a></li>
+</ul>
+
+      
+    </div>
+
+  </div>
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+      
+
+    <span class="post-categories">
+      <i class="icon-categories"></i>
+        <a href="/categories/UED/">UED</a>
+    </span>
+    
+
+    
+    
+
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/CSS/">CSS</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+  
+	<div id="comment">
+	
+	
+	<!-- 多说评论框 start -->
+	 <div class="ds-thread" data-thread-key="/UED/CSS设置垂直居中/" data-title="CSS设置垂直居中" data-url="http://finalhome.org/UED/CSS设置垂直居中/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"leohxj"};
+	  (function() {
+	    var ds = document.createElement('script');
+	    ds.type = 'text/javascript';ds.async = true;
+	    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+	    ds.charset = 'UTF-8';
+	    (document.getElementsByTagName('head')[0] 
+	     || document.getElementsByTagName('body')[0]).appendChild(ds);
+	  })();
+	  </script>
+	<!-- 多说公共JS代码 end -->
+	
+	</div>
+
+
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    </br>
+    
+    &copy; 2016 Leo Hui
+    
+  </p>
+</footer>
+    
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-42849828-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>RequireJS-使用 | FinalHome | 最初的梦想</title>
+
+  
+  <meta name="author" content="Leo Hui">
+  
+
+  
+  <meta name="description" content="description by Leo">
+  
+
+  
+  
+  <meta name="keywords" content="JavaScript,模块化">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="RequireJS-使用"/>
+
+  <meta property="og:site_name" content="FinalHome"/>
+
+  
+  <meta property="og:image" content="/favicon.ico"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="FinalHome" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+</head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">FinalHome</a>
+    </h1>
+    <p class="site-description">最初的梦想</p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
+      
+        <li><a href="/">主页</a></li>
+      
+        <li><a href="/archives">归档</a></li>
+      
+        <li><a href="/about">关于</a></li>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>RequireJS-使用</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/JavaScript/RequireJS-使用/" rel="bookmark">
+        <time class="entry-date published" datetime="2014-04-17T06:45:41.000Z">
+          2014-04-17
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <p>前面介绍过了模块化的概念，那么就说说AMD的具体实现–RequireJS。<br><a id="more"></a></p>
+<h2 id="为什么使用RequireJS"><a href="#为什么使用RequireJS" class="headerlink" title="为什么使用RequireJS"></a>为什么使用RequireJS</h2><p>RequireJS的提出就是为了在浏览器端更好的管理JS文件，使之模块化。主要解决的问题有两点：</p>
+<ol>
+<li>实现js文件的异步加载，避免网页失去响应；</li>
+<li>管理模块之间的依赖性，便于代码的编写和维护。</li>
+</ol>
+<h2 id="引入RequireJS"><a href="#引入RequireJS" class="headerlink" title="引入RequireJS"></a>引入RequireJS</h2><p>从官网下载好<code>require.js</code>，我们按照官网提供的结构，建立一下目录：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">project-directory/</div><div class="line">    project.html</div><div class="line">    scripts/</div><div class="line">        main.js</div><div class="line">        require.js</div><div class="line">        helper/</div><div class="line">            util.js</div></pre></td></tr></table></figure></p>
+<p>HTML文件如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html&gt;</div><div class="line">    &lt;head&gt;</div><div class="line">        &lt;title&gt;My Sample Project&lt;/title&gt;</div><div class="line">        &lt;!-- data-main attribute tells require.js to load</div><div class="line">             scripts/main.js after require.js loads. --&gt;</div><div class="line">        &lt;script data-main=&quot;scripts/main&quot; src=&quot;scripts/require.js&quot;&gt;&lt;/script&gt;</div><div class="line">    &lt;/head&gt;</div><div class="line">    &lt;body&gt;</div><div class="line">        &lt;h1&gt;My Sample Project&lt;/h1&gt;</div><div class="line">    &lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure></p>
+<p>此时的<code>script</code>标签可以放在<code>head</code>中，也可以放在<code>body</code>尾部。通过<code>data-main</code>指定的文件，就已经通过异步去操作了。</p>
+<p>main.js当作主文件, 需要依赖util文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">require([&quot;helper/util&quot;], function(util) &#123;</div><div class="line">    //This function is called when scripts/helper/util.js is loaded.</div><div class="line">    //If util.js calls define(), then this function is not fired until</div><div class="line">    //util&apos;s dependencies have loaded, and the util argument will hold</div><div class="line">    //the module value for &quot;helper/util&quot;.</div><div class="line">    console.log(&quot;helper/util&quot;, util);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>util文件定义一个模块:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">define(function() &#123;　　　　</div><div class="line">    var add = function(x, y) &#123;　　　　　　</div><div class="line">        return x + y;　　　　</div><div class="line">    &#125;;　　　　</div><div class="line">    return &#123;　　　　　　</div><div class="line">        add: add　　　　</div><div class="line">    &#125;;　　</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>打开<code>project.html</code>文件，控制台会输出:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">helper/util </div><div class="line">Object &#123;add: function&#125;</div></pre></td></tr></table></figure></p>
+<p>这样，算是完成了对requireJS的初次体验。</p>
+<h2 id="Module编写"><a href="#Module编写" class="headerlink" title="Module编写"></a>Module编写</h2><p>CommonJS规范推荐所有文件都是模块，AMD使用<code>define</code>定义一个模块：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">// 没有依赖，不做处理，直接返回对象</div><div class="line">define(&#123;</div><div class="line">    color: &quot;black&quot;,</div><div class="line">    size: &quot;unisize&quot;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">// 没有依赖，但是做一些处理，返回对象</div><div class="line">define(function () &#123;</div><div class="line">    //Do setup work here</div><div class="line"></div><div class="line">    return &#123;</div><div class="line">        color: &quot;black&quot;,</div><div class="line">        size: &quot;unisize&quot;</div><div class="line">    &#125;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">// 有依赖，做处理，返回对象</div><div class="line">define([&quot;./cart&quot;, &quot;./inventory&quot;], function(cart, inventory) &#123;</div><div class="line">        //return an object to define the &quot;my/shirt&quot; module.</div><div class="line">        return &#123;</div><div class="line">            color: &quot;blue&quot;,</div><div class="line">            size: &quot;large&quot;,</div><div class="line">            addToCart: function() &#123;</div><div class="line">                inventory.decrement(this);</div><div class="line">                cart.add(this);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">);</div><div class="line"></div><div class="line">// 返回函数</div><div class="line">define([&quot;my/cart&quot;, &quot;my/inventory&quot;],</div><div class="line">    function(cart, inventory) &#123;</div><div class="line">        //return a function to define &quot;foo/title&quot;.</div><div class="line">        //It gets or sets the window title.</div><div class="line">        return function(title) &#123;</div><div class="line">            return title ? (window.title = title) :</div><div class="line">                   inventory.storeName + &apos; &apos; + cart.name;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">);</div></pre></td></tr></table></figure></p>
+<p>使用的时候通过<code>require</code>引入，然后定义一个名称，这个名称就是返回的对象的引用。</p>
+<h2 id="RequireJS的config"><a href="#RequireJS的config" class="headerlink" title="RequireJS的config"></a>RequireJS的config</h2><p>requirejs的配置文件可以写在html文件中，也可以写在<code>data-main</code>指定的文件中。但是小心写在<code>data-main</code>中，它的执行时异步的，不一定比其他文件先执行。基本写法如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">require.config(&#123;</div><div class="line">    baseUrl: &quot;/another/path&quot;,</div><div class="line">    paths: &#123;</div><div class="line">        &quot;some&quot;: &quot;some/v1.0&quot;</div><div class="line">    &#125;,</div><div class="line">    waitSeconds: 15</div><div class="line">  &#125;);</div><div class="line">  require( [&quot;some/module&quot;, &quot;my/module&quot;, &quot;a.js&quot;, &quot;b.js&quot;],</div><div class="line">    function(someModule,    myModule) &#123;</div><div class="line">        //This function will be called when all the dependencies</div><div class="line">        //listed above are loaded. Note that this function could</div><div class="line">        //be called before the page is loaded.</div><div class="line">        //This callback is optional.</div><div class="line">    &#125;</div><div class="line">  );</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+  </div>
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+      
+
+    <span class="post-categories">
+      <i class="icon-categories"></i>
+        <a href="/categories/JavaScript/">JavaScript</a>
+    </span>
+    
+
+    
+    
+
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/JavaScript/">JavaScript</a><a href="/tags/模块化/">模块化</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+  
+	<div id="comment">
+	
+	
+	<!-- 多说评论框 start -->
+	 <div class="ds-thread" data-thread-key="/JavaScript/RequireJS-使用/" data-title="RequireJS-使用" data-url="http://finalhome.org/JavaScript/RequireJS-使用/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"leohxj"};
+	  (function() {
+	    var ds = document.createElement('script');
+	    ds.type = 'text/javascript';ds.async = true;
+	    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+	    ds.charset = 'UTF-8';
+	    (document.getElementsByTagName('head')[0] 
+	     || document.getElementsByTagName('body')[0]).appendChild(ds);
+	  })();
+	  </script>
+	<!-- 多说公共JS代码 end -->
+	
+	</div>
+
+
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    </br>
+    
+    &copy; 2016 Leo Hui
+    
+  </p>
+</footer>
+    
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-42849828-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,1062 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>FinalHome</title>
+  <subtitle>最初的梦想</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://finalhome.org/"/>
+  <updated>2014-11-21T06:48:53.000Z</updated>
+  <id>http://finalhome.org/</id>
+  
+  <author>
+    <name>Leo Hui</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>GoogleStaticMap的使用</title>
+    <link href="http://finalhome.org/Google%E7%9B%B8%E5%85%B3/GoogleStaticMap%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
+    <id>http://finalhome.org/Google相关/GoogleStaticMap的使用/</id>
+    <published>2014-11-21T05:36:46.000Z</published>
+    <updated>2014-11-21T06:48:53.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>做前端不可避免的会接触到地图服务，Google Map是面试应用中的佼佼者。它提供的功能很全面，也方便定制。<a id="more"></a></p>
+<h2 id="Google-Maps-Image-APIs"><a href="#Google-Maps-Image-APIs" class="headerlink" title="Google Maps Image APIs"></a>Google Maps Image APIs</h2><p><a href="https://developers.google.com/maps/documentation/imageapis/" target="_blank" rel="external">Google Maps Image APIs</a>, 顾名思义，就是提供静态图片的服务。可以传递坐标，尺寸等信息。</p>
+<p>提供了两种API：</p>
+<ul>
+<li><a href="https://developers.google.com/maps/documentation/staticmaps/" target="_blank" rel="external">Static Maps</a></li>
+<li><a href="https://developers.google.com/maps/documentation/streetview/" target="_blank" rel="external">Street View</a></li>
+</ul>
+<h2 id="一个需求"><a href="#一个需求" class="headerlink" title="一个需求"></a>一个需求</h2><p>昨日帮同事做个小功能，给定三个地点的经纬度以及尺寸，输出三个地点在所输出的图片上的坐标。所用的是<code>Static Map</code>API。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>根据给出的点获取合适的zoom级别的图片，这个方法google直接就可以用，只需要把zoom设置为auto即可。比如:<br><img src="https://maps.googleapis.com/maps/api/staticmap?center=40.744907,-73.997144&amp;zoom=auto&amp;size=350x265&amp;maptype=roadmap&amp;markers=color:blue%7Clabel:S%7C40.764083,-73.995767&amp;markers=color:green%7Clabel:G%7C40.753933,-73.900254&amp;markers=color:red%7Clabel:C%7C40.716705,-74.095413" alt="zoom auto"></p>
+<p>但解决这个需求，有几个关键的点：</p>
+<ul>
+<li>求出正确的zoom级别</li>
+<li>求出在256x256下的坐标</li>
+<li>更具zoom求出对应尺寸下的坐标</li>
+</ul>
+<p>在线预览如下：<a href="http://jsfiddle.net/leohxj/Lga46rx1/" target="_blank" rel="external">jsfiddle</a></p>
+<h3 id="求出zoom-levels"><a href="#求出zoom-levels" class="headerlink" title="求出zoom levels"></a>求出zoom levels</h3><p>由于我暂时还没理解，只能直接贴出代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div></pre></td><td class="code"><pre><div class="line">// getZoom.js</div><div class="line">function getBoundsZoomLevel(points, mapDim) &#123;</div><div class="line">    var WORLD_DIM = &#123; height: 256, width: 256 &#125;;</div><div class="line">    var ZOOM_MAX = 21;</div><div class="line"></div><div class="line">    function latRad(lat) &#123;</div><div class="line">        var sin = Math.sin(lat * Math.PI / 180);</div><div class="line">        var radX2 = Math.log((1 + sin) / (1 - sin)) / 2;</div><div class="line">        return Math.max(Math.min(radX2, Math.PI), -Math.PI) / 2;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    function zoom(mapPx, worldPx, fraction) &#123;</div><div class="line">        return Math.floor(Math.log(mapPx / worldPx / fraction) / Math.LN2);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    var ne = getNorthEast(points);</div><div class="line">    var sw = getSouthWest(points);</div><div class="line"></div><div class="line">    var latFraction = (latRad(ne.lat) - latRad(sw.lat)) / Math.PI;</div><div class="line">    </div><div class="line">    var lngDiff = ne.lng - sw.lng;</div><div class="line">    var lngFraction = ((lngDiff &lt; 0) ? (lngDiff + 360) : lngDiff) / 360;</div><div class="line">    </div><div class="line">    var latZoom = zoom(mapDim.height, WORLD_DIM.height, latFraction);</div><div class="line">    var lngZoom = zoom(mapDim.width, WORLD_DIM.width, lngFraction);</div><div class="line">    </div><div class="line">    return Math.min(latZoom, lngZoom, ZOOM_MAX)-1;</div><div class="line">&#125;</div><div class="line"></div><div class="line">function getBoundsCenter(points) &#123;</div><div class="line">    var centerX = 0;</div><div class="line">    var centerY = 0;</div><div class="line">    for (var i = 0, len = points.length; i &lt; len; i++) &#123;</div><div class="line">        centerX += points[i].lat;</div><div class="line">        centerY += points[i].lng;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    return &#123;</div><div class="line">        lat: (centerX/3),</div><div class="line">        lng: (centerY/3)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">function getNorthEast(points) &#123;</div><div class="line">    var neLat = points[0].lat;</div><div class="line">    var neLng = points[0].lng;</div><div class="line"></div><div class="line">    for (var i = 1, len = points.length; i &lt; len; i++) &#123;</div><div class="line">        neLat = Math.max(neLat, points[i].lat);</div><div class="line">        neLng = Math.max(neLng, points[i].lng);</div><div class="line">    &#125;</div><div class="line">    return &#123;</div><div class="line">        lat: neLat,</div><div class="line">        lng: neLng</div><div class="line">    &#125; </div><div class="line">&#125;</div><div class="line"></div><div class="line">function getSouthWest(points) &#123;</div><div class="line">    var swLat = points[0].lat;</div><div class="line">    var swLng = points[0].lng;</div><div class="line"></div><div class="line">    for (var i = 1, len = points.length; i &lt; len; i++) &#123;</div><div class="line">        swLat = Math.min(swLat, points[i].lat);</div><div class="line">        swLng = Math.min(swLng, points[i].lng);</div><div class="line">    &#125;</div><div class="line">    return &#123;</div><div class="line">        lat: swLat,</div><div class="line">        lng: swLng</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">function formatPoint2Str(point) &#123;</div><div class="line">    return point.lat + &quot;,&quot; + point.lng;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="求出256x256下坐标"><a href="#求出256x256下坐标" class="headerlink" title="求出256x256下坐标"></a>求出256x256下坐标</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line">// MercatorProjection.js</div><div class="line">var MERCATOR_RANGE = 256;</div><div class="line"></div><div class="line">function bound(value, opt_min, opt_max) &#123;</div><div class="line">  if (opt_min != null) value = Math.max(value, opt_min);</div><div class="line">  if (opt_max != null) value = Math.min(value, opt_max);</div><div class="line">  return value;</div><div class="line">&#125;</div><div class="line"></div><div class="line">function degreesToRadians(deg) &#123;</div><div class="line">  return deg * (Math.PI / 180);</div><div class="line">&#125;</div><div class="line"></div><div class="line">function radiansToDegrees(rad) &#123;</div><div class="line">  return rad / (Math.PI / 180);</div><div class="line">&#125;</div><div class="line"></div><div class="line">function MercatorProjection() &#123;</div><div class="line">  this.pixelOrigin_ = &#123;x:MERCATOR_RANGE/2, y:MERCATOR_RANGE/2&#125;;</div><div class="line">  this.pixelsPerLonDegree_ = MERCATOR_RANGE / 360;</div><div class="line">  this.pixelsPerLonRadian_ = MERCATOR_RANGE / (2 * Math.PI);</div><div class="line">&#125;;</div><div class="line"></div><div class="line">MercatorProjection.prototype.fromLatLngToPoint = function(latLng, opt_point) &#123;</div><div class="line">  var me = this;</div><div class="line"></div><div class="line">  var point = opt_point || &#123;x:0, y:0&#125;;</div><div class="line"></div><div class="line">  var origin = me.pixelOrigin_;</div><div class="line">  point.x = origin.x + latLng.lng * me.pixelsPerLonDegree_;</div><div class="line">  // NOTE(appleton): Truncating to 0.9999 effectively limits latitude to</div><div class="line">  // 89.189.  This is about a third of a tile past the edge of the world tile.</div><div class="line">  var siny = bound(Math.sin(degreesToRadians(latLng.lat)), -0.9999, 0.9999);</div><div class="line">  point.y = origin.y + 0.5 * Math.log((1 + siny) / (1 - siny)) * -me.pixelsPerLonRadian_;</div><div class="line">  return point;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">MercatorProjection.prototype.fromPointToLatLng = function(point) &#123;</div><div class="line">  var me = this;</div><div class="line"></div><div class="line">  var origin = me.pixelOrigin_;</div><div class="line">  var lng = (point.x - origin.x) / me.pixelsPerLonDegree_;</div><div class="line">  var latRadians = (point.y - origin.y) / -me.pixelsPerLonRadian_;</div><div class="line">  var lat = radiansToDegrees(2 * Math.atan(Math.exp(latRadians)) - Math.PI / 2);</div><div class="line">  return new google.maps.LatLng(lat, lng);</div><div class="line">&#125;;</div><div class="line"></div><div class="line">//pixelCoordinate = worldCoordinate * Math.pow(2,zoomLevel)</div></pre></td></tr></table></figure>
+<h3 id="求出对应指定尺寸下的坐标"><a href="#求出对应指定尺寸下的坐标" class="headerlink" title="求出对应指定尺寸下的坐标"></a>求出对应指定尺寸下的坐标</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">function getCorners(center,point,zoom,mapWidth,mapHeight)&#123;</div><div class="line">    var scale = Math.pow(2,zoom);</div><div class="line">    var centerPx = proj.fromLatLngToPoint(center);</div><div class="line">    var point = proj.fromLatLngToPoint(point);</div><div class="line"></div><div class="line">    var result = &#123;x:(point.x-centerPx.x)*scale+mapWidth/2,y:(-centerPx.y+point.y)*scale+mapHeight/2&#125;</div><div class="line"></div><div class="line">    return result;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="http://jsfiddle.net/john_s/BHHs8/6/" target="_blank" rel="external">jsfiddle: calc zoom</a></li>
+<li><a href="http://stackoverflow.com/questions/6048975/google-maps-v3-how-to-calculate-the-zoom-level-for-a-given-bounds" target="_blank" rel="external">Google Maps V3 - How to calculate the zoom level for a given bounds</a></li>
+<li><a href="http://stackoverflow.com/questions/12507274/how-to-get-bounds-of-a-google-static-map" target="_blank" rel="external">How to get bounds of a google static map?</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;做前端不可避免的会接触到地图服务，Google Map是面试应用中的佼佼者。它提供的功能很全面，也方便定制。
+    
+    </summary>
+    
+      <category term="google相关" scheme="http://finalhome.org/categories/google%E7%9B%B8%E5%85%B3/"/>
+    
+    
+      <category term="google" scheme="http://finalhome.org/tags/google/"/>
+    
+      <category term="Map" scheme="http://finalhome.org/tags/Map/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>关于地图服务的地理知识</title>
+    <link href="http://finalhome.org/Google%E7%9B%B8%E5%85%B3/%E5%85%B3%E4%BA%8E%E5%9C%B0%E5%9B%BE%E6%9C%8D%E5%8A%A1%E7%9A%84%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86/"/>
+    <id>http://finalhome.org/Google相关/关于地图服务的地理知识/</id>
+    <published>2014-11-21T04:36:46.000Z</published>
+    <updated>2014-11-21T06:25:46.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>地理一直是本人的硬伤，我到现在也不能立即说出经纬度的范围。<a id="more"></a></p>
+<h2 id="基本地理知识"><a href="#基本地理知识" class="headerlink" title="基本地理知识"></a>基本地理知识</h2><ul>
+<li>经纬度：经纬度是经度与纬度的合称组成一个坐标系统。又称为地理坐标系统，它是一种利用三度空间的球面来定义地球上的空间的球面坐标系统，能够标示地球上的任何一个位置。</li>
+<li>经度： 经度是地球上一个地点离一根被称为本初子午线的南北方向走线以东或以西的度数。本初子午线的经度是0°，地球上其它地点的经度是向东到180°或向西到180°。不像纬度有赤道作为自然的起点，经度没有自然的起点而使用经过伦敦格林尼治天文台旧址的子午线作为起点。东经180°即西经180°，约等同于国际日期变更线，国际日期变更线的两边，日期相差一日。</li>
+<li>纬度: 纬度是指某点与地球球心的连线和地球赤道面所成的线面角，其数值在0至90度之间。位于赤道以北的点的纬度叫北纬，记为N，位于赤道以南的点的纬度称南纬，记为S。</li>
+</ul>
+<h2 id="地图映射关系"><a href="#地图映射关系" class="headerlink" title="地图映射关系"></a>地图映射关系</h2><p>地球是一个球体，通过经纬度可以在这个球体上定位任何一个位置。经纬度以度数表示，一般可直接以小数点表示，但亦可把度数的小数点分为角分（1角分等于六十分之一度），和秒（一秒等于六十分之一分）。</p>
+<p>我们常见的地图服务，是通过一种叫做<a href="http://en.wikipedia.org/wiki/UV_mapping" target="_blank" rel="external">UV mapping</a>的方式，把球面的点与经纬度对应起来。参考的映射地图，是一个叫做<a href="https://en.wikipedia.org/wiki/Mercator_projection" target="_blank" rel="external">Mercator projection</a>的项目。</p>
+<p>我们看到的平面地图，理论上是一张如下所示的地图，中心点就是经纬度为0的点：<br><img src="https://maps.googleapis.com/maps/api/staticmap?center=0,0&amp;zoom=0&amp;size=256x256&amp;maptype=roadmap&amp;markers=color:blue%7Clabel:S%7C0,0" alt="Map"></p>
+<p>Google关于这个坐标系的定义是这样的：<a href="https://developers.google.com/maps/documentation/javascript/maptypes#MapCoordinates" target="_blank" rel="external">MapCoordinates</a>。每次缩放的级别都是二的幂。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://developers.google.com/maps/documentation/staticmaps/#Zoomlevels" target="_blank" rel="external">Zoom Levels</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;地理一直是本人的硬伤，我到现在也不能立即说出经纬度的范围。
+    
+    </summary>
+    
+      <category term="google相关" scheme="http://finalhome.org/categories/google%E7%9B%B8%E5%85%B3/"/>
+    
+    
+      <category term="google" scheme="http://finalhome.org/tags/google/"/>
+    
+      <category term="Map" scheme="http://finalhome.org/tags/Map/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>GooglePlay登录美国区的方式</title>
+    <link href="http://finalhome.org/Google%E7%9B%B8%E5%85%B3/GooglePlay%E7%99%BB%E5%BD%95%E7%BE%8E%E5%9B%BD%E5%8C%BA%E7%9A%84%E6%96%B9%E5%BC%8F/"/>
+    <id>http://finalhome.org/Google相关/GooglePlay登录美国区的方式/</id>
+    <published>2014-11-19T05:26:47.000Z</published>
+    <updated>2014-11-19T06:02:59.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>双十一的时候购入了锤子手机，整体感觉很优雅。由于是Android系统，所以第一件事情我还是安装Google的相关服务。然后下载一个Google Play市场，下一些正品的应用。<a id="more"></a></p>
+<h2 id="Google服务框架"><a href="#Google服务框架" class="headerlink" title="Google服务框架"></a>Google服务框架</h2><p>自从使用智能机器以来，我一直都是用的Android，小米、魅族、锤子，这三个优秀的Android系统我都体验过了。总体来说，还是很喜欢锤子的系统，喜欢这件事情，是一个很主观的事情，必须要自己去体验一下。</p>
+<p>Android系统，不用Google服务，总感觉缺失了一些安全感。作为一个程序员，有着良好的科学上网方式，我是必须装上Google服务的。锤子这一点我觉得做的就比其他系统好很多，它的内置应用商店中就有一个<code>Google服务下载器</code>,并且当你要下载使用Google服务相关的应用时候，它的软件描述中还会告知用户请先下载Google服务，很贴心。</p>
+<p>下载并安装完成之后，可能要先翻墙一下，然后登陆Google账号。然后选择你要同步的内容即可。我不推荐同步联系人和人脉，google的联系人中还包含了你发送邮件的地址，显得很混乱。不如使用<code>QQ同步助手</code>这样专门用于联系人同步的软件。一般我只用来同步日历。</p>
+<h2 id="设置翻墙"><a href="#设置翻墙" class="headerlink" title="设置翻墙"></a>设置翻墙</h2><p>选择一个翻墙方式，VPN或者shadowsocks。一定要记住<strong>必须是美国的ip</strong>,可以在百度中搜索IP查看验证。</p>
+<h3 id="电脑端设置"><a href="#电脑端设置" class="headerlink" title="电脑端设置"></a>电脑端设置</h3><p>首先清空或者选择Chrome的隐私模式。首先登陆<a href="wallet.google.com">Google Wallet</a>, 不是Google Play。</p>
+<p>设置下付款地址, 由于我之前绑定了信用卡，在左侧的导航栏里，选择<code>Payment Method</code>，保险起见，建议右侧的Setting里面的Home Address也一并修改了。修改地址为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Leo Hui</div><div class="line">1 World Way</div><div class="line">Los Angeles World Airports</div><div class="line">Los Angeles CA 90045 US</div></pre></td></tr></table></figure>
+<p>修改完成之后，登陆<a href="play.google.com">Google Play</a>, 理论上看到的就是美区的内容了，特点是左侧导航里会有图书，音乐等选项。</p>
+<p>选择一本免费得图书，点击购买，选择使用兑换码购买，输入一个使用过的代码，比如<code>2M7J2LPCU7K62QK6U54G</code>即可。点击下一步，会告知此兑换码已经使用过，这就达到我们的目的了。就是为了记录一次购买经历。然后就可以关闭当前付款窗口。重新打开购买，就可以免费购买图书了。</p>
+<p>这一步，其实已经完成了账号绑定到美国区的过程。</p>
+<h3 id="手机端设置"><a href="#手机端设置" class="headerlink" title="手机端设置"></a>手机端设置</h3><p>同样的先选择一个能翻墙到美国区的方式。</p>
+<p>建议先从软件设置中清空Google Play的数据。等于重新打开。切换区域可能存在一定的延时，所以可以多试几次（清空数据再登录）。</p>
+<p>如果一切正常，那么你看到的也应该是美国区的Google Play。里面的应用可以说是应用尽有。</p>
+<p>Enjoy it!</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="http://micromacer.lofter.com/post/1c7abf_89e712" target="_blank" rel="external">喜大普奔!Google Play永久锁定美国区教程!-断尾的Zekrom</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;双十一的时候购入了锤子手机，整体感觉很优雅。由于是Android系统，所以第一件事情我还是安装Google的相关服务。然后下载一个Google Play市场，下一些正品的应用。
+    
+    </summary>
+    
+      <category term="google相关" scheme="http://finalhome.org/categories/google%E7%9B%B8%E5%85%B3/"/>
+    
+    
+      <category term="google" scheme="http://finalhome.org/tags/google/"/>
+    
+      <category term="Play" scheme="http://finalhome.org/tags/Play/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ios界面尺寸</title>
+    <link href="http://finalhome.org/UI/ios-size/"/>
+    <id>http://finalhome.org/UI/ios-size/</id>
+    <published>2014-10-13T05:55:14.000Z</published>
+    <updated>2014-10-13T06:06:38.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要介绍下ios中safari的尺寸。ios界面主要被分割为如下几部分:</p>
+<ul>
+<li>Status bar</li>
+<li>Navigation bar</li>
+<li>Content</li>
+<li>Tab bar</li>
+</ul>
+<p>如图：<br><img src="http://www.idev101.com/code/User_Interface/img/bothPhones.jpg" alt="Sizes of iPhone UI Elements"><br><a id="more"></a></p>
+<h2 id="设备尺寸"><a href="#设备尺寸" class="headerlink" title="设备尺寸"></a>设备尺寸</h2><p>Resolutions &amp; Display Specifications:</p>
+<table>
+<thead>
+<tr>
+<th>Devices</th>
+<th style="text-align:center">point</th>
+<th style="text-align:right">pixel</th>
+<th style="text-align:right">Physical Device</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>iPhone 2g/3g/3gs</td>
+<td style="text-align:center">320x480</td>
+<td style="text-align:right">320x640</td>
+<td style="text-align:right">3.5’’</td>
+</tr>
+<tr>
+<td>iPhone 4/4s</td>
+<td style="text-align:center">320x480</td>
+<td style="text-align:right">640x960</td>
+<td style="text-align:right">3.5’’</td>
+</tr>
+<tr>
+<td>iPhone 5/5s</td>
+<td style="text-align:center">320x568</td>
+<td style="text-align:right">640x1136</td>
+<td style="text-align:right">4’’</td>
+</tr>
+<tr>
+<td>iPhone 6</td>
+<td style="text-align:center">375x667</td>
+<td style="text-align:right">750x1334</td>
+<td style="text-align:right">4.7’’</td>
+</tr>
+<tr>
+<td>iPhone 6 Plus</td>
+<td style="text-align:center">414x736</td>
+<td style="text-align:right">1242x2208(1080x1920)</td>
+<td style="text-align:right">5.5’’</td>
+</tr>
+<tr>
+<td>iPad 1/2</td>
+<td style="text-align:center">768x1024</td>
+<td style="text-align:right">768x1024</td>
+<td style="text-align:right">9.7’’</td>
+</tr>
+<tr>
+<td>iPad 3/4/air</td>
+<td style="text-align:center">768x1024</td>
+<td style="text-align:right">1536x2048</td>
+<td style="text-align:right">9.7’’</td>
+</tr>
+<tr>
+<td>iPad Mini</td>
+<td style="text-align:center">768x1024</td>
+<td style="text-align:right">768x1024</td>
+<td style="text-align:right">7.9’’</td>
+</tr>
+<tr>
+<td>iPad Mini 2</td>
+<td style="text-align:center">768x1024</td>
+<td style="text-align:right">1536x2048</td>
+<td style="text-align:right">7.9’’</td>
+</tr>
+</tbody>
+</table>
+<p>Commonly used design elements of Safari (point):</p>
+<table>
+<thead>
+<tr>
+<th>Devices</th>
+<th style="text-align:center">Height of Status Bar</th>
+<th style="text-align:center">Height of Nav Bar(protrait)/when scroll</th>
+<th style="text-align:center">Nav Bar when scroll(landscape)/when scroll</th>
+<th style="text-align:center">Height of Tab Bar(portrait)/when scroll</th>
+<th style="text-align:center">Height of Tab Bar(landscape)/when scroll</th>
+<th style="text-align:right">landscape fullview (no status bar)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ios5/iPhone</td>
+<td style="text-align:center">20px</td>
+<td style="text-align:center">60px/0px</td>
+<td style="text-align:center">60px/0px</td>
+<td style="text-align:center">44px/44px</td>
+<td style="text-align:center">32px/32px</td>
+<td style="text-align:right">YES</td>
+</tr>
+<tr>
+<td>ios5/iPad</td>
+<td style="text-align:center">20px</td>
+<td style="text-align:center">60px/60px</td>
+<td style="text-align:center">60px/60px</td>
+<td style="text-align:center">44px/44px</td>
+<td style="text-align:center">44px/44px</td>
+<td style="text-align:right">NO</td>
+</tr>
+<tr>
+<td>ios6/iPhone</td>
+<td style="text-align:center">20px</td>
+<td style="text-align:center">60px/0px</td>
+<td style="text-align:center">60px/0px</td>
+<td style="text-align:center">44px/44px</td>
+<td style="text-align:center">32px/32px</td>
+<td style="text-align:right">YES</td>
+</tr>
+<tr>
+<td>ios6/iPad</td>
+<td style="text-align:center">20px</td>
+<td style="text-align:center">60px/60px</td>
+<td style="text-align:center">60px/60px</td>
+<td style="text-align:center">44px/44px</td>
+<td style="text-align:center">44px/44px</td>
+<td style="text-align:right">NO</td>
+</tr>
+<tr>
+<td>ios7/iPhone</td>
+<td style="text-align:center">20px</td>
+<td style="text-align:center">44px/20px</td>
+<td style="text-align:center">44px/0px</td>
+<td style="text-align:center">44px/0px</td>
+<td style="text-align:center">44px/0px</td>
+<td style="text-align:right">YES</td>
+</tr>
+<tr>
+<td>ios7/iPad</td>
+<td style="text-align:center">20px</td>
+<td style="text-align:center">44px/44px</td>
+<td style="text-align:center">44px/44px</td>
+<td style="text-align:center">32px/32px</td>
+<td style="text-align:center">32px/32px</td>
+<td style="text-align:right">NO</td>
+</tr>
+</tbody>
+</table>
+<h3 id="尺寸说明"><a href="#尺寸说明" class="headerlink" title="尺寸说明"></a>尺寸说明</h3><ol>
+<li>iphone下，ios5，6竖屏滚动，上面的地址栏会消失，但是下面的tab bar不会消失。而在ios7下，竖屏滚动，上面的地址栏会变小，下面的tab bar会消失。</li>
+<li>iphone下, 横屏都可以全屏，ios5,6需要手动点击，ios7自动全屏。全屏状态下，ios5,6 status可以消失。ios7下status不会消失。</li>
+<li>ipad下，不可以全屏，且status bar + nav bar + tab bar固定大小。大小就是status bar + nav bar + tab bar的高度。</li>
+<li>ios7下，页面如果设置100%高，实际高度还是可以滚动，需要强制样式上写入!important.</li>
+</ol>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="http://www.paintcodeapp.com/news/iphone-6-screens-demystified" target="_blank" rel="external">iPhone 6 Screens Demystified</a></li>
+<li><a href="http://ivomynttinen.com/blog/the-ios-7-design-cheat-sheet/" target="_blank" rel="external">The iOS Design Cheat Sheet </a></li>
+<li><a href="https://developer.apple.com/Library/ios/documentation/UserExperience/Conceptual/TransitionGuide/Bars.html" target="_blank" rel="external">iOS 7 UI Transition Guide</a></li>
+<li><a href="http://www.kylejlarson.com/blog/2012/iphone-5-web-design/" target="_blank" rel="external">iPhone 5 Display Size and Web Design Tips</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要介绍下ios中safari的尺寸。ios界面主要被分割为如下几部分:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Status bar&lt;/li&gt;
+&lt;li&gt;Navigation bar&lt;/li&gt;
+&lt;li&gt;Content&lt;/li&gt;
+&lt;li&gt;Tab bar&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如图：&lt;br&gt;&lt;img src=&quot;http://www.idev101.com/code/User_Interface/img/bothPhones.jpg&quot; alt=&quot;Sizes of iPhone UI Elements&quot;&gt;&lt;br&gt;
+    
+    </summary>
+    
+      <category term="UI" scheme="http://finalhome.org/categories/UI/"/>
+    
+    
+      <category term="UI" scheme="http://finalhome.org/tags/UI/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>margin和padding</title>
+    <link href="http://finalhome.org/HTML&amp;CSS/margin%E5%92%8Cpadding/"/>
+    <id>http://finalhome.org/HTML&amp;CSS/margin和padding/</id>
+    <published>2014-07-18T06:41:36.000Z</published>
+    <updated>2014-07-18T06:43:01.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>理解CSS的属性时，经常会对margin和padding的使用感到。。。。<br><a id="more"></a></p>
+<h2 id="构造方法"><a href="#构造方法" class="headerlink" title="构造方法"></a>构造方法</h2><ul>
+<li>构造函数<br>  var arr = new Array();</li>
+<li>字面赋值<br>  var arr = [1,2,3];</li>
+</ul>
+<p>通常采用这两种方式。字面赋值的时候，注意元素末尾不要有多余的<code>,</code>号。会在IE中造成bug。</p>
+<h2 id="长度问题"><a href="#长度问题" class="headerlink" title="长度问题"></a>长度问题</h2><p>获取数组的长度是<code>.length</code>属性，获取的是数组中元素的个数。但是数组访问是可以超过这个length的。获取的元素是<code>undefined</code>。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;理解CSS的属性时，经常会对margin和padding的使用感到。。。。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="HTML/CSS" scheme="http://finalhome.org/categories/HTML-CSS/"/>
+    
+    
+      <category term="CSS" scheme="http://finalhome.org/tags/CSS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SublimeText3使用指南</title>
+    <link href="http://finalhome.org/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/SublimeText3%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/"/>
+    <id>http://finalhome.org/开发工具/SublimeText3使用指南/</id>
+    <published>2014-07-03T05:57:30.000Z</published>
+    <updated>2014-07-03T06:14:34.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>选择一个好的编辑器，可以极大的提高你的开发效率。我使用过Vim、Emacs和SublimeText。个人还是比较推荐现代化的sublimeText编辑器配合vim,emacs的操作方式。</p>
+<p>更多内容，可以查看官方推荐的非官方文档-&gt;<a href="http://docs.sublimetext.info/en/latest/index.html" target="_blank" rel="external">文档地址</a>。</p>
+<a id="more"></a>
+<h2 id="特色功能"><a href="#特色功能" class="headerlink" title="特色功能"></a>特色功能</h2><ul>
+<li>ctrl+p，搜索。这个搜索可以左侧的Folders里所以文件，而且是模糊搜索，不需要完整的文件名。配合#, @, :可以搜索变量，函数，行数。</li>
+<li>多行编辑。按住ctrl加左击，可以出现多个光标位置。</li>
+<li>多重选择， ctrl+d可以多重选择，结合光标键，可以批量修改。</li>
+<li>多屏编辑，alt+shift+数字键。</li>
+<li>Projects，通过View-&gt;Side Bar-&gt;show Side Bar左侧文件结构管理。</li>
+<li>snippet, 不同格式的文件，可以设置不同的snippet,就是简写，通过tab扩展成相应的内容。</li>
+<li>各种插件支持</li>
+<li>正则表达式搜索,比如我要删除所有的空行，可以使用<code>^[\s]*\n</code>来选择所有空行。可以使用<code>(?&lt;=&lt;h2&gt;).+(?=&lt;/h2&gt;)</code>来匹配h2标签内的内容。</li>
+<li>ctrl+shift+p，功能菜单。只有你想不到，没有做不到的事情。</li>
+</ul>
+<h2 id="下载安装"><a href="#下载安装" class="headerlink" title="下载安装"></a>下载安装</h2><p>ST3虽然没有提供稳定版本，但是相比ST2，速度提升还是很明显的。缺点就是插件不够完善，以及插件的编写全部采用Python3.x版本。这里给出ST3<a href="http://www.sublimetext.com/3" target="_blank" rel="external">下载地址</a>。</p>
+<p>个人最喜欢的一点新特性是：新增了跳转到函数定义处功能，在大菜单Goto中可以查看到。</p>
+<p>首次使用，建议先打开侧栏，方便管理文件结构。打开方式:<code>View-&gt;Side Bar-&gt;Show Side Bar</code>。</p>
+<h2 id="插件安装"><a href="#插件安装" class="headerlink" title="插件安装"></a>插件安装</h2><p>插件通过<a href="https://sublime.wbond.net/installation#Simple" target="_blank" rel="external">Package Control</a>来管理。</p>
+<h3 id="安装Package-Control"><a href="#安装Package-Control" class="headerlink" title="安装Package Control"></a>安装Package Control</h3><p>进入Package Control页面，选择对应版本的代码进行复制，比如ST3如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404&apos; + &apos;e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)</div></pre></td></tr></table></figure></p>
+<p>使用<code>View-&gt;Show Console</code>打开控制台，粘贴复制的代码，敲击回车运行。待程序右下角提示<code>success</code>后，重启ST。</p>
+<p>再次进入ST后，可以通过菜单<code>Preferences-&gt;Package Control</code>或者按键<code>ctrl+shift+p</code>查找<code>install package</code>。输入对应的插件名称，即可安装插件。</p>
+<p>更多插件，可以通过Package Control中的<a href="https://sublime.wbond.net/search" target="_blank" rel="external">search</a>查找。</p>
+<h2 id="配置修改"><a href="#配置修改" class="headerlink" title="配置修改"></a>配置修改</h2><p>配置包括Preferences-&gt;Settings-Default和Key Bindings-Default。</p>
+<p>修改配置文件时，以上两个默认文件最好不要修改，自行讲需要设置的参数写入到Settings-User和Key Bindings-User里，它们会自动覆盖Default相同属性。</p>
+<h3 id="备份配置"><a href="#备份配置" class="headerlink" title="备份配置"></a>备份配置</h3><p>配置文件的路径，点击Preferences-&gt;Browse Packages打开目录，找到User目录，这里的文件就是自己的配置文件，最好备份，方便下次替换。</p>
+<h2 id="插件推荐"><a href="#插件推荐" class="headerlink" title="插件推荐"></a>插件推荐</h2><h3 id="主题配色和代码配色"><a href="#主题配色和代码配色" class="headerlink" title="主题配色和代码配色"></a>主题配色和代码配色</h3><p>配色其实分为主题配色和代码配色。主题配色就是程序的外形设置，代码配色则是打开文件高亮显示的配置。</p>
+<p>主题配色我使用的是<code>Theme-Phoenix</code>插件，代码配色选择的是<code>Dayle Rees Color Schemes</code>插件，对于字体，我也是进行了替换，在windows下推荐使用<code>yaheiconsolashybrid</code>。</p>
+<p>插播一句，编程的字体应该选择等宽类型的。</p>
+<p>安装完了插件，可以在<code>Perferences-&gt;Color Scheme</code>中查看修改。也可以通过配置文件修改：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;caret_style&quot;: &quot;phase&quot;,</div><div class="line">    &quot;color_scheme&quot;: &quot;Packages/User/theme/Peacock (SL).tmTheme&quot;,</div><div class="line">    &quot;default_line_ending&quot;: &quot;unix&quot;,</div><div class="line">    &quot;font_face&quot;: &quot;YaHei Consolas Hybrid&quot;,</div><div class="line">    &quot;font_size&quot;: 16.0,</div><div class="line">    &quot;highlight_line&quot;: true,</div><div class="line">    &quot;hot_exit&quot;: false,</div><div class="line">    &quot;ignored_packages&quot;:</div><div class="line">    [</div><div class="line">        &quot;Vintage&quot;</div><div class="line">    ],</div><div class="line">    &quot;phoenix_color_green&quot;: true,</div><div class="line">    &quot;phoenix_dirty_bottom_bar_red&quot;: true,</div><div class="line">    &quot;phoenix_eighties&quot;: true,</div><div class="line">    &quot;phoenix_highlight_current_tab&quot;: true,</div><div class="line">    &quot;phoenix_sidebar_tree_large&quot;: true,</div><div class="line">    &quot;phoenix_solid_current_tab&quot;: true,</div><div class="line">    &quot;phoenix_tabs_medium&quot;: true,</div><div class="line">    &quot;rulers&quot;:</div><div class="line">    [</div><div class="line">        80,</div><div class="line">        100,</div><div class="line">        120</div><div class="line">    ],</div><div class="line">    &quot;soda_folder_icons&quot;: false,</div><div class="line">    &quot;tab_size&quot;: 4,</div><div class="line">    &quot;theme&quot;: &quot;Phoenix Dark.sublime-theme&quot;,</div><div class="line">    &quot;translate_tabs_to_spaces&quot;: true,</div><div class="line">    &quot;word_separators&quot;: &quot;./\\()\&quot;&apos;:,.;&lt;&gt;~!@#$%^&amp;*|+=[]&#123;&#125;`~?&quot;,</div><div class="line">    &quot;word_wrap&quot;: true,</div><div class="line">    &quot;wrap_width&quot;: 0</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这里我列出的是我的全部配置文件，可以看到相关的主题配色、代码配色和字体设置。</p>
+<h3 id="ST辅助类"><a href="#ST辅助类" class="headerlink" title="ST辅助类"></a>ST辅助类</h3><ul>
+<li><p><strong>SideBarEnhancements</strong><br>提升右侧导航栏功能</p>
+</li>
+<li><p><strong>Sublimerge Pro</strong><br>文件对比功能</p>
+</li>
+<li><p><strong>Markdown Preview</strong><br>书写markdown格式文本，预览等功能。</p>
+</li>
+<li><p><strong>Terminal</strong><br>直接在对应文件所在目录打开terminal功能。</p>
+</li>
+</ul>
+<h3 id="代码显示辅助类"><a href="#代码显示辅助类" class="headerlink" title="代码显示辅助类"></a>代码显示辅助类</h3><ul>
+<li><p><strong>BracketHighlighter</strong><br>高亮显示匹配括号，会在左侧的行号标识处显示对应的括号位置和范围。</p>
+</li>
+<li><p><strong>HTML-CSS-JS Prettify</strong><br>格式化代码工具，默认快捷键<code>ctrl+shift+h</code>。</p>
+</li>
+<li><p><strong>CSScomb JS</strong><br>按照一定规律格式化CSS的属性顺序。</p>
+</li>
+</ul>
+<h3 id="代码书写辅助类"><a href="#代码书写辅助类" class="headerlink" title="代码书写辅助类"></a>代码书写辅助类</h3><ul>
+<li><p><strong>Emmet</strong><br>必装插件，辅助书写HTML, CSS。</p>
+</li>
+<li><p><strong>AutoFileName</strong><br>书写代码时，自动提示补充文件路径。</p>
+</li>
+<li><p><strong>DocBlockr</strong><br>辅助书写注释</p>
+</li>
+<li><p><strong>JSHint Gutter</strong><br>利用<code>jslint</code>检测js代码是否规范的插件。</p>
+</li>
+<li><p><strong>LiveStyle</strong><br>配合对应的chrome插件，可以达到修改文件后，自动刷新页面的效果。但目前对<code>less</code>,<code>sass</code>之类预编译语言支持不够好。</p>
+</li>
+</ul>
+<h2 id="使用技巧"><a href="#使用技巧" class="headerlink" title="使用技巧"></a>使用技巧</h2><h3 id="快捷键操作"><a href="#快捷键操作" class="headerlink" title="快捷键操作"></a>快捷键操作</h3><p>默认的快捷操作，可以查看<code>Preferences-&gt;Key Binding</code>，或者文档:<a href="http://docs.sublimetext.info/en/latest/reference/keyboard_shortcuts_win.html" target="_blank" rel="external">Keyboard Shortcuts-Windows/Linux</a>和<a href="http://docs.sublimetext.info/en/latest/reference/keyboard_shortcuts_osx.html" target="_blank" rel="external">Keyboard Shortcuts-OSX</a>。</p>
+<p>个人常用的快捷键设置如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div></pre></td><td class="code"><pre><div class="line">[</div><div class="line">/*============= Emacs Style =============*/</div><div class="line">&#123; &quot;keys&quot;: [&quot;ctrl+b&quot;], &quot;command&quot;: &quot;move&quot;, &quot;args&quot;: &#123;&quot;by&quot;: &quot;characters&quot;, &quot;forward&quot;: false&#125; &#125;,</div><div class="line">&#123; &quot;keys&quot;: [&quot;ctrl+f&quot;], &quot;command&quot;: &quot;move&quot;, &quot;args&quot;: &#123;&quot;by&quot;: &quot;characters&quot;, &quot;forward&quot;: true&#125; &#125;,</div><div class="line">&#123; &quot;keys&quot;: [&quot;ctrl+p&quot;], &quot;command&quot;: &quot;move&quot;, &quot;args&quot;: &#123;&quot;by&quot;: &quot;lines&quot;, &quot;forward&quot;:</div><div class="line">false&#125; &#125;,</div><div class="line">&#123; &quot;keys&quot;: [&quot;ctrl+n&quot;], &quot;command&quot;: &quot;move&quot;, &quot;args&quot;: &#123;&quot;by&quot;: &quot;lines&quot;, &quot;forward&quot;:</div><div class="line">true&#125; &#125;,</div><div class="line">&#123; &quot;keys&quot;: [&quot;ctrl+a&quot;], &quot;command&quot;: &quot;move_to&quot;, &quot;args&quot;: &#123;&quot;to&quot;: &quot;bol&quot;, &quot;extend&quot;: false&#125; &#125;,</div><div class="line">&#123; &quot;keys&quot;: [&quot;ctrl+e&quot;], &quot;command&quot;: &quot;move_to&quot;, &quot;args&quot;: &#123;&quot;to&quot;: &quot;eol&quot;, &quot;extend&quot;: false&#125; &#125;,</div><div class="line">&#123; &quot;keys&quot;: [&quot;ctrl+l&quot;], &quot;command&quot;: &quot;show_at_center&quot; &#125;,</div><div class="line">/*============= End Emacs Style =============*/</div><div class="line"></div><div class="line">/*============= switch tabs =============*/</div><div class="line">&#123; &quot;keys&quot;: [&quot;ctrl+1&quot;], &quot;command&quot;: &quot;select_by_index&quot;, &quot;args&quot;: &#123; &quot;index&quot;: 0 &#125; &#125;,</div><div class="line">&#123; &quot;keys&quot;: [&quot;ctrl+2&quot;], &quot;command&quot;: &quot;select_by_index&quot;, &quot;args&quot;: &#123; &quot;index&quot;: 1 &#125; &#125;,</div><div class="line">&#123; &quot;keys&quot;: [&quot;ctrl+3&quot;], &quot;command&quot;: &quot;select_by_index&quot;, &quot;args&quot;: &#123; &quot;index&quot;: 2 &#125; &#125;,</div><div class="line">&#123; &quot;keys&quot;: [&quot;ctrl+4&quot;], &quot;command&quot;: &quot;select_by_index&quot;, &quot;args&quot;: &#123; &quot;index&quot;: 3 &#125; &#125;,</div><div class="line">&#123; &quot;keys&quot;: [&quot;ctrl+5&quot;], &quot;command&quot;: &quot;select_by_index&quot;, &quot;args&quot;: &#123; &quot;index&quot;: 4 &#125; &#125;,</div><div class="line">&#123; &quot;keys&quot;: [&quot;ctrl+6&quot;], &quot;command&quot;: &quot;select_by_index&quot;, &quot;args&quot;: &#123; &quot;index&quot;: 5 &#125; &#125;,</div><div class="line">&#123; &quot;keys&quot;: [&quot;ctrl+7&quot;], &quot;command&quot;: &quot;select_by_index&quot;, &quot;args&quot;: &#123; &quot;index&quot;: 6 &#125; &#125;,</div><div class="line">&#123; &quot;keys&quot;: [&quot;ctrl+8&quot;], &quot;command&quot;: &quot;select_by_index&quot;, &quot;args&quot;: &#123; &quot;index&quot;: 7 &#125; &#125;,</div><div class="line">&#123; &quot;keys&quot;: [&quot;ctrl+9&quot;], &quot;command&quot;: &quot;select_by_index&quot;, &quot;args&quot;: &#123; &quot;index&quot;: 8 &#125; &#125;,</div><div class="line">&#123; &quot;keys&quot;: [&quot;ctrl+shift+t&quot;], &quot;command&quot;: &quot;reopen_last_file&quot; &#125;,</div><div class="line">/*============= End switch tabs =============*/</div><div class="line"></div><div class="line">/*============= Modify Default key-mapping  =============*/</div><div class="line">&#123; &quot;keys&quot;: [&quot;alt+a&quot;], &quot;command&quot;: &quot;select_all&quot; &#125;,</div><div class="line">&#123; &quot;keys&quot;: [&quot;ctrl+t&quot;], &quot;command&quot;: &quot;new_file&quot; &#125;,</div><div class="line">&#123; &quot;keys&quot;: [&quot;f5&quot;], &quot;command&quot;: &quot;open_in_browser&quot; &#125;,</div><div class="line">// autocomplate</div><div class="line">&#123; &quot;keys&quot;: [&quot;alt+/&quot;], &quot;command&quot;: &quot;auto_complete&quot; &#125;,</div><div class="line">// paste</div><div class="line">&#123; &quot;keys&quot;: [&quot;ctrl+v&quot;], &quot;command&quot;: &quot;paste_and_indent&quot; &#125;,</div><div class="line">&#123; &quot;keys&quot;: [&quot;ctrl+shift+v&quot;], &quot;command&quot;: &quot;paste&quot; &#125;,</div><div class="line">// reindex</div><div class="line">&#123; &quot;keys&quot;: [&quot;ctrl+i&quot;], &quot;command&quot;: &quot;reindent&quot; &#125;,</div><div class="line">// find and goto</div><div class="line">&#123; &quot;keys&quot;: [&quot;alt+f&quot;], &quot;command&quot;: &quot;show_panel&quot;, &quot;args&quot;: &#123;&quot;panel&quot;: &quot;find&quot;&#125; &#125;,</div><div class="line">&#123; &quot;keys&quot;: [&quot;ctrl+g&quot;], &quot;command&quot;: &quot;find_all_under&quot; &#125;,</div><div class="line">&#123; &quot;keys&quot;: [&quot;alt+p&quot;], &quot;command&quot;: &quot;show_overlay&quot;, &quot;args&quot;: &#123;&quot;overlay&quot;: &quot;goto&quot;, &quot;show_files&quot;: true&#125; &#125;,</div><div class="line">&#123; &quot;keys&quot;: [&quot;alt+r&quot;], &quot;command&quot;: &quot;show_overlay&quot;, &quot;args&quot;: &#123;&quot;overlay&quot;: &quot;goto&quot;, &quot;text&quot;: &quot;@&quot;&#125; &#125;,</div><div class="line">&#123; &quot;keys&quot;: [&quot;alt+l&quot;], &quot;command&quot;: &quot;show_overlay&quot;, &quot;args&quot;: &#123;&quot;overlay&quot;: &quot;goto&quot;, &quot;text&quot;: &quot;:&quot;&#125; &#125;,</div><div class="line">&#123; &quot;keys&quot;: [&quot;alt+;&quot;], &quot;command&quot;: &quot;show_overlay&quot;, &quot;args&quot;: &#123;&quot;overlay&quot;: &quot;goto&quot;, &quot;text&quot;: &quot;#&quot;&#125; &#125;,</div><div class="line">&#123; &quot;keys&quot;: [&quot;alt+d&quot;], &quot;command&quot;: &quot;goto_definition&quot; &#125;,</div><div class="line">&#123; &quot;keys&quot;: [&quot;alt+-&quot;], &quot;command&quot;: &quot;jump_back&quot; &#125;,</div><div class="line">&#123; &quot;keys&quot;: [&quot;alt+=&quot;], &quot;command&quot;: &quot;jump_forward&quot; &#125;,</div><div class="line">/*============= End Modify Default key-mapping  =============*/</div><div class="line"></div><div class="line">/*============= Plugin =============*/</div><div class="line">// Emmet expand</div><div class="line">&#123;&quot;keys&quot;: [&quot;alt+e&quot;], &quot;args&quot;: &#123;&quot;action&quot;: &quot;expand_abbreviation&quot;&#125;, &quot;command&quot;: &quot;run_emmet_action&quot;, &quot;context&quot;: [&#123;&quot;key&quot;: &quot;emmet_action_enabled.expand_abbreviation&quot;&#125; ] &#125;,</div><div class="line">// js Hint Grunt</div><div class="line">&#123;&quot;keys&quot;: [&quot;alt+j&quot;], &quot;command&quot;: &quot;jshint&quot;&#125;,</div><div class="line">// markdown preview</div><div class="line">&#123; &quot;keys&quot;: [&quot;ctrl+m&quot;], &quot;command&quot;: &quot;markdown_preview&quot;, &quot;args&quot;: &#123;&quot;target&quot;: &quot;browser&quot;, &quot;parser&quot;:&quot;markdown&quot;&#125; &#125;,</div><div class="line">// terminal</div><div class="line">&#123; &quot;keys&quot;: [&quot;ctrl+alt+t&quot;], &quot;command&quot;: &quot;open_terminal&quot; &#125;,</div><div class="line">&#123; &quot;keys&quot;: [&quot;ctrl+shift+alt+t&quot;], &quot;command&quot;: &quot;open_terminal_project_folder&quot; &#125;</div><div class="line">/*============= End Plugin =============*/</div><div class="line">]</div></pre></td></tr></table></figure></p>
+<p>其中涉及到了emacs移动光标，多标签切换，以及快速查找等方式。</p>
+<h3 id="snippet"><a href="#snippet" class="headerlink" title="snippet"></a>snippet</h3><p>snippet是代码片段，可以方便的自动补全。创建方式通过<code>Tools-&gt;New Snippet</code>完成。</p>
+<p>默认的文件如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;snippet&gt;</div><div class="line">    &lt;content&gt;&lt;![CDATA[</div><div class="line">Hello, $&#123;1:this&#125; is a $&#123;2:snippet&#125;.</div><div class="line">]]&gt;&lt;/content&gt;</div><div class="line">    &lt;!-- Optional: Set a tabTrigger to define how to trigger the snippet --&gt;</div><div class="line">    &lt;!-- &lt;tabTrigger&gt;hello&lt;/tabTrigger&gt; --&gt;</div><div class="line">    &lt;!-- Optional: Set a scope to limit where the snippet will trigger --&gt;</div><div class="line">    &lt;!-- &lt;scope&gt;source.python&lt;/scope&gt; --&gt;</div><div class="line">&lt;/snippet&gt;</div></pre></td></tr></table></figure></p>
+<p>代码段写在<code>CDATA[]</code>中，<code>${}</code>为占位字符。 </p>
+<p><code>tabTrigger</code>为自动补全需要的字符，<code>scope</code>设置的是文件格式。</p>
+<p>创建完成之后，个人建议保存在<code>User-&gt;snippet</code>目录下，<code>snippet</code>需要自行创建，方便管理。</p>
+<h3 id="build命令和Macro命令"><a href="#build命令和Macro命令" class="headerlink" title="build命令和Macro命令"></a>build命令和Macro命令</h3><p>这些命令的使用请参考文档-&gt;<a href="http://docs.sublimetext.info/en/latest/reference/reference.html" target="_blank" rel="external">Reference</a>。</p>
+<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><ul>
+<li><a href="http://www.sublimetext.com/" target="_blank" rel="external">sublimeText官网</a></li>
+<li><a href="http://docs.sublimetext.info/en/latest" target="_blank" rel="external">非官方手册</a></li>
+<li><a href="https://sublime.wbond.net/installation#Simple" target="_blank" rel="external">Package Control</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;选择一个好的编辑器，可以极大的提高你的开发效率。我使用过Vim、Emacs和SublimeText。个人还是比较推荐现代化的sublimeText编辑器配合vim,emacs的操作方式。&lt;/p&gt;
+&lt;p&gt;更多内容，可以查看官方推荐的非官方文档-&amp;gt;&lt;a href=&quot;http://docs.sublimetext.info/en/latest/index.html&quot;&gt;文档地址&lt;/a&gt;。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="开发工具" scheme="http://finalhome.org/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
+    
+    
+      <category term="SublimeText" scheme="http://finalhome.org/tags/SublimeText/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>nodejs开发命名行工具</title>
+    <link href="http://finalhome.org/Nodejs/nodejs%E5%BC%80%E5%8F%91%E5%91%BD%E5%90%8D%E8%A1%8C%E5%B7%A5%E5%85%B7/"/>
+    <id>http://finalhome.org/Nodejs/nodejs开发命名行工具/</id>
+    <published>2014-07-02T06:31:46.000Z</published>
+    <updated>2014-11-19T02:22:52.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>受启发的缘由一个是<a href="https://github.com/Edmeral/nodecup" target="_blank" rel="external">nodecup</a>项目，可以命令行形式查看世界杯赛程。另一个是<a href="https://visionmedia.github.io/commander.js/" target="_blank" rel="external">commander</a>, 方便编写命令行工具的库。</p>
+<p>结合起来，我觉得对以后的自动化部署会有帮助，所以先尝试去写一个获取天气的命令行工具。<br><a id="more"></a></p>
+<h2 id="项目分析"><a href="#项目分析" class="headerlink" title="项目分析"></a>项目分析</h2><p>我想要做的是通过命名行的方式，直接查询当前时刻的天气，以及最近几天的天气情况。命名行下我预测会出现的问题就是获取当前位置，所以默认情况还是需要手动输入一个城市名称。</p>
+<p>项目我放在了github上，使用的是Node.js完成。项目地址:<a href="https://github.com/leohxj/nodeweather" target="_blank" rel="external">nodeweather</a>。</p>
+<h2 id="天气API"><a href="#天气API" class="headerlink" title="天气API"></a>天气API</h2><p>关于天气的API，知乎上有一个讨论<a href="http://www.zhihu.com/question/20575288" target="_blank" rel="external">网上的天气 API 哪一个更加可靠？</a>。</p>
+<p>我相信中国天气的API比较官方，但是个人使用需要申请验证，<a href="http://smart.weather.com.cn/wzfw/smart/weatherapi.shtml" target="_blank" rel="external">验证方式</a>。使用过程中，也是需要根据城市查询到对应的城市代码才可以查询，不是很方便，因为网上没有直接查询这些城市代码的接口。我可能需要自行建立数据库。</p>
+<p>接下来我想到了Yahoo Weather， 目前很多天气源也是引用的雅虎数据。它的在线手册是:<a href="https://developer.yahoo.com/weather/#response" target="_blank" rel="external">yahoo weather</a>。使用雅虎天气的API，需要有一个<code>woeid</code>，这个正常情况下需要申请yahoo的Developer API。但是幸运的是我发现一个地址可以通过城市名称查询这个<code>woeid</code>，在线地址<code>http://query.yahooapis.com/v1/public/yql?q=select*from%20geo.places%20where%20text=%22%22&amp;format=xml</code>，传入的城市名称设置在<code>text=%22%22</code>两个<code>%22</code>中。返回的是XML格式数据。里面会有响应的<code>woeid</code>。</p>
+<p>获取到了<code>woeid</code>之后，我们可以通过雅虎天气的API查询天气了，查询方式如下：<code>http://weather.yahooapis.com/forecastrss?w=615702&amp;u=c</code>。参数<code>woeid</code>就是城市对应的代码，<code>u=c</code>代表查询的是摄氏温度。当然，返回的对象依旧是XML格式。</p>
+<h2 id="处理XML"><a href="#处理XML" class="headerlink" title="处理XML"></a>处理XML</h2><p>因为是在服务器端处理，并且使用的是node.js环境。我还是习惯性的使用<code>jQuery</code>去解析XML。</p>
+<p>在nodejs中使用jQuery，会有一个问题就是缺少window变量。需要引入<code>jsdom</code>帮助创建<code>window</code>对象。</p>
+<p>官方的使用方式如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">In Node.JS you may also create separate window instances</div><div class="line"> </div><div class="line">    var jsdom = require(&apos;jsdom&apos;).jsdom</div><div class="line">      , myWindow = jsdom().createWindow()</div><div class="line">      , $ = require(&apos;jQuery&apos;)</div><div class="line">      , jq = require(&apos;jQuery&apos;).create()</div><div class="line">      , jQuery = require(&apos;jQuery&apos;).create(myWindow)</div><div class="line">      ;</div><div class="line"> </div><div class="line">    $(&quot;&lt;h1&gt;test passes&lt;/h1&gt;&quot;).appendTo(&quot;body&quot;);</div><div class="line">    console.log($(&quot;body&quot;).html());</div><div class="line"> </div><div class="line">    jq(&quot;&lt;h2&gt;other test passes&lt;/h2&gt;&quot;).appendTo(&quot;body&quot;);</div><div class="line">    console.log(jq(&quot;body&quot;).html());</div><div class="line"> </div><div class="line">    jQuery(&quot;&lt;h3&gt;third test passes&lt;/h3&gt;&quot;).appendTo(&quot;body&quot;);</div><div class="line">    console.log(jQuery(&quot;body&quot;).html());</div></pre></td></tr></table></figure></p>
+<p>我个人创建window使用的方式如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">var jsdom = require(&quot;jsdom&quot;);</div><div class="line">var $ = require(&quot;jquery&quot;)(jsdom.jsdom().createWindow());</div></pre></td></tr></table></figure></p>
+<p>nodejs处理网络请求使用的模块是<code>request</code>, 具体使用参考文档即可。</p>
+<h2 id="脚本的编写"><a href="#脚本的编写" class="headerlink" title="脚本的编写"></a>脚本的编写</h2><p>这里如要提及一下脚本的编写问题，我是在windows下写的程序，但是为了保证程序在unix下正常工作，我需要在文件头部声明好系统的环境变量，nodejs写的脚本应该为:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">#!usr/bin/env node</div></pre></td></tr></table></figure>
+<p>sublimetext编辑器需要注意设置<code>view-&gt;line-coding</code>为<code>unix</code>模式，如果模式是<code>windows</code>，在unix下，换行会多出<code>/r</code>字符，报错信息大致为<code>ERROE env: node/r</code>。</p>
+<p>本地测试的使用，你使用的是<code>node xxx</code>形式，只要你在<code>package.json</code>中指定了:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&quot;main&quot;: &quot;./nodeweather&quot;,</div><div class="line">  &quot;bin&quot;: &#123;</div><div class="line">    &quot;nodeweather&quot;: &quot;./nodeweather.js&quot;</div><div class="line">  &#125;</div></pre></td></tr></table></figure></p>
+<p>上传至npm之后，再下载就可以直接使用xxx形式。</p>
+<h2 id="上传NPM"><a href="#上传NPM" class="headerlink" title="上传NPM"></a>上传NPM</h2><p>首先，你需要拥有一个npm的账号，然后正确的设置好<code>package.json</code>。</p>
+<p>使用<code>npm adduser</code>进行验证，使用<code>npm publish</code>上传文件至npm。</p>
+<p>完成之后，就可以在任意环境下使用<code>npm install xxx</code>安装了。</p>
+<h2 id="不借助commander的情况"><a href="#不借助commander的情况" class="headerlink" title="不借助commander的情况"></a>不借助commander的情况</h2><p>有时候我们只是写一段脚本，想要在全局运行，那么也很简单。</p>
+<p>首先确保项目中存在<code>package.json</code>文件，如果没有，自行<code>npm init</code>一个，比如:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  &quot;name&quot;: &quot;sayhi&quot;,</div><div class="line">  &quot;version&quot;: &quot;1.0.0&quot;,</div><div class="line">  &quot;description&quot;: &quot;&quot;,</div><div class="line">  &quot;main&quot;: &quot;index.js&quot;,</div><div class="line">  &quot;scripts&quot;: &#123;</div><div class="line">    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;</div><div class="line">  &#125;,</div><div class="line">  &quot;bin&quot;: &#123;</div><div class="line">    &quot;hw&quot;: &quot;index.js&quot;</div><div class="line">  &#125;,</div><div class="line">  &quot;author&quot;: &quot;&quot;,</div><div class="line">  &quot;license&quot;: &quot;ISC&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其中特别要注意的是:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&quot;bin&quot;: &#123;</div><div class="line">  &quot;hw&quot;: &quot;index.js&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这段，标明了希望使用<code>hw</code>达到<code>node index.js</code>的目的。</p>
+<p>其次我们要在脚本文件的开头，加上:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">#!usr/bin/env node</div></pre></td></tr></table></figure>
+<h3 id="全局安装"><a href="#全局安装" class="headerlink" title="全局安装"></a>全局安装</h3><p>使用<code>npm install -g</code>或者<code>npm link</code>即可。<br>然后全局下就可以使用了。</p>
+<p>这里区分一下<code>npm install -g</code>与<code>npm link</code>的区别：</p>
+<ul>
+<li><code>npm install -g</code>安装的相当于硬链接，只保留当前版本，本地修改项目不会同步到命令中。</li>
+<li><code>npm link</code>其实就是一个软连接，本地的任何修改都能同步到命令之中。</li>
+</ul>
+<h3 id="撤销全局安装"><a href="#撤销全局安装" class="headerlink" title="撤销全局安装"></a>撤销全局安装</h3><p><code>npm uninstall -g &lt;name&gt;</code></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://developer.yahoo.com/weather" target="_blank" rel="external">Yahoo Weather API</a></li>
+<li><a href="http://android-er.blogspot.jp/2012/03/search-woeid-from-httpqueryyahooapiscom.html" target="_blank" rel="external">获取城市WOEID代码方式</a></li>
+<li><a href="https://github.com/Edmeral/nodecup" target="_blank" rel="external">nodecup</a></li>
+<li><a href="https://visionmedia.github.io/commander.js/" target="_blank" rel="external">commander</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;受启发的缘由一个是&lt;a href=&quot;https://github.com/Edmeral/nodecup&quot;&gt;nodecup&lt;/a&gt;项目，可以命令行形式查看世界杯赛程。另一个是&lt;a href=&quot;https://visionmedia.github.io/commander.js/&quot;&gt;commander&lt;/a&gt;, 方便编写命令行工具的库。&lt;/p&gt;
+&lt;p&gt;结合起来，我觉得对以后的自动化部署会有帮助，所以先尝试去写一个获取天气的命令行工具。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Nodejs" scheme="http://finalhome.org/categories/Nodejs/"/>
+    
+    
+      <category term="nodejs" scheme="http://finalhome.org/tags/nodejs/"/>
+    
+      <category term="commander" scheme="http://finalhome.org/tags/commander/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>解决跨域问题</title>
+    <link href="http://finalhome.org/JavaScript/%E8%A7%A3%E5%86%B3%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98/"/>
+    <id>http://finalhome.org/JavaScript/解决跨域问题/</id>
+    <published>2014-06-06T03:53:20.000Z</published>
+    <updated>2014-06-06T05:04:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>服务器端不存在跨域问题，客户端ajax请求的时候，如果报错:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">XMLHttpRequest cannot load xxxxx. Origin http://localhost is not allowed by Access-Control-Allow-Origin.</div></pre></td></tr></table></figure>
+<p>恭喜你，这就出现了跨域问题。<br><a id="more"></a></p>
+<h2 id="问题来源"><a href="#问题来源" class="headerlink" title="问题来源"></a>问题来源</h2><p>微信开发模式下，需要验证TOKEN。我使用的后台环境是nodejs。网上没有很直接的教程，所以我自己写了一个验证代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">var http = require(&apos;http&apos;);</div><div class="line">var url = require(&apos;url&apos;);</div><div class="line">var crypto = require(&apos;crypto&apos;);</div><div class="line"></div><div class="line">function sha1(str) &#123;</div><div class="line">    var md5sum = crypto.createHash(&apos;sha1&apos;);</div><div class="line">    md5sum.update(str);</div><div class="line">    str = md5sum.digest(&apos;hex&apos;);</div><div class="line">    return str;</div><div class="line">&#125;</div><div class="line">http.createServer(function(req, res) &#123;</div><div class="line">    res.writeHead(200, &#123;&apos;Content-Type&apos;: &apos;text/plain&apos;&#125;);</div><div class="line"></div><div class="line">    var url_parts = url.parse(req.url, true);</div><div class="line">    var query = url_parts.query;</div><div class="line"></div><div class="line">    var signature = query.signature;</div><div class="line">    var echostr = query.echostr;</div><div class="line">    var timestamp = query.timestamp;</div><div class="line">    var nonce = query.nonce;</div><div class="line"></div><div class="line">    var oriArray = new Array();</div><div class="line">    oriArray[0] = nonce;</div><div class="line">    oriArray[1] = timestamp;</div><div class="line">    oriArray[2] = &quot;XXXXX&quot;; // your token  </div><div class="line">    oriArray.sort();</div><div class="line">    var original = oriArray[0] + oriArray[1] + oriArray[2];</div><div class="line">    var scyptoString = sha1(original);</div><div class="line">    if (signature == scyptoString) &#123;</div><div class="line">        console.log(&apos;True&apos;)</div><div class="line">        res.end(echostr);</div><div class="line">    &#125; else &#123;</div><div class="line">        console.log(&apos;False&apos;)</div><div class="line">        res.end(&quot;Bad Token!&quot;);</div><div class="line">    &#125;</div><div class="line">&#125;).listen(5000);</div><div class="line">console.log(&apos;Server running at http::5000/&apos;);</div></pre></td></tr></table></figure></p>
+<p>注意，这里我绑定的是<code>5000</code>端口，但是微信必须是<code>80</code>端口，所以我在服务器端使用了<code>nginx</code>代理，设置的主要代码如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">upstream nodejs__upstream2 &#123;</div><div class="line">     server 127.0.0.1:5000;</div><div class="line">     keepalive 64;</div><div class="line">&#125;</div><div class="line">server &#123;</div><div class="line">     listen 80;</div><div class="line">     # server_name为你的主机IP</div><div class="line">     server_name 128.199.209.206; </div><div class="line">     location / &#123;</div><div class="line">         proxy_set_header   X-Real-IP            $remote_addr;</div><div class="line">         proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;</div><div class="line">         proxy_set_header   Host                   $http_host;</div><div class="line">         proxy_set_header   X-NginX-Proxy    true;</div><div class="line">         proxy_set_header   Connection &quot;&quot;;</div><div class="line">         proxy_http_version 1.1;</div><div class="line">         proxy_pass         http://nodejs__upstream2;</div><div class="line">     &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>理所当然的我会首先在本地进行下测试，首先想到了利用Ajax请求。测试代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">&lt;!doctype html&gt;</div><div class="line">&lt;html lang=&quot;en&quot;&gt;</div><div class="line"></div><div class="line">&lt;head&gt;</div><div class="line">    &lt;meta charset=&quot;UTF-8&quot;&gt;</div><div class="line">    &lt;title&gt;Test Get&lt;/title&gt;</div><div class="line">&lt;/head&gt;</div><div class="line"></div><div class="line">&lt;body&gt;</div><div class="line"></div><div class="line">    &lt;script src=&quot;http://cdn.staticfile.org/jquery/2.1.1-rc2/jquery.min.js&quot;&gt;&lt;/script&gt;</div><div class="line"></div><div class="line">    &lt;script&gt;</div><div class="line">    $(function() &#123;</div><div class="line"></div><div class="line">        var data = &#123;</div><div class="line">            signature: &apos;7032b0ab6a41f2fb382d782d1dd8a65e12b2dfb2&apos;,</div><div class="line">            echostr: &apos;5904622633625829580&apos;,</div><div class="line">            timestamp: &apos;1375715532&apos;,</div><div class="line">            nonce: &apos;1374777116&apos;</div><div class="line">        &#125;;</div><div class="line"></div><div class="line">        $.ajax(&#123;</div><div class="line">            type: &quot;GET&quot;,</div><div class="line">            url: &quot;http://localhost:5000&quot;,</div><div class="line">            data: data</div><div class="line">        &#125;).done(function(data) &#123;</div><div class="line">            console.log(&apos;success:&apos;,data);</div><div class="line">        &#125;);</div><div class="line">    &#125;)</div><div class="line">    &lt;/script&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure></p>
+<p>Chrome下打开开发者工具，看到报错信息如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">GET http://localhost:5000/?signature=7032b0ab6a41f2fb382d782d1dd8a65e12b2dfb2&amp;echostr=5904622633625829580&amp;timestamp=1375715532&amp;nonce=1374777116 net::ERR_CONNECTION_REFUSED jquery.js:8617</div></pre></td></tr></table></figure></p>
+<p>说明一下，我这里返回的是字符串，而不是json数据。所以我没有使用getJSON方法。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><h3 id="JSONP"><a href="#JSONP" class="headerlink" title="JSONP"></a>JSONP</h3><p>JSONP是一个非官方的协议，它允许在服务器端集成Script tags返回至客户端，通过javascript callback的形式实现跨域访问（这仅仅是JSONP简单的实现形式）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">var http = require(&apos;http&apos;);</div><div class="line">var url = require(&apos;url&apos;);</div><div class="line">var crypto = require(&apos;crypto&apos;);</div><div class="line"></div><div class="line">function sha1(str) &#123;</div><div class="line">    var md5sum = crypto.createHash(&apos;sha1&apos;);</div><div class="line">    md5sum.update(str);</div><div class="line">    str = md5sum.digest(&apos;hex&apos;);</div><div class="line">    return str;</div><div class="line">&#125;</div><div class="line">http.createServer(function(req, res) &#123;</div><div class="line">    res.writeHead(200, &#123;&apos;Content-Type&apos;: &apos;text/plain&apos;&#125;);</div><div class="line"></div><div class="line">    var url_parts = url.parse(req.url, true);</div><div class="line">    var query = url_parts.query;</div><div class="line"></div><div class="line">    var signature = query.signature;</div><div class="line">    var echostr = query.echostr;</div><div class="line">    var timestamp = query.timestamp;</div><div class="line">    var nonce = query.nonce;</div><div class="line">    var jsoncallback = query.callback;</div><div class="line"></div><div class="line">    console.log(query)</div><div class="line">    var oriArray = new Array();</div><div class="line">    oriArray[0] = nonce;</div><div class="line">    oriArray[1] = timestamp;</div><div class="line">    oriArray[2] = &quot;XXXXX&quot;; // your token  </div><div class="line">    oriArray.sort();</div><div class="line">    var original = oriArray[0] + oriArray[1] + oriArray[2];</div><div class="line">    var scyptoString = sha1(original);</div><div class="line">    if (signature == scyptoString) &#123;</div><div class="line">        console.log(&apos;True&apos;)</div><div class="line">        res.end(jsoncallback+&quot;(&quot;+ echostr +&quot;)&quot;);</div><div class="line">    &#125; else &#123;</div><div class="line">        console.log(&apos;False&apos;)</div><div class="line">        res.end(jsoncallback+&quot;(&apos;Bad Token!&apos;)&quot;);</div><div class="line">    &#125;</div><div class="line">&#125;).listen(5000);</div><div class="line">console.log(&apos;Server running at http::5000/&apos;);</div></pre></td></tr></table></figure>
+<p>客户端代码修改为:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$.ajax(&#123;</div><div class="line">    type: &quot;GET&quot;,</div><div class="line">    url: &quot;http://localhost:5000&quot;,</div><div class="line">    data: data,</div><div class="line">    dataType:&apos;JSONP&apos;</div><div class="line">&#125;).done(function(data) &#123;</div><div class="line">    console.log(&apos;success:&apos;,data);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>JSONP是用一个callback包裹所要传递的数据，本地指定了<code>dataType</code>的话，就能正常访问了。</p>
+<h3 id="设置服务器端的Header"><a href="#设置服务器端的Header" class="headerlink" title="设置服务器端的Header"></a>设置服务器端的Header</h3><p>主要是这一段，<code>Access-Control-Allow-Origin：*</code>。</p>
+<p>服务器端的程序如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">var http = require(&apos;http&apos;);</div><div class="line">var url = require(&apos;url&apos;);</div><div class="line">var crypto = require(&apos;crypto&apos;);</div><div class="line"></div><div class="line">function sha1(str) &#123;</div><div class="line">    var md5sum = crypto.createHash(&apos;sha1&apos;);</div><div class="line">    md5sum.update(str);</div><div class="line">    str = md5sum.digest(&apos;hex&apos;);</div><div class="line">    return str;</div><div class="line">&#125;</div><div class="line">http.createServer(function(req, res) &#123;</div><div class="line">    res.writeHead(200, &#123;&apos;Content-Type&apos;: &apos;text/plain&apos;,</div><div class="line">                        &apos;Access-Control-Allow-Origin&apos;: &apos;*&apos;&#125;);</div><div class="line"></div><div class="line">    var url_parts = url.parse(req.url, true);</div><div class="line">    var query = url_parts.query;</div><div class="line"></div><div class="line">    var signature = query.signature;</div><div class="line">    var echostr = query.echostr;</div><div class="line">    var timestamp = query.timestamp;</div><div class="line">    var nonce = query.nonce;</div><div class="line">    var jsoncallback = query.jsonpcallback;</div><div class="line"></div><div class="line">    var oriArray = new Array();</div><div class="line">    oriArray[0] = nonce;</div><div class="line">    oriArray[1] = timestamp;</div><div class="line">    oriArray[2] = &quot;XXXXX&quot;; // your token  </div><div class="line">    oriArray.sort();</div><div class="line">    var original = oriArray[0] + oriArray[1] + oriArray[2];</div><div class="line">    var scyptoString = sha1(original);</div><div class="line">    if (signature == scyptoString) &#123;</div><div class="line">        console.log(&apos;True&apos;)</div><div class="line">        // res.end(jsoncallback+&quot;(&quot;+ echostr +&quot;)&quot;);</div><div class="line">        res.end(echostr);</div><div class="line">    &#125; else &#123;</div><div class="line">        console.log(&apos;False&apos;)</div><div class="line">        // res.end(jsoncallback+&quot;(&apos;Bad Token!&apos;)&quot;);</div><div class="line">        res.end(&quot;Bad Token!&quot;);</div><div class="line">    &#125;</div><div class="line">&#125;).listen(5000);</div><div class="line">console.log(&apos;Server running at http::5000/&apos;);</div></pre></td></tr></table></figure></p>
+<p>客户端还是那样访问:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$.ajax(&#123;</div><div class="line">    type: &quot;GET&quot;,</div><div class="line">    url: &quot;http://localhost:5000&quot;,</div><div class="line">    data: data</div><div class="line">&#125;).done(function(data) &#123;</div><div class="line">    console.log(&apos;success:&apos;,data);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<h3 id="服务器端处理"><a href="#服务器端处理" class="headerlink" title="服务器端处理"></a>服务器端处理</h3><p>服务器端处理请求的话不存在跨域问题，所以我使用Nodejs充当了客户端的角色:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">var http = require(&quot;http&quot;);</div><div class="line"></div><div class="line">var options = &#123;</div><div class="line">    &quot;host&quot;: &quot;localhost&quot;,</div><div class="line">    &quot;port&quot;: &quot;5000&quot;,</div><div class="line">    &quot;path&quot;: &quot;/&quot;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">http.get(options, function(res) &#123;</div><div class="line">    console.log(&quot;Site Status:&quot;, res.statusCode);</div><div class="line">    console.log(res.headers);</div><div class="line">    res.on(&apos;data&apos;, function (chunk) &#123;</div><div class="line">        console.log(&apos;Data:&apos; + chunk);</div><div class="line">      &#125;);</div><div class="line"></div><div class="line">    if (res.statusCode == 200) &#123;</div><div class="line">        console.log(&quot;The site is up!\n&quot;);</div><div class="line">    &#125; else &#123;</div><div class="line">        console.log(&quot;The site is down!\n&quot;);</div><div class="line">    &#125;</div><div class="line">&#125;).on(&quot;error&quot;, function(e) &#123;</div><div class="line">    console.log(&quot;There was an error:&quot;, e.message);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="http://developer.yahoo.com/javascript/howto-proxy.html" target="_blank" rel="external">JS通过服务器代理解决跨域问题</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;服务器端不存在跨域问题，客户端ajax请求的时候，如果报错:&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;XMLHttpRequest cannot load xxxxx. Origin http://localhost is not allowed by Access-Control-Allow-Origin.&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;恭喜你，这就出现了跨域问题。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="JavaScript" scheme="http://finalhome.org/categories/JavaScript/"/>
+    
+    
+      <category term="JavaScript" scheme="http://finalhome.org/tags/JavaScript/"/>
+    
+      <category term="nodejs" scheme="http://finalhome.org/tags/nodejs/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>nginx安装与反向代理</title>
+    <link href="http://finalhome.org/%E6%9C%8D%E5%8A%A1%E5%99%A8/nginx%E5%AE%89%E8%A3%85%E4%B8%8E%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/"/>
+    <id>http://finalhome.org/服务器/nginx安装与反向代理/</id>
+    <published>2014-05-19T09:50:55.000Z</published>
+    <updated>2014-05-20T02:11:25.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>想要在服务器上搭配N多站点，使用反向代理，监听80端口是个好方法，并且Nginx的效率很高。</p>
+<a id="more"></a>
+<h2 id="Window"><a href="#Window" class="headerlink" title="Window"></a>Window</h2><p><a href="http://nginx.org/en/download.html" target="_blank" rel="external">下载地址</a>.选择<code>nginx/Windows-1.7.0</code>下载。</p>
+<p>解压缩到本地，这里我选择<code>D:\Servers</code>下，解压之后完整路径为<code>D:\Servers\nginx-1.7.0</code>。</p>
+<p>在<code>D:\Servers\nginx-1.7.0</code>下,启动使用<code>start nginx</code>。</p>
+<p>是否启动可以通过<code>tasklist | grep nginx</code>查看。记住，不要多次启动，不然后台会挂很多nginx的。</p>
+<h2 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h2><p><code>sudo apt-get install nginx</code>安装即可。安装完毕默认启动。</p>
+<h2 id="设置反向代理"><a href="#设置反向代理" class="headerlink" title="设置反向代理"></a>设置反向代理</h2><p>这里举个例子，就是通过本机ip访问的转到3000端口，localhost访问的转到4000端口。下面看具体设置。</p>
+<h3 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h3><p>配置文件目录在<code>D:\Servers\nginx-1.7.0\conf</code>下， 修改<code>nginx.conf</code>文件，去除其中的server配置，添加上<code>include    vhosts/*.conf;</code>。</p>
+<p>在<code>D:\Servers\nginx-1.7.0\conf</code>下创建<code>vhosts</code>目录，里面方式各个server配置即可。</p>
+<p>这里给一个我的配置（使用localhost访问4000端口， 192.168.1.60访问3000端口）的例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">upstream nodejs__upstream &#123;</div><div class="line">     server 127.0.0.1:3000;</div><div class="line">     keepalive 64;</div><div class="line">&#125;</div><div class="line">server &#123;</div><div class="line">     listen 80;</div><div class="line">     server_name 192.168.1.60;</div><div class="line">     location / &#123;</div><div class="line">         proxy_set_header   X-Real-IP            $remote_addr;</div><div class="line">         proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;</div><div class="line">         proxy_set_header   Host                   $http_host;</div><div class="line">         proxy_set_header   X-NginX-Proxy    true;</div><div class="line">         proxy_set_header   Connection &quot;&quot;;</div><div class="line">         proxy_http_version 1.1;</div><div class="line">         proxy_pass         http://nodejs__upstream;</div><div class="line">     &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">upstream nodejs__upstream2 &#123;</div><div class="line">     server 127.0.0.1:4000;</div><div class="line">     keepalive 64;</div><div class="line">&#125;</div><div class="line">server &#123;</div><div class="line">     listen 80;</div><div class="line">     server_name localhost;</div><div class="line">     location / &#123;</div><div class="line">         proxy_set_header   X-Real-IP            $remote_addr;</div><div class="line">         proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;</div><div class="line">         proxy_set_header   Host                   $http_host;</div><div class="line">         proxy_set_header   X-NginX-Proxy    true;</div><div class="line">         proxy_set_header   Connection &quot;&quot;;</div><div class="line">         proxy_http_version 1.1;</div><div class="line">         proxy_pass         http://nodejs__upstream2;</div><div class="line">     &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="Linux-1"><a href="#Linux-1" class="headerlink" title="Linux"></a>Linux</h3><p>配置文件目录在<code>/etc/nginx</code>中。</p>
+<p>Linux下的配置文件结构和Windows略有不同，但是意义相似。修改<code>/etc/nginx/nginx.conf</code>文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">include /etc/nginx/conf.d/*.conf;</div><div class="line">include /etc/nginx/sites-enabled/*;</div><div class="line"></div><div class="line"># 修改为</div><div class="line">include /etc/nginx/conf.d/*.conf;</div><div class="line"># include /etc/nginx/sites-enabled/*;</div><div class="line">include /etc/nginx/vhosts/*.conf;</div></pre></td></tr></table></figure></p>
+<p>注意这里，我新建了个目录<code>vhosts</code>，如果不想新建，就把里面的配置文件放到<code>conf.d</code>或者<code>sites-enabled</code>中。</p>
+<p><code>vhosts</code>目录下我包含了两个文件，<code>default.conf</code>和<code>proxy-node.conf</code>。</p>
+<h4 id="default-conf"><a href="#default-conf" class="headerlink" title="default.conf"></a>default.conf</h4><p>此文件就是<code>sites-enabled</code>下的<code>defalut</code>文件。</p>
+<h4 id="proxy-node-conf"><a href="#proxy-node-conf" class="headerlink" title="proxy-node.conf"></a>proxy-node.conf</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">upstream nodejs__upstream &#123;</div><div class="line">     server 127.0.0.1:3000;</div><div class="line">     keepalive 64;</div><div class="line">&#125;</div><div class="line">server &#123;</div><div class="line">     listen 80;</div><div class="line">     server_name 192.168.1.60;</div><div class="line">     location / &#123;</div><div class="line">         proxy_set_header   X-Real-IP            $remote_addr;</div><div class="line">         proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;</div><div class="line">         proxy_set_header   Host                   $http_host;</div><div class="line">         proxy_set_header   X-NginX-Proxy    true;</div><div class="line">         proxy_set_header   Connection &quot;&quot;;</div><div class="line">         proxy_http_version 1.1;</div><div class="line">         proxy_pass         http://nodejs__upstream;</div><div class="line">     &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">upstream nodejs__upstream2 &#123;</div><div class="line">     server 127.0.0.1:4000;</div><div class="line">     keepalive 64;</div><div class="line">&#125;</div><div class="line">server &#123;</div><div class="line">     listen 80;</div><div class="line">     server_name localhost;</div><div class="line">     location / &#123;</div><div class="line">         proxy_set_header   X-Real-IP            $remote_addr;</div><div class="line">         proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;</div><div class="line">         proxy_set_header   Host                   $http_host;</div><div class="line">         proxy_set_header   X-NginX-Proxy    true;</div><div class="line">         proxy_set_header   Connection &quot;&quot;;</div><div class="line">         proxy_http_version 1.1;</div><div class="line">         proxy_pass         http://nodejs__upstream2;</div><div class="line">     &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>保存完毕之后，重启nginx。 <code>sudo nginx -s reload</code>。</p>
+<p>之后通过<code>localhost</code>和<code>192.168.1.60</code>访问就能对应分别的端口了。</p>
+<hr>
+<p>这里说下node做服务器时listen的设置，只绑定端口，无需绑定ip。如果像官网上写的:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">var http = require(&apos;http&apos;);</div><div class="line">http.createServer(function (req, res) &#123;</div><div class="line">  res.writeHead(200, &#123;&apos;Content-Type&apos;: &apos;text/plain&apos;&#125;);</div><div class="line">  res.end(&apos;Hello World\n&apos;);</div><div class="line">&#125;).listen(1337, &apos;127.0.0.1&apos;);</div><div class="line">console.log(&apos;Server running at http://127.0.0.1:1337/&apos;);</div></pre></td></tr></table></figure></p>
+<p>那么只能通过<code>localhost:1337</code>和<code>127.0.0.1:1337</code>访问。无法通过<code>192.168.1.60:1337</code>这样访问。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;想要在服务器上搭配N多站点，使用反向代理，监听80端口是个好方法，并且Nginx的效率很高。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="服务器" scheme="http://finalhome.org/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+    
+    
+      <category term="nginx" scheme="http://finalhome.org/tags/nginx/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>搭建Node+Express+Mongodb环境</title>
+    <link href="http://finalhome.org/Nodejs/%E6%90%AD%E5%BB%BANode+Express+Mongodb%E7%8E%AF%E5%A2%83/"/>
+    <id>http://finalhome.org/Nodejs/搭建Node+Express+Mongodb环境/</id>
+    <published>2014-05-19T06:16:05.000Z</published>
+    <updated>2014-05-19T06:49:05.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>每次搭建都要查一遍，不如记录一下。<br><a id="more"></a></p>
+<h2 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h2><p>先说下Windows下必要的开发环境，最好安装上<code>Microsoft Visual Studio</code>， 保证系统有<code>python 2.7.x</code>。因为很多npm的包，需要这些编译环境。</p>
+<h3 id="Nodejs"><a href="#Nodejs" class="headerlink" title="Nodejs"></a>Nodejs</h3><p>window下node直接通过官网下载, <a href="http://nodejs.org/download/" target="_blank" rel="external">下载地址</a>。下载msi文件直接安装即可，它会自动添加<code>node</code>和<code>npm</code>到系统环境变量中。</p>
+<p>以后如果要切换版本，直接下载对应版本，重新安装即可。</p>
+<h3 id="Express"><a href="#Express" class="headerlink" title="Express"></a>Express</h3><p>截至2014年5月19日， Express的版本维持在4.X。不同于之前的express，4.x分割出去很多模块，比如<code>connect</code>和<code>generator</code>。</p>
+<p>安装方法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">npm install -g express</div><div class="line"></div><div class="line"># 如果需要安装之前的版本, 加个@符号和版本即可</div><div class="line">npm install -g express@3</div><div class="line"></div><div class="line"># 4.x版本无法直接通过express命名新建项目，所以需要安装</div><div class="line">npm install -g express-generator</div></pre></td></tr></table></figure></p>
+<h3 id="Mongodb"><a href="#Mongodb" class="headerlink" title="Mongodb"></a>Mongodb</h3><p>先给一个官方的文档：<a href="http://docs.mongodb.org/manual/" target="_blank" rel="external">点我</a>。里面有各个系统的安装方式。</p>
+<p>下面说说我的安装方式：</p>
+<p>第一，在<code>D:</code>根目录下创建一个<code>DB/MongoDB</code>文件夹， 把对应版本的mongodb文件加载到此目录下的一个目录中。比如我这里的<code>MongoDB-2.6.0</code>。然后分别建立两个目录存放数据库和日志:<code>MongoDB-2.6.0-db</code>和<code>MongoDB-2.6.0-log</code>。并且保证<code>MongoDB--2.6.0-log</code>下有一个<code>mongodb.log</code>文件。</p>
+<p>第二，使用管理员权限打开cmd， <code>win+X -&gt; A</code>。然后:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">echo logpath=D:\DB\MongoDB\MongoDB-2.6.0-log\mongo.log&gt; &quot;D:\DB\MongoDB\MongoDB-2.6.0\mongod.cfg&quot;</div><div class="line">echo dbpath=D:\DB\MongoDB\MongoDB-2.6.0-db&gt;&gt; &quot;D:\DB\MongoDB\MongoDB-2.6.0\mongod.cfg&quot;</div></pre></td></tr></table></figure></p>
+<p>这一步是写安装配置文件，正确处理后，会在<code>D:\DB\MongoDB\MongoDB-2.6.0</code>目录下多个<code>mongod.cfg</code>文件，里面内容如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">logpath=D:\DB\MongoDB\MongoDB-2.6.0-log\mongo.log</div><div class="line">dbpath=D:\DB\MongoDB\MongoDB-2.6.0-db</div></pre></td></tr></table></figure></p>
+<p>最后，安装使用命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sc.exe create MongoDB binPath= &quot;\&quot;E:\DB\MongoDB\MongoDB-2.6.0\bin\mongod.exe\&quot; --service --config=\&quot;E:\DB\MongoDB\MongoDB-2.6.0\mongod.cfg\&quot;&quot; DisplayName= &quot;MongoDB 2.6 Standard&quot; start= &quot;auto&quot;</div></pre></td></tr></table></figure></p>
+<p>安装结束会提示<code>[SC] CreateService SUCCESS</code>, 然后可以通过<code>net start MongoDB</code>启动。默认是会自动启动的。如果出问题，可以重启先看看，不行再重新安装。</p>
+<h4 id="默认的使用方法"><a href="#默认的使用方法" class="headerlink" title="默认的使用方法"></a>默认的使用方法</h4><p>如果不添加系统服务，启动<code>mongodb</code>的步骤是这样的：</p>
+<p>打开cmd命令行，进入D:/DB/MongoDB/MongoDB-2.6.0/bin目录，输入如下的命令启动mongodb服务， 需要指定数据库位置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">D:/DB/MongoDB/MongoDB-2.6.0/bin&gt;mongod.exe --dbpath D:/DB/MongoDB/MongoDB-2.6.0-db</div></pre></td></tr></table></figure></p>
+<p>保持这个cmd窗口不关闭，再打开一个cmd窗口， 输入：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">D:/DB/MongoDB/MongoDB-2.6.0/bin&gt;mongo</div></pre></td></tr></table></figure></p>
+<p>这样才能运行mongo服务。</p>
+<h2 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h2><p>Linux下首先需要必要的环境:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install -y dkms build-essential linux-headers-generic linux-headers-$(uname -r)</div><div class="line"></div><div class="line">sudo apt-get install python-software-properties python g++ make</div><div class="line"></div><div class="line">sudo apt-get install git</div></pre></td></tr></table></figure></p>
+<h3 id="Nodejs-1"><a href="#Nodejs-1" class="headerlink" title="Nodejs"></a>Nodejs</h3><p>通过 PPA 在 Ubuntu 上安装最新版本的 node.js：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install python-software-properties python g++ make</div><div class="line">sudo add-apt-repository ppa:chris-lea/node.js</div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install nodejs</div></pre></td></tr></table></figure></p>
+<p>可能会存在命名冲突，是的安装之后使用<code>nodejs</code>而非<code>node</code>，如果需要修改，创建链接：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo ln -s /usr/bin/nodejs /usr/bin/node</div></pre></td></tr></table></figure></p>
+<p>其实使用<code>nodejs</code>也没关系，我修改主要是想windows和linux下命名统一。</p>
+<h3 id="NPM"><a href="#NPM" class="headerlink" title="NPM"></a>NPM</h3><p>Linux下npm好像不是随着<code>node</code>安装的，需要:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install npm</div></pre></td></tr></table></figure></p>
+<h3 id="Express-1"><a href="#Express-1" class="headerlink" title="Express"></a>Express</h3><p>安装了<code>npm</code>之后，安装方式和windows下一致：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">npm install -g express</div><div class="line"></div><div class="line"># 如果需要安装之前的版本, 加个@符号和版本即可</div><div class="line">npm install -g express@3</div><div class="line"></div><div class="line"># 4.x版本无法直接通过express命名新建项目，所以需要安装</div><div class="line">npm install -g express-generator</div></pre></td></tr></table></figure></p>
+<h3 id="Mongodb-1"><a href="#Mongodb-1" class="headerlink" title="Mongodb"></a>Mongodb</h3><p>这个还是推荐看官方文档：<a href="http://docs.mongodb.org/manual/" target="_blank" rel="external">点我</a>。</p>
+<p>我的安装方式是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10</div><div class="line"></div><div class="line">echo &apos;deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen&apos; | sudo tee /etc/apt/sources.list.d/mongodb.list</div><div class="line"></div><div class="line">sudo apt-get update</div><div class="line"></div><div class="line"></div><div class="line">sudo apt-get install mongodb-org</div></pre></td></tr></table></figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;每次搭建都要查一遍，不如记录一下。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Nodejs" scheme="http://finalhome.org/categories/Nodejs/"/>
+    
+    
+      <category term="nodejs" scheme="http://finalhome.org/tags/nodejs/"/>
+    
+      <category term="express" scheme="http://finalhome.org/tags/express/"/>
+    
+      <category term="mongodb" scheme="http://finalhome.org/tags/mongodb/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>UbuntuServer的初次设置</title>
+    <link href="http://finalhome.org/Linux/UbuntuServer%E7%9A%84%E5%88%9D%E6%AC%A1%E8%AE%BE%E7%BD%AE/"/>
+    <id>http://finalhome.org/Linux/UbuntuServer的初次设置/</id>
+    <published>2014-05-16T07:59:09.000Z</published>
+    <updated>2014-05-16T08:13:24.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>上一篇说完了Windows下搭建UbuntuServer开发环境，这篇就说说初次进入UbuntuServer的设置。<br><a id="more"></a></p>
+<h2 id="初次设置"><a href="#初次设置" class="headerlink" title="初次设置"></a>初次设置</h2><p>安装UbuntuServer的时候，推荐只选择安装<code>openssh-server</code>服务。</p>
+<p>进入系统后，首先需要修改root密码，<code>sudo passwd</code>。</p>
+<p>如果是本地虚拟机跑UbuntuServer，推荐更换软件源：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">更换软件源</div><div class="line">给两个源地址：</div><div class="line">http://mirrors.163.com/和http://mirrors.ustc.edu.cn/</div><div class="line">给个更换源的方法:(http://mirrors.163.com/.help/ubuntu.html)</div><div class="line">cd /etc/apt</div><div class="line">备份软件源文件。</div><div class="line">sudo mv sources.list sources.list.backup</div><div class="line">输入你的密码</div><div class="line">sudo wget http://mirrors.163.com/.help/sources.list.lucid</div><div class="line">sudo mv sources.list.lucid sources.list</div><div class="line">换好软件源了，更新一下源列表。</div><div class="line">sudo apt-get update</div><div class="line">接下来从源列表安装更新</div><div class="line">sudo apt-get dist-upgrade</div></pre></td></tr></table></figure></p>
+<p>接下来，安装必要的软件和环境:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install -y dkms build-essential linux-headers-generic linux-headers-$(uname -r)</div><div class="line"></div><div class="line">sudo apt-get install curl</div><div class="line"></div><div class="line"># 如果之前没有安装openssh</div><div class="line">sudo apt-get install openssh-server</div></pre></td></tr></table></figure></p>
+<p>一般的软件，通过<code>apt-get</code>安装即可，版本求新的请通过:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./configure &amp;&amp; make &amp;&amp; make install</div></pre></td></tr></table></figure></p>
+<h2 id="node开发环境搭建"><a href="#node开发环境搭建" class="headerlink" title="node开发环境搭建"></a>node开发环境搭建</h2><p>最近使用node+express+mongodb制作了一个段地址网站，搭建在UbuntuServer上。所以有必要说下<code>node</code>的环境搭建：</p>
+<h3 id="git"><a href="#git" class="headerlink" title="git"></a>git</h3><p><code>sudo apt-get install git</code></p>
+<h3 id="nodejs"><a href="#nodejs" class="headerlink" title="nodejs"></a>nodejs</h3><p>通过 PPA 在 Ubuntu 上安装最新版本的 node.js:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install python-software-properties python g++ make</div><div class="line">sudo add-apt-repository ppa:chris-lea/node.js</div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install nodejs</div></pre></td></tr></table></figure></p>
+<p>这种安装方式可能存在命名冲突，所以ubuntu下使用的命令是<code>nodejs</code>，没特殊必要，可以不修改，如果想要修改为<code>node</code>，使用软连接<code>sudo ln -s /usr/bin/nodejs /usr/bin/node</code></p>
+<p>不推荐下载github上的代码编译，原因是版本太新，容易和npm上的包不兼容。</p>
+<h3 id="npm"><a href="#npm" class="headerlink" title="npm"></a>npm</h3><p><code>sudo apt-get install npm</code></p>
+<h3 id="mongodb"><a href="#mongodb" class="headerlink" title="mongodb"></a>mongodb</h3><p>老老实实按照官方文档来: <a href="http://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/" target="_blank" rel="external">点这里</a>。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;上一篇说完了Windows下搭建UbuntuServer开发环境，这篇就说说初次进入UbuntuServer的设置。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Linux" scheme="http://finalhome.org/categories/Linux/"/>
+    
+    
+      <category term="Ubuntu" scheme="http://finalhome.org/tags/Ubuntu/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Windows下通过Virtualbox安装UbuntuServer1404</title>
+    <link href="http://finalhome.org/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/Windows%E4%B8%8B%E9%80%9A%E8%BF%87Virtualbox%E5%AE%89%E8%A3%85UbuntuServer1404/"/>
+    <id>http://finalhome.org/开发工具/Windows下通过Virtualbox安装UbuntuServer1404/</id>
+    <published>2014-05-16T06:00:13.000Z</published>
+    <updated>2014-05-20T01:33:37.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>VPS上的虚拟机安装了Ubuntu Server 14.04。本地主机是Windows的，所以想搭建下本地的开发环境。这里叙述一下安装过程和网络设置。<br><a id="more"></a></p>
+<h2 id="安装Virtualbox"><a href="#安装Virtualbox" class="headerlink" title="安装Virtualbox"></a>安装Virtualbox</h2><p>直接<a href="https://www.virtualbox.org/wiki/Downloads" target="_blank" rel="external">官网</a>下载：</p>
+<ol>
+<li>客户端</li>
+<li>Extension Pack</li>
+</ol>
+<p>正常安装完毕后，打开VirtualBox-&gt;管理-&gt;全局设定-&gt;扩展，安装Extension Pack。</p>
+<h2 id="安装Ubuntu-Server-14-04"><a href="#安装Ubuntu-Server-14-04" class="headerlink" title="安装Ubuntu Server 14.04"></a>安装Ubuntu Server 14.04</h2><p>先去<a href="http://www.ubuntu.com/server" target="_blank" rel="external">UbuntuServer官网</a>下载iso文件，然后在Virtualbox中新建一个虚拟机，分配好内存，硬盘大小。内存可以是512M或者1G，硬盘大小动态分配。直接启动，然后选择加载iso文件，就he真机一样安装系统了。具体的安装步骤，可以参见<a href="http://www.dedecms.com/knowledge/servers/linux-bsd/2012/0819/8387.html" target="_blank" rel="external">图解UbuntuServer安装过程</a>。安装完毕之后就可以直接登陆系统了。</p>
+<h2 id="网络设置"><a href="#网络设置" class="headerlink" title="网络设置"></a>网络设置</h2><p>搭建本地开发环境，最重要的就是要实现宿主机器和虚拟机的互通，联网。</p>
+<p>Virtualbox提供了四种网络模式，大体介绍可以参考这篇文章: <a href="http://blog.csdn.net/yxc135/article/details/8458939" target="_blank" rel="external">VirtualBox虚拟机网络环境解析和搭建-NAT、桥接、Host-Only、Internal、端口映射</a>。</p>
+<p>正常情况下，应该首选桥接模式: 设置-&gt;网络-&gt;桥接模式。然后再次启动虚拟机，查看虚拟机的IP，应该是和宿主机器在同一网络内，相当于一个真是机器。</p>
+<p>有些特殊的情况下，比如无线网卡驱动等问题，导致桥接模式无法使用，具体症状就是虚拟机中无法获取IP。这时候推荐大家选择NAT模式，就是默认的链接方式。这种方式下，虚拟机的IP段和主机不在一起，虚拟机可以访问外网和宿主机器。但是宿主机器无法访问虚拟机。需要设置端口转发，把对宿主主机的访问转发给虚拟机中。</p>
+<p>设置端口转发的方式就是：在 设置-&gt;网络-&gt;网络地址转换(NAT)。高级选项下面，有一个端口转发选项。里面配置上对宿主机器的访问端口， 以及需要转发到虚拟机的端口。比如主机ip填写<code>192.168.1.60</code>或者<code>127.0.0.1</code>, 主机端口填写<code>122</code>, 子系统端口填写<code>22</code>。这样ssh访问时候，主机IP填写<code>192.168.1.60</code>, 端口选择<code>122</code>。就能访问到虚拟机中的<code>22</code>端口了。</p>
+<p>如果主机ip只填写<code>192.168.1.60</code>，就是只能通过ip访问，如要要通过<code>localhost</code>和<code>127.0.0.1</code>访问，记得再添加一条主机ip为<code>127.0.0.1</code>的规则。</p>
+<h2 id="关于虚拟机分辨率问题"><a href="#关于虚拟机分辨率问题" class="headerlink" title="关于虚拟机分辨率问题"></a>关于虚拟机分辨率问题</h2><p>如果不需要图形界面，本人觉得没有必要安装扩展程序(此扩展不同于Extension Pack)。当然如果你要安装的话，我还是说一说吧：</p>
+<p>第一次进入系统后，一般会<code>sudo passwd</code>设置下root密码。然后替换源。这里给个(更换源的方法)[<a href="http://mirrors.163.com/.help/ubuntu.html]。" target="_blank" rel="external">http://mirrors.163.com/.help/ubuntu.html]。</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">cd /etc/apt</div><div class="line">备份软件源文件。</div><div class="line">sudo mv sources.list sources.list.backup</div><div class="line">输入你的密码</div><div class="line">sudo wget http://mirrors.163.com/.help/sources.list.版本名称</div><div class="line">sudo mv sources.list.版本名称 sources.list</div><div class="line">换好软件源了，更新一下源列表。</div><div class="line">sudo apt-get update</div><div class="line">接下来从源列表安装更新</div><div class="line">sudo apt-get dist-upgrade</div></pre></td></tr></table></figure>
+<p>接下来安装必要开发软件包：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install -y dkms build-essential linux-headers-generic linux-headers-$(uname -r)</div><div class="line"></div><div class="line">sudo apt-get install xserver-xorg xserver-xorg-core</div></pre></td></tr></table></figure></p>
+<p>然后通过光驱加载virtualbox安装目录下的<code>VBoxGuestAdditions.iso</code>文件，正常应该会挂在到<code>/mnt</code>目录下，如果没有挂在，执行<code>sudo  mount /dev/cdrom /mnt/</code>挂载。</p>
+<p>进入<code>/mnt</code>目录下，执行<code>sudo ./VBoxLinuxAddion.sh</code>安装。</p>
+<p>安装结束之后，可以点击光驱卸载加载的文件，或者执行<code>sudo umount /mnt/</code></p>
+<p>如果是图形界面的话，重启机器分辨率应该就正常了。</p>
+<hr>
+<p>update:</p>
+<p>不知道什么原先，windows的虚拟化服务不能运行了。显示:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">VT-x/AMD-V 硬件加速在您的系统中不可用。您的 64-位虚拟机将无法检测到 64-位</div></pre></td></tr></table></figure></p>
+<p>首先检测了BIOS里面是否开启。虽然显示了开启，但是虚拟化软件还是显示未开启。</p>
+<p>解决方案：<br>启动/关闭windows服务-&gt;关闭Hyper-V。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;VPS上的虚拟机安装了Ubuntu Server 14.04。本地主机是Windows的，所以想搭建下本地的开发环境。这里叙述一下安装过程和网络设置。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="开发工具" scheme="http://finalhome.org/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
+    
+    
+      <category term="Ubuntu" scheme="http://finalhome.org/tags/Ubuntu/"/>
+    
+      <category term="Virtualbox" scheme="http://finalhome.org/tags/Virtualbox/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>RequireJS-简化版almond</title>
+    <link href="http://finalhome.org/JavaScript/RequireJS-%E7%AE%80%E5%8C%96%E7%89%88almond/"/>
+    <id>http://finalhome.org/JavaScript/RequireJS-简化版almond/</id>
+    <published>2014-04-20T06:45:41.000Z</published>
+    <updated>2014-04-17T10:00:05.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>almond是requireJS作者的另一个简化版AMD加载项目，它的特点是在build之后，网络请求只留一个，而requireJS的请求有两个（另一个是requireJS本身）。并且自身只有1kb左右的大小(服务器开启gzip后)。<br><a id="more"></a></p>
+<h2 id="使用almond"><a href="#使用almond" class="headerlink" title="使用almond"></a>使用almond</h2><p>开发过程还是使用requireJS，只是build的时候，去掉requireJS而加入almond而已。能够减少requireJS的多余大小和一次请求。</p>
+<p>使用方式通过<code>r.js</code>，<code>almond-build.js</code>文件如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">(&#123;</div><div class="line">    baseUrl: &quot;.&quot;,</div><div class="line">    paths: &#123;</div><div class="line">        jquery: &quot;some/other/jquery&quot;</div><div class="line">    &#125;,</div><div class="line">    name: &quot;./almond&quot;,</div><div class="line">    include: &quot;main&quot;,</div><div class="line">    out: &quot;main-built.js&quot;,</div><div class="line">    wrap: true</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<p>保证<code>r.js</code>和<code>almond-build.js</code>在<code>script</code>目录下，运行<code>node r.js -o almond-build.js</code>即可。生成的<code>main-built.js</code>文件，可以直接通过<code>script</code>引入到index.html中。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://github.com/jrburke/almond" target="_blank" rel="external">almond项目地址</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;almond是requireJS作者的另一个简化版AMD加载项目，它的特点是在build之后，网络请求只留一个，而requireJS的请求有两个（另一个是requireJS本身）。并且自身只有1kb左右的大小(服务器开启gzip后)。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="JavaScript" scheme="http://finalhome.org/categories/JavaScript/"/>
+    
+    
+      <category term="JavaScript" scheme="http://finalhome.org/tags/JavaScript/"/>
+    
+      <category term="模块化" scheme="http://finalhome.org/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>RequireJS-优化</title>
+    <link href="http://finalhome.org/JavaScript/RequireJS-%E4%BC%98%E5%8C%96/"/>
+    <id>http://finalhome.org/JavaScript/RequireJS-优化/</id>
+    <published>2014-04-19T06:45:41.000Z</published>
+    <updated>2014-04-17T09:58:31.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>开发完成之后，部署的时候需要对requirejs进行优化。以合并文件，减少请求。<br><a id="more"></a></p>
+<h2 id="使用r-js"><a href="#使用r-js" class="headerlink" title="使用r.js"></a>使用r.js</h2><p>可以通过官网下载<code>r.js</code>，也可以使用<code>npm install -g requirejs</code>安装。windows用户注意需要在cmd中重新定义下r.js命名： <code>DOSKEY r.js=r.js.cmd $*</code>。</p>
+<h3 id="命令行模式"><a href="#命令行模式" class="headerlink" title="命令行模式"></a>命令行模式</h3><p>保证r.js和<code>data-main</code>指定的文件在同一目录，可以在命名行下使用 <code>node r.js -o baseUrl=. paths.jquery=some/other/jquery name=main out=main-built.js</code>。</p>
+<h3 id="build-js配置文件模式"><a href="#build-js配置文件模式" class="headerlink" title="build.js配置文件模式"></a>build.js配置文件模式</h3><p>也可以在配置一个<code>build.js</code>文件，比如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">(&#123;</div><div class="line">    baseUrl: &quot;.&quot;,</div><div class="line">    paths: &#123;</div><div class="line">        jquery: &quot;some/other/jquery&quot;</div><div class="line">    &#125;,</div><div class="line">    name: &quot;main&quot;,</div><div class="line">    out: &quot;main-built.js&quot;</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<p>通过<code>node r.js -o build.js</code>调用生成<code>main-built.js</code>文件。</p>
+<h3 id="使用build过后的文件"><a href="#使用build过后的文件" class="headerlink" title="使用build过后的文件"></a>使用build过后的文件</h3><p>把<code>data-main</code>修改为生成好的文件，这样请求就只有<code>require.js</code>和<code>main-built.js</code>两个文件了。</p>
+<h2 id="使用r-js发布整个项目"><a href="#使用r-js发布整个项目" class="headerlink" title="使用r.js发布整个项目"></a>使用r.js发布整个项目</h2><p>r.js也可以build整个项目，完成css的合并，js的压缩：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">(&#123;</div><div class="line">    appDir: &quot;../&quot;,</div><div class="line">    baseUrl: &quot;scripts&quot;,</div><div class="line">    dir: &quot;../../appdirectory-build&quot;,</div><div class="line">    modules: [</div><div class="line">        &#123;</div><div class="line">            name: &quot;main&quot;</div><div class="line">        &#125;</div><div class="line">    ]</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<p>将此文件存为<code>app-build.js</code>，然后运行<code>node r.js -o app-build.js</code>，就会在项目目录同级创建一个目录。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="http://nomospace.github.io/posts/r.js-example.build.js.html" target="_blank" rel="external">r.js配置文件不完整中文注释</a></li>
+<li><a href="http://blog.segmentfault.com/f2e/1190000000394849" target="_blank" rel="external">前端优化：RequireJS Optimizer 的使用和配置方法</a></li>
+<li><a href="http://requirejs.org/docs/optimization.html" target="_blank" rel="external">requirejs官方优化文档</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;开发完成之后，部署的时候需要对requirejs进行优化。以合并文件，减少请求。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="JavaScript" scheme="http://finalhome.org/categories/JavaScript/"/>
+    
+    
+      <category term="JavaScript" scheme="http://finalhome.org/tags/JavaScript/"/>
+    
+      <category term="模块化" scheme="http://finalhome.org/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>RequireJS-使用</title>
+    <link href="http://finalhome.org/JavaScript/RequireJS-%E4%BD%BF%E7%94%A8/"/>
+    <id>http://finalhome.org/JavaScript/RequireJS-使用/</id>
+    <published>2014-04-17T06:45:41.000Z</published>
+    <updated>2014-04-17T09:57:48.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>前面介绍过了模块化的概念，那么就说说AMD的具体实现–RequireJS。<br><a id="more"></a></p>
+<h2 id="为什么使用RequireJS"><a href="#为什么使用RequireJS" class="headerlink" title="为什么使用RequireJS"></a>为什么使用RequireJS</h2><p>RequireJS的提出就是为了在浏览器端更好的管理JS文件，使之模块化。主要解决的问题有两点：</p>
+<ol>
+<li>实现js文件的异步加载，避免网页失去响应；</li>
+<li>管理模块之间的依赖性，便于代码的编写和维护。</li>
+</ol>
+<h2 id="引入RequireJS"><a href="#引入RequireJS" class="headerlink" title="引入RequireJS"></a>引入RequireJS</h2><p>从官网下载好<code>require.js</code>，我们按照官网提供的结构，建立一下目录：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">project-directory/</div><div class="line">    project.html</div><div class="line">    scripts/</div><div class="line">        main.js</div><div class="line">        require.js</div><div class="line">        helper/</div><div class="line">            util.js</div></pre></td></tr></table></figure></p>
+<p>HTML文件如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html&gt;</div><div class="line">    &lt;head&gt;</div><div class="line">        &lt;title&gt;My Sample Project&lt;/title&gt;</div><div class="line">        &lt;!-- data-main attribute tells require.js to load</div><div class="line">             scripts/main.js after require.js loads. --&gt;</div><div class="line">        &lt;script data-main=&quot;scripts/main&quot; src=&quot;scripts/require.js&quot;&gt;&lt;/script&gt;</div><div class="line">    &lt;/head&gt;</div><div class="line">    &lt;body&gt;</div><div class="line">        &lt;h1&gt;My Sample Project&lt;/h1&gt;</div><div class="line">    &lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure></p>
+<p>此时的<code>script</code>标签可以放在<code>head</code>中，也可以放在<code>body</code>尾部。通过<code>data-main</code>指定的文件，就已经通过异步去操作了。</p>
+<p>main.js当作主文件, 需要依赖util文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">require([&quot;helper/util&quot;], function(util) &#123;</div><div class="line">    //This function is called when scripts/helper/util.js is loaded.</div><div class="line">    //If util.js calls define(), then this function is not fired until</div><div class="line">    //util&apos;s dependencies have loaded, and the util argument will hold</div><div class="line">    //the module value for &quot;helper/util&quot;.</div><div class="line">    console.log(&quot;helper/util&quot;, util);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>util文件定义一个模块:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">define(function() &#123;　　　　</div><div class="line">    var add = function(x, y) &#123;　　　　　　</div><div class="line">        return x + y;　　　　</div><div class="line">    &#125;;　　　　</div><div class="line">    return &#123;　　　　　　</div><div class="line">        add: add　　　　</div><div class="line">    &#125;;　　</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>打开<code>project.html</code>文件，控制台会输出:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">helper/util </div><div class="line">Object &#123;add: function&#125;</div></pre></td></tr></table></figure></p>
+<p>这样，算是完成了对requireJS的初次体验。</p>
+<h2 id="Module编写"><a href="#Module编写" class="headerlink" title="Module编写"></a>Module编写</h2><p>CommonJS规范推荐所有文件都是模块，AMD使用<code>define</code>定义一个模块：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">// 没有依赖，不做处理，直接返回对象</div><div class="line">define(&#123;</div><div class="line">    color: &quot;black&quot;,</div><div class="line">    size: &quot;unisize&quot;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">// 没有依赖，但是做一些处理，返回对象</div><div class="line">define(function () &#123;</div><div class="line">    //Do setup work here</div><div class="line"></div><div class="line">    return &#123;</div><div class="line">        color: &quot;black&quot;,</div><div class="line">        size: &quot;unisize&quot;</div><div class="line">    &#125;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">// 有依赖，做处理，返回对象</div><div class="line">define([&quot;./cart&quot;, &quot;./inventory&quot;], function(cart, inventory) &#123;</div><div class="line">        //return an object to define the &quot;my/shirt&quot; module.</div><div class="line">        return &#123;</div><div class="line">            color: &quot;blue&quot;,</div><div class="line">            size: &quot;large&quot;,</div><div class="line">            addToCart: function() &#123;</div><div class="line">                inventory.decrement(this);</div><div class="line">                cart.add(this);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">);</div><div class="line"></div><div class="line">// 返回函数</div><div class="line">define([&quot;my/cart&quot;, &quot;my/inventory&quot;],</div><div class="line">    function(cart, inventory) &#123;</div><div class="line">        //return a function to define &quot;foo/title&quot;.</div><div class="line">        //It gets or sets the window title.</div><div class="line">        return function(title) &#123;</div><div class="line">            return title ? (window.title = title) :</div><div class="line">                   inventory.storeName + &apos; &apos; + cart.name;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">);</div></pre></td></tr></table></figure></p>
+<p>使用的时候通过<code>require</code>引入，然后定义一个名称，这个名称就是返回的对象的引用。</p>
+<h2 id="RequireJS的config"><a href="#RequireJS的config" class="headerlink" title="RequireJS的config"></a>RequireJS的config</h2><p>requirejs的配置文件可以写在html文件中，也可以写在<code>data-main</code>指定的文件中。但是小心写在<code>data-main</code>中，它的执行时异步的，不一定比其他文件先执行。基本写法如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">require.config(&#123;</div><div class="line">    baseUrl: &quot;/another/path&quot;,</div><div class="line">    paths: &#123;</div><div class="line">        &quot;some&quot;: &quot;some/v1.0&quot;</div><div class="line">    &#125;,</div><div class="line">    waitSeconds: 15</div><div class="line">  &#125;);</div><div class="line">  require( [&quot;some/module&quot;, &quot;my/module&quot;, &quot;a.js&quot;, &quot;b.js&quot;],</div><div class="line">    function(someModule,    myModule) &#123;</div><div class="line">        //This function will be called when all the dependencies</div><div class="line">        //listed above are loaded. Note that this function could</div><div class="line">        //be called before the page is loaded.</div><div class="line">        //This callback is optional.</div><div class="line">    &#125;</div><div class="line">  );</div></pre></td></tr></table></figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;前面介绍过了模块化的概念，那么就说说AMD的具体实现–RequireJS。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="JavaScript" scheme="http://finalhome.org/categories/JavaScript/"/>
+    
+    
+      <category term="JavaScript" scheme="http://finalhome.org/tags/JavaScript/"/>
+    
+      <category term="模块化" scheme="http://finalhome.org/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>模块加载机制</title>
+    <link href="http://finalhome.org/JavaScript/%E6%A8%A1%E5%9D%97%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/"/>
+    <id>http://finalhome.org/JavaScript/模块加载机制/</id>
+    <published>2014-04-16T03:31:27.000Z</published>
+    <updated>2014-04-16T06:14:09.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>想要与人合作，就需要写出可维护的代码，把代码封装为模块，可以方便使用。封装的过程就会涉及到模块如何组织与加载。JS规范目前主要有三类，CommonJS, AMD和CMD。<br><a id="more"></a></p>
+<h2 id="CommonJS"><a href="#CommonJS" class="headerlink" title="CommonJS"></a>CommonJS</h2><p>Node.js就是CommonJS的一个部分实现。CommonJS是一个规范，要求你去实现它的定义。</p>
+<p>CommonJS规范的加载是同步的，只有在加载完成之后，才能执行后面的操作，比较适合在服务器端，因为所有的文件都已经在硬盘之中，调用不存在延时。</p>
+<p>根据CommonJS规范，一个单独的文件就是一个模块。加载模块使用require方法，该方法读取一个文件并执行，最后返回文件内部的exports对象。Node.js就是这么干的:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// example.js</span></div><div class="line"><span class="built_in">console</span>.log(<span class="string">"evaluating example.js"</span>);</div><div class="line"></div><div class="line"><span class="keyword">var</span> invisible = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">"invisible"</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line">exports.message = <span class="string">"hi"</span>;</div><div class="line"></div><div class="line">exports.say = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.message);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// loadModule.js</span></div><div class="line"><span class="keyword">var</span> example = <span class="built_in">require</span>(<span class="string">'./example.js'</span>);</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(<span class="string">"example"</span>, example);</div><div class="line"></div><div class="line">example.say();</div></pre></td></tr></table></figure>
+<p>这是两个文件，存放在同一个目录中。运行<code>node loadModule.js</code>显示：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">H:\Workspace\OSChinaGit\CodeTest\NodeJS\Modules&gt;node loadModule.js</div><div class="line">evaluating example.js</div><div class="line">example &#123; message: <span class="string">'hi'</span>, say: [Function] &#125;</div><div class="line">hi</div></pre></td></tr></table></figure></p>
+<h2 id="AMD"><a href="#AMD" class="headerlink" title="AMD"></a>AMD</h2><p>CommonJS提供了同步加载的方式，在浏览器环境中，更多的是需要异步加载。所以诞生了AMD的加载方式。模块的加载不影响它后面语句的运行。所有依赖这个模块的语句，都定义在一个回调函数中，等到加载完成之后，这个回调函数才会运行。</p>
+<p>AMD是一种强依赖关系，所有依赖模块必须提前声明好，这样虽然对开发过程不算友好，但是性能上更优一些。使用方法主要是<code>require</code>和<code>define</code>。</p>
+<p>define定义一个模块：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">define([<span class="string">'package/lib'</span>], <span class="function"><span class="keyword">function</span>(<span class="params">lib</span>)</span>&#123;</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>)</span>&#123;</div><div class="line">        lib.log(<span class="string">'hello world!'</span>);</div><div class="line">    &#125; </div><div class="line"> </div><div class="line">    <span class="keyword">return</span> &#123;</div><div class="line">        foo: foo</div><div class="line">    &#125;;</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>AMD规范允许输出的模块兼容CommonJS规范，这时define方法需要写成下面这样：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">define(<span class="function"><span class="keyword">function</span> (<span class="params">require, exports, module</span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> someModule = <span class="built_in">require</span>(<span class="string">"someModule"</span>);</div><div class="line">    <span class="keyword">var</span> anotherModule = <span class="built_in">require</span>(<span class="string">"anotherModule"</span>);</div><div class="line"></div><div class="line">    someModule.doTehAwesome();</div><div class="line">    anotherModule.doMoarAwesome();</div><div class="line"></div><div class="line">    exports.asplode = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</div><div class="line">        someModule.doTehAwesome();</div><div class="line">        anotherModule.doMoarAwesome();</div><div class="line">    &#125;;</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>require使用模块:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">require</span>([<span class="string">'package/lib'</span>], <span class="function"><span class="keyword">function</span>(<span class="params">lib</span>)</span>&#123;</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>)</span>&#123;</div><div class="line">        lib.log(<span class="string">'hello world!'</span>);</div><div class="line">    &#125; </div><div class="line"> </div><div class="line">    <span class="keyword">return</span> &#123;</div><div class="line">        foo: foo</div><div class="line">    &#125;;</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<h2 id="CMD"><a href="#CMD" class="headerlink" title="CMD"></a>CMD</h2><p>CMD更倾向在浏览器端使用，这是淘宝的玉伯发明的加载方式。和AMD的主要区别就是对依赖关系加载时序的处理。依赖不必开始就声明好，用到时再声明。</p>
+<p>由于对CMD了解较少，暂时不多说，日后补充！</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="http://www.commonjs.org/" target="_blank" rel="external">CommonJS官网</a></li>
+<li><a href="https://github.com/amdjs/amdjs-api/wiki/AMD" target="_blank" rel="external">AMD规范</a></li>
+<li><a href="https://github.com/seajs/seajs/issues/242" target="_blank" rel="external">CMD规范</a></li>
+<li><a href="https://github.com/seajs/seajs/issues/240" target="_blank" rel="external">玉伯解释模块系统</a></li>
+<li><a href="https://github.com/seajs/seajs/issues/588" target="_blank" rel="external">前端模块化开发那点历史</a></li>
+<li><a href="http://www.douban.com/note/283566440/" target="_blank" rel="external">SeaJS与RequireJS最大的区别</a></li>
+<li><a href="https://github.com/seajs/seajs/issues/269" target="_blank" rel="external">CommonJS到Sea.js</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;想要与人合作，就需要写出可维护的代码，把代码封装为模块，可以方便使用。封装的过程就会涉及到模块如何组织与加载。JS规范目前主要有三类，CommonJS, AMD和CMD。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="JavaScript" scheme="http://finalhome.org/categories/JavaScript/"/>
+    
+    
+      <category term="JavaScript" scheme="http://finalhome.org/tags/JavaScript/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>翻越GWF</title>
+    <link href="http://finalhome.org/%E6%95%B0%E7%A0%81%E7%BB%8F%E9%AA%8C/%E7%BF%BB%E8%B6%8AGWF/"/>
+    <id>http://finalhome.org/数码经验/翻越GWF/</id>
+    <published>2014-04-15T06:16:17.000Z</published>
+    <updated>2014-04-16T07:37:03.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>在国内，特别是程序员，是需要查阅很多国外资料的。但是国内的限制你懂的。今天就来说说如何绕过这些限制。<br><a id="more"></a></p>
+<h2 id="免费的方案"><a href="#免费的方案" class="headerlink" title="免费的方案"></a>免费的方案</h2><p><code>goagent</code>, <a href="https://code.google.com/p/goagent/" target="_blank" rel="external">goagent项目地址</a>。这是利用Google Appengine设置代理，好处就是免费，达到浏览器翻墙的效果。很久以前，我一直是用它，很稳定，适合学生。</p>
+<p>具体使用方法，项目里面介绍的很详细，按步骤来就可以。</p>
+<h2 id="SSH"><a href="#SSH" class="headerlink" title="SSH"></a>SSH</h2><p><code>Secure Shell</code>的缩写，是一种建立在应用层和传输层基础上的安全协议。主要用来远程连接，也可以作为代理使用，推荐配合clowwindy的<code>shadowsocks</code>使用。<a href="https://github.com/clowwindy/shadowsocks/wiki/Ports-and-Clients" target="_blank" rel="external">shadowsocks项目地址</a>。</p>
+<p>shadowsocks连接方式配合chrome插件<code>proxy switchSharp</code>，能很好的实现分流（翻墙的才走代理）。</p>
+<p>我有一点疑问关于SSH的连接，貌似不用输入用户名。只提供ip，端口和密码即可？</p>
+<h2 id="VPN"><a href="#VPN" class="headerlink" title="VPN"></a>VPN</h2><p>这个是最普遍的翻墙方式，但是所有代理都会走VPN。对于有流量限制和下载的情况来说，需要来回切换，很麻烦。所以我找到了一下如果让VPN实现分流的操作，这里提供一些方式：</p>
+<h3 id="PAC"><a href="#PAC" class="headerlink" title="PAC"></a>PAC</h3><p>pac是系统级别的代理配置，属于应用层，所以所有应用都会走代理，通过PAC进行判断，可以实现分流操作。开启之后，所有请求会先走VPN再PAC判断，走两层代理。</p>
+<p>这里有一个更优的<code>GFWList</code>，也是由clowwindy大神提供的，<a href="https://github.com/clowwindy/gfwlist2pac" target="_blank" rel="external">gwflist2pac</a>。</p>
+<h3 id="修改路由表"><a href="#修改路由表" class="headerlink" title="修改路由表"></a>修改路由表</h3><p>如果让VPN做动态判断，只能在开启VPN后，修改系统的路由表。可以查看chnroutes, <a href="https://github.com/fivesheep/chnroutes/wiki" target="_blank" rel="external">chnroutes项目地址</a>。MacTalk君有一篇<a href="http://macshuo.com/?tag=chnroutes" target="_blank" rel="external">文章</a>可以参考.</p>
+<p>chnroutes会定期更新，这里提供一个下载地址<a href="http://chnroutes-dl.appspot.com/" target="_blank" rel="external">chnroutes定期更新下载</a>。</p>
+<h2 id="一些资源"><a href="#一些资源" class="headerlink" title="一些资源"></a>一些资源</h2><ul>
+<li><a href="https://github.com/cyfdecyf/cow" target="_blank" rel="external">Cow</a></li>
+<li><a href="https://vpnso.com/" target="_blank" rel="external">东哥的服务</a></li>
+<li><a href="https://www.runos.us/" target="_blank" rel="external">目前自用的VPN</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在国内，特别是程序员，是需要查阅很多国外资料的。但是国内的限制你懂的。今天就来说说如何绕过这些限制。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="数码经验" scheme="http://finalhome.org/categories/%E6%95%B0%E7%A0%81%E7%BB%8F%E9%AA%8C/"/>
+    
+    
+      <category term="Windows" scheme="http://finalhome.org/tags/Windows/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Windows下提高效率的软件</title>
+    <link href="http://finalhome.org/%E6%95%B0%E7%A0%81%E7%BB%8F%E9%AA%8C/Windows%E4%B8%8B%E6%8F%90%E9%AB%98%E6%95%88%E7%8E%87%E7%9A%84%E8%BD%AF%E4%BB%B6/"/>
+    <id>http://finalhome.org/数码经验/Windows下提高效率的软件/</id>
+    <published>2014-04-04T01:22:30.000Z</published>
+    <updated>2014-04-04T02:23:49.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>一些常用的软件就不一一介绍了，说些小众但是高效的。<a id="more"></a></p>
+<h2 id="Launchy"><a href="#Launchy" class="headerlink" title="Launchy"></a>Launchy</h2><p>一个快捷启动的工具，可以添加一些目录，加载其中的<code>.exe</code>文件，直接搜索即可启动。同样，也可以快速打开某个目录。我设置了快捷键<code>alt + s</code>。</p>
+<p>这个工具里面包含了一个插件，叫做<code>weby</code>, 可以设置一些搜索引擎，比如<code>google</code>, 快捷访问并且查询。利用这个功能，我添加了<code>Name:ddg</code>, 设置<code>URL:https://duckduckgo.com/?q=%1</code>, 这样启动之后，输入<code>ddg</code>-&gt;<code>tab</code>,加上查询字段就可以直接打开浏览器搜索。</p>
+<h2 id="MasterSeeker"><a href="#MasterSeeker" class="headerlink" title="MasterSeeker"></a>MasterSeeker</h2><p>功能和<code>Everything</code>类似，但是个人感觉比<code>Everything</code>更加易用。</p>
+<p>虽然<code>Everything</code>的速度很快，但是查询的可定制的不强。而<code>MaskerSeeker</code>可以指定查询文件，文件夹，包括文件大小。</p>
+<p>不方便的地方是索引需要手动更新，但是也很快啦。不会很耽误时间。比起搜索的准确性，我宁愿索引建立的时间长一些。</p>
+<p>默认快捷键<code>ctrl + ~</code>。</p>
+<h2 id="Listary"><a href="#Listary" class="headerlink" title="Listary"></a>Listary</h2><p>这是一个资源管理器的插件，可以模糊查询当前目录及其子目录下的文件，达到快速定位的功能。默认自动在资源管理器中开启，只需要使用键盘输入关键字即可。</p>
+<p>此软件还有一个Pro版本，但是个人目前没有使用需求。</p>
+<h2 id="Clover-3"><a href="#Clover-3" class="headerlink" title="Clover 3"></a>Clover 3</h2><p>一个实现资源管理器多标签功能的插件，类似Chrome。可以添加和管理书签。</p>
+<p>之前我开多个目录切换的时候，真是太TM耗时了，现在有了这个，配合<code>Listary</code>, 方便！</p>
+<p>唯一的缺点就是偶尔不稳定，会自动关闭，但是再次开启，可以打开上次的目录。</p>
+<h2 id="Ditto"><a href="#Ditto" class="headerlink" title="Ditto"></a>Ditto</h2><p>剪切板历史记录工具，不管你复制，裁切过什么，它都可以帮你记录下来。我设置了快捷键<code>alt + v</code>，这样正常复制粘贴不受影响，一旦我需要查看剪切板历史，调用一下就好。</p>
+<h2 id="CMD扩展工具"><a href="#CMD扩展工具" class="headerlink" title="CMD扩展工具"></a>CMD扩展工具</h2><h3 id="Clink"><a href="#Clink" class="headerlink" title="Clink"></a>Clink</h3><p>安装之后，可以在<code>cmd</code>中实现复制，粘贴等功能。</p>
+<h3 id="gow"><a href="#gow" class="headerlink" title="gow"></a>gow</h3><p>当你只需要 *nix 工具的时候装 Cygwin 未免小题大做。 Gow 就是实现了常用的linux命令，并且整合到cmd中的工具。</p>
+<h2 id="teracopy"><a href="#teracopy" class="headerlink" title="teracopy"></a>teracopy</h2><p>大多数时候我都用 Windows 8.1 自带的复制，不过如果我真要搬运一大堆东西的话我会用 TeraCopy。正如其名它做的事情就是复制，而且在速度上，无出其右。</p>
+<h2 id="PicPick"><a href="#PicPick" class="headerlink" title="PicPick"></a>PicPick</h2><p>这是一个设计的辅助工具，提供了截图，标注，吸取颜色，测量距离，角度等功能，关键还是免费的！</p>
+<p>对于这个软件，我经常用到的功能就是：</p>
+<ol>
+<li><p>截图</p>
+<p> 设置快捷键<code>shift + print</code></p>
+</li>
+<li><p>标尺</p>
+<p> 设置快捷键<code>shift + c</code></p>
+</li>
+<li><p>吸取颜色</p>
+<p> 设置快捷键<code>shift + b</code>, 注意如果直接在PSD上吸取颜色，结果其实和PSD里设置的颜色不一致。</p>
+</li>
+</ol>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;一些常用的软件就不一一介绍了，说些小众但是高效的。
+    
+    </summary>
+    
+      <category term="数码经验" scheme="http://finalhome.org/categories/%E6%95%B0%E7%A0%81%E7%BB%8F%E9%AA%8C/"/>
+    
+    
+      <category term="Windows" scheme="http://finalhome.org/tags/Windows/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>自调用的方式</title>
+    <link href="http://finalhome.org/JavaScript/%E8%87%AA%E8%B0%83%E7%94%A8%E7%9A%84%E6%96%B9%E5%BC%8F/"/>
+    <id>http://finalhome.org/JavaScript/自调用的方式/</id>
+    <published>2013-11-18T07:40:10.000Z</published>
+    <updated>2013-11-18T08:46:54.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>平时我们可能对添加括号来调用匿名函数的方式更为习惯:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;alert(<span class="string">'iifksp'</span>)&#125;)() <span class="comment">// undefinded</span></div><div class="line"><span class="comment">// 另外一种, 主要是括号的位置不同</span></div><div class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;alert(<span class="string">'iifksp'</span>)&#125;()) <span class="comment">// undefinded</span></div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h2 id="感叹号开头的自调用"><a href="#感叹号开头的自调用" class="headerlink" title="感叹号开头的自调用"></a>感叹号开头的自调用</h2><p>其实很多库中都是这么去写的：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">!<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;alert(<span class="string">'iifksp'</span>)&#125;()        <span class="comment">// true</span></div></pre></td></tr></table></figure>
+<p>其实无论是括号，还是感叹号，让整个语句合法做的事情只有一件，就是让一个函数声明语句变成了一个表达式。任何消除函数声明和函数表达式间歧义的方法，都可以被解析器正确识别。比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var i = function()&#123;return 10&#125;();        // undefined</div><div class="line">1 &amp;&amp; function()&#123;return true&#125;();        // true</div><div class="line">1, function()&#123;alert(&apos;iifksp&apos;)&#125;();        // undefined</div></pre></td></tr></table></figure>
+<p>赋值，逻辑，甚至是逗号，各种操作符都可以告诉解析器，这个不是函数声明，它是个函数表达式。并且，对函数一元运算可以算的上是消除歧义最快的方式，感叹号只是其中之一，如果不在乎返回值，这些一元运算都是有效的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">!function()&#123;alert(&apos;iifksp&apos;)&#125;()        // true</div><div class="line">+function()&#123;alert(&apos;iifksp&apos;)&#125;()        // NaN</div><div class="line">-function()&#123;alert(&apos;iifksp&apos;)&#125;()        // NaN</div><div class="line">~function()&#123;alert(&apos;iifksp&apos;)&#125;()        // -1</div></pre></td></tr></table></figure>
+<h2 id="效率问题"><a href="#效率问题" class="headerlink" title="效率问题"></a>效率问题</h2><p>不同的写法，同样的效果，当然会让人想到是否会影响效率。所以有人进行了一些测试:<a href="http://jsperf.com/js-funcion-expression-speed。结果显示，效率较快的是" target="_blank" rel="external">http://jsperf.com/js-funcion-expression-speed。结果显示，效率较快的是</a>: 括号，感叹号，加减号。</p>
+<p>可是为什么很多库会选择感叹号，应该是一种习惯，当然视觉上也比括号更有优势。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>自调用的方式，简单的写的话，可以使用!,+,-符号，规范一点的写法就用括号形式。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="http://www.swordair.com/blog/2011/10/714/" target="_blank" rel="external">function与感叹号</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;平时我们可能对添加括号来调用匿名函数的方式更为习惯:&lt;/p&gt;
+&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;(&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;)&lt;/span&gt;&amp;#123;alert(&lt;span class=&quot;string&quot;&gt;&#39;iifksp&#39;&lt;/span&gt;)&amp;#125;)() &lt;span class=&quot;comment&quot;&gt;// undefinded&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// 另外一种, 主要是括号的位置不同&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;(&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;)&lt;/span&gt;&amp;#123;alert(&lt;span class=&quot;string&quot;&gt;&#39;iifksp&#39;&lt;/span&gt;)&amp;#125;()) &lt;span class=&quot;comment&quot;&gt;// undefinded&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+      <category term="JavaScript" scheme="http://finalhome.org/categories/JavaScript/"/>
+    
+    
+      <category term="JavaScript" scheme="http://finalhome.org/tags/JavaScript/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>关于分号的一切</title>
+    <link href="http://finalhome.org/JavaScript/%E5%85%B3%E4%BA%8E%E5%88%86%E5%8F%B7%E7%9A%84%E4%B8%80%E5%88%87/"/>
+    <id>http://finalhome.org/JavaScript/关于分号的一切/</id>
+    <published>2013-11-18T07:40:10.000Z</published>
+    <updated>2013-11-18T08:07:43.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>JavaScript关于是否加分号一直都存在争议。加分号的一方大多是力挺大牛Douglas Crockford，认为需要在末尾加分号。另一方则是无分号党，现在是越来越多了，比如zepto的作者。<a id="more"></a></p>
+<h2 id="为什么会有争议"><a href="#为什么会有争议" class="headerlink" title="为什么会有争议"></a>为什么会有争议</h2><p>其实主要是JS自带的自动添加分号造成的，这门语言在设计之初我觉得是想少写分号的，但是这个自动添加分号的规则太乱了，导致大多数人无法正确判断哪里该加，因此很多时候不如全部都加上省心。</p>
+<p>但是无分号的代码看着确实清爽，并且少敲打了很多次分号。</p>
+<h2 id="如何选择"><a href="#如何选择" class="headerlink" title="如何选择"></a>如何选择</h2><p>咳咳，我的建议是啊：遵循团队或开源库的风格，让自己适应两种方式。如果是自己写代码，原生JavaScript加分号，CoffeeScript不加分号。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="http://www.zhihu.com/question/20298345" target="_blank" rel="external">知乎上关于分号的讨论</a></li>
+<li><a href="http://copri.me/post/javascript-with-semicolons-or-not.html" target="_blank" rel="external">好多大牛不加分号</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;JavaScript关于是否加分号一直都存在争议。加分号的一方大多是力挺大牛Douglas Crockford，认为需要在末尾加分号。另一方则是无分号党，现在是越来越多了，比如zepto的作者。
+    
+    </summary>
+    
+      <category term="JavaScript" scheme="http://finalhome.org/categories/JavaScript/"/>
+    
+    
+      <category term="JavaScript" scheme="http://finalhome.org/tags/JavaScript/"/>
+    
+      <category term="编码规范" scheme="http://finalhome.org/tags/%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/"/>
+    
+  </entry>
+  
+</feed>
