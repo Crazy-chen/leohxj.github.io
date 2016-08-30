@@ -76,7 +76,7 @@ deploy:
 ## 主题切换
 基本的 blog 系统算是完成了，我们对界面或许还有些追求， Hexo 也提供了许多主题供我们选择，在 [Hexo Themes](https://hexo.io/themes/) 可以查看。
 
-选择了一个主题之后，我们可以将它 `clone` 或 `download` 到本地，放置在 `theme` 目录下， 然后修改 `_config.yml` 文件，配置主题名称, 比如我的这个主题 `Hacker`: 
+选择了一个主题之后，我们可以将它 `clone` 或 `download` 到本地，放置在 `theme` 目录下， 然后修改 `_config.yml` 文件，配置主题名称, 比如我的这个主题 `Hacker`:
 
 ```
 theme: Hacker
@@ -101,6 +101,22 @@ theme: Hacker
 - 在`source`目录下添加 `CNAME`： 通过`username.github.io`，能够跳转到自己的域名
 
 `CNAME`文件内容，就是自己的域名地址。
+
+## 资源管理
+主要是对图片和项目工程的管理。
+
+图片，Hexo 建议我们将工程用到的图片直接放置在 `source/images` 目录中，如果是文章依赖的图片，通过修改 `_config.yml` 中的 `post_asset_folder: true`, 再次创建新文章的时候，就会创建一个和文章同名的目录，用来存放我们的素材。
+
+工程上面，我们放置到 github 上的，是生成的静态资源。我们项目实际的工程是放置在本地的，所以不利于同步和管理。我目前使用的是在 `username.github.io` 上创建一个 `source` 分支，用来存放管理源文件。这样，我在一台新的电脑上，只需要 :
+
+```
+git checkout source
+npm install
+hexo deploy -g
+```
+
+就可以在新的机器上完成写作与部署了。
+
 
 ## 写在最后
 最后说一点，博客记录的是自己的产出，多花点时间专注在内容上 :)
