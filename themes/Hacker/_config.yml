@@ -13,4 +13,7 @@ disqus: false
 disqus_shortname:
 
 # google analytics
-googleTrackId: UA-42849828-1
+googleTrackId:
+
+# cnzz analytics
+cnzzTrackId: 5563232
