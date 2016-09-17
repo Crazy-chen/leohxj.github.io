@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://finalhome.org/"/>
-  <updated>2016-08-29T15:59:05.000Z</updated>
+  <updated>2016-09-17T13:20:34.000Z</updated>
   <id>http://finalhome.org/</id>
   
   <author>
@@ -16,11 +16,253 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>gitbook 使用指南</title>
+    <link href="http://finalhome.org/gitbook%E7%9B%B8%E5%85%B3/gitbook%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/"/>
+    <id>http://finalhome.org/gitbook相关/gitbook使用指南/</id>
+    <published>2016-09-17T08:00:07.000Z</published>
+    <updated>2016-09-17T13:20:34.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>我之前使用 <code>gitbook</code> 的时候还是 <code>1.x.x</code> 版本，现在都已经 <code>3.x.x</code> 了。<a id="more"></a></p>
+<h2 id="什么是-GitBook"><a href="#什么是-GitBook" class="headerlink" title="什么是 GitBook"></a>什么是 GitBook</h2><p>一个致力于解决文档，书籍书写与发布的技术方案, 于 2014 年中旬创立，建立了一套开源书籍的书写规范和相关的构建工具。后来也创立了一个网站， <a href="https://gitbook.com/" target="_blank" rel="external">GitBook.com</a>, 供世界各地的人发布和管理自己的书籍。</p>
+<h2 id="安装-GitBook"><a href="#安装-GitBook" class="headerlink" title="安装 GitBook"></a>安装 GitBook</h2><p><code>GitBook 3.x.x</code> 版本需要 <code>node &gt;=4.0.0</code>, 这里插一句，大多数情况下，node 还是推荐使用 LTS 版本，最新版本的特性有些库支持还是有问题的，而且会存在不兼容的情况。</p>
+<p>通过 <code>npm install gitbook-cli -g</code> 全局安装 <code>gitbook</code> 命令，安装完成后，有几个常用的命令:</p>
+<ul>
+<li><code>gitbook --version</code>: 查看当前使用的版本</li>
+<li><code>gitbook ls</code>: 系统存在的 gitbook 版本</li>
+<li><code>gitbook ls-remote</code>: 所有 gitbook 版本</li>
+<li><code>gitbook fetch</code>: 下载对应的 gitbook 版本</li>
+<li><code>gitbook current</code>: 当前目录使用的 gitbook 版本</li>
+</ul>
+<p>当前版本下，默认安装的是:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">CLI version: 2.3.0</div><div class="line">GitBook version: 3.2.0</div></pre></td></tr></table></figure>
+<p>如果我们需要使用不同的版本，需要自己安装，或者通过 <code>book.json</code> 配置 <code>gitbook</code> 版本。比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;gitbook&quot;: &quot;~2.x.x&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样在含有 <code>book.json</code> 的目录下运行 <code>gitbook</code> 相关命令，就是基于指定的版本了。</p>
+<h3 id="查看相关命令"><a href="#查看相关命令" class="headerlink" title="查看相关命令"></a>查看相关命令</h3><p>通过 <code>gitbook</code> 和 <code>gitbook help</code> 可以查看相关的命令。</p>
+<h2 id="创建书籍"><a href="#创建书籍" class="headerlink" title="创建书籍"></a>创建书籍</h2><p><code>gitbook init &lt;folder&gt;</code> 创建项目， 生成:</p>
+<ul>
+<li>README.md</li>
+<li>SUMMARY.md</li>
+</ul>
+<p>如果对项目需要配置，还需自行添加 <code>book.json</code> 文件。</p>
+<h2 id="运行书籍"><a href="#运行书籍" class="headerlink" title="运行书籍"></a>运行书籍</h2><p><code>gitbook serve</code> 命令。</p>
+<h2 id="编译书籍"><a href="#编译书籍" class="headerlink" title="编译书籍"></a>编译书籍</h2><p><code>gitbook build</code> 命令。</p>
+<h2 id="SUMMARY-md"><a href="#SUMMARY-md" class="headerlink" title="SUMMARY.md"></a>SUMMARY.md</h2><p><code>SUMMARY.md</code> 是用来定义书籍的章节的，用来生成目录。比如:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># Summary</div><div class="line"></div><div class="line">* [Introduction](README.md)</div><div class="line">* [Part I](part1/README.md)</div><div class="line">    * [Writing is nice](part1/writing.md)</div><div class="line">    * [GitBook is nice](part1/gitbook.md)</div><div class="line">* [Part II](part2/README.md)</div><div class="line">    * [We love feedback](part2/feedback_please.md)</div><div class="line">    * [Better tools for authors](part2/better_tools.md)</div></pre></td></tr></table></figure>
+<p>在 <code>2.x.x</code> 版本中，这样会生成目录:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Introduction</div><div class="line">1.Part I</div><div class="line">    1.1 Writing is nice</div><div class="line">    1.2 GitBook is nice</div><div class="line">2.Part II</div><div class="line">    2.1 We love feedback</div><div class="line">    2.2 Better tools for authors</div></pre></td></tr></table></figure>
+<p><code>3.x.x</code> 版本后，默认推荐不为章节编码，生成的内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Introduction</div><div class="line">Part I</div><div class="line">    Writing is nice</div><div class="line">    GitBook is nice</div><div class="line">Part II</div><div class="line">    We love feedback</div><div class="line">    Better tools for authors</div></pre></td></tr></table></figure>
+<p>如果你想要展示章节编码，需要添加设置, 修改 <code>book.json</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&quot;pluginsConfig&quot;: &#123;</div><div class="line">       &quot;theme-default&quot;: &#123;</div><div class="line">           &quot;showLevel&quot;: true</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>这样生成的目录会是这样:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">1.1 Introduction</div><div class="line">1.2 Part I</div><div class="line">    1.2.1 Writing is nice</div><div class="line">    1.2.2 GitBook is nice</div><div class="line">1.3 Part II</div><div class="line">    1.3.1 We love feedback</div><div class="line">    1.3.2 Better tools for authors</div></pre></td></tr></table></figure>
+<p>所有内容都会以 <code>1.x</code> 编码开始。原因是我们没有使用 <code>Part</code> 分割章节， 这也是 <code>3.x.x</code> 版本后推荐的做法，我们修改 <code>SUMMARY.md</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"># Summary</div><div class="line"></div><div class="line">* [Introduction](README.md)</div><div class="line"></div><div class="line"># Part I</div><div class="line">* [Part I](part1/README.md)</div><div class="line">    * [Writing is nice](part1/writing.md)</div><div class="line">    * [GitBook is nice](part1/gitbook.md)</div><div class="line"></div><div class="line"># Part II</div><div class="line">* [Part II](part2/README.md)</div><div class="line">    * [We love feedback](part2/feedback_please.md)</div><div class="line">    * [Better tools for authors](part2/better_tools.md)</div></pre></td></tr></table></figure>
+<p>这样之后，显示的编码会变成这样:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">1.1 Introduction</div><div class="line">2.1 Part I</div><div class="line">    2.1.1 Writing is nice</div><div class="line">    2.1.2 GitBook is nice</div><div class="line">3.1 Part II</div><div class="line">    3.1.1 We love feedback</div><div class="line">    3.1.2 Better tools for authors</div></pre></td></tr></table></figure>
+<p>不带编码显示是这样, 会带上分割线:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">Introduction</div><div class="line">-----</div><div class="line">1.Part I</div><div class="line">    1.1 Writing is nice</div><div class="line">    1.2 GitBook is nice</div><div class="line">-----</div><div class="line">2.Part II</div><div class="line">    2.1 We love feedback</div><div class="line">    2.2 Better tools for authors</div></pre></td></tr></table></figure>
+<h2 id="PAGES"><a href="#PAGES" class="headerlink" title="PAGES"></a>PAGES</h2><p>每篇文章，就是一个单独的 <code>markdown</code> 文件，支持 <a href="https://guides.github.com/features/mastering-markdown/" target="_blank" rel="external">GitHub Flavored Markdown syntax</a>, 比如:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># Title of the chapter</div><div class="line"></div><div class="line">This is a great introduction.</div><div class="line"></div><div class="line">## Section 1</div><div class="line"></div><div class="line">Markdown will dictates _most_ of your **book&apos;s structure**</div><div class="line"></div><div class="line">## Section 2</div><div class="line"></div><div class="line">...</div></pre></td></tr></table></figure>
+<h2 id="发布"><a href="#发布" class="headerlink" title="发布"></a>发布</h2><p>你可以选择在 <a href="https://www.gitbook.com/new" target="_blank" rel="external">GitBook New</a> 上创建，选择在线编辑或者通过 <code>git clone</code> 下载到本地编辑。</p>
+<p>你还可以将在 Github 上创建的书籍，同步到 GitBook 中， 在 GitBook 的项目设置中，手动添加对应的 Github 仓库，注意要保证 GitBook 对你的 Github 有访问权限。</p>
+<p>原理是借助 Webhook, 当你的 github 仓库有提交时，同步 GitBook 仓库。</p>
+<h2 id="绑定域名"><a href="#绑定域名" class="headerlink" title="绑定域名"></a>绑定域名</h2><p>默认发布在 GitBook 上的项目，URL规则是这样的: <code>https://www.gitbook.com/book/{username}/{bookname}</code>, 如果我们要为此绑定域名，需要两处设置:</p>
+<ul>
+<li>GitBook对于的项目设置中，修改 <code>Domain</code>, 添加自定义域名</li>
+<li>在你的域名服务商提供的控制面板中，设置 <code>CNAME</code>， 绑定 <code>www.gitbooks.io</code>，开启 <code>domain forwarding</code></li>
+</ul>
+<h2 id="缘由"><a href="#缘由" class="headerlink" title="缘由"></a>缘由</h2><p>重新使用 GitBook 是因为上周有人发邮件给我，说放在 GitBook 上的 <a href="https://www.gitbook.com/book/leohxj/a-programmer-prepares/details" target="_blank" rel="external">&lt;程序员的自我修养&gt;</a> 这本书，下载为 PDF格式时字体有些怪异，希望我能将书开源到 github 上供他自己编译，考虑到此书确实也很久没有更新了，我决定借此机会重启这一系列的更新，希望能将自己这一两年积累的知识贡献出来。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://www.gitbook.com/" target="_blank" rel="external">GitBook 官网</a></li>
+<li><a href="https://github.com/GitbookIO/gitbook" target="_blank" rel="external">GitbookIO/gitbook</a></li>
+<li><a href="http://toolchain.gitbook.com/" target="_blank" rel="external">GitBook Document</a></li>
+<li><a href="https://help.gitbook.com/" target="_blank" rel="external">Gitbook Help Center</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;我之前使用 &lt;code&gt;gitbook&lt;/code&gt; 的时候还是 &lt;code&gt;1.x.x&lt;/code&gt; 版本，现在都已经 &lt;code&gt;3.x.x&lt;/code&gt; 了。
+    
+    </summary>
+    
+      <category term="gitbook相关" scheme="http://finalhome.org/categories/gitbook%E7%9B%B8%E5%85%B3/"/>
+    
+    
+      <category term="gitbook" scheme="http://finalhome.org/tags/gitbook/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ECMAScript的一些介绍</title>
+    <link href="http://finalhome.org/JavaScript/ECMA%E7%9A%84%E4%B8%80%E4%BA%9B%E4%BB%8B%E7%BB%8D/"/>
+    <id>http://finalhome.org/JavaScript/ECMA的一些介绍/</id>
+    <published>2016-09-06T02:00:00.000Z</published>
+    <updated>2016-09-06T14:39:16.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>学习 JavaScript 的过程中，你肯定听说过 ECMAScript 。但是你知道它到底是什么吗?<br><a id="more"></a></p>
+<h2 id="JavaScript-介绍"><a href="#JavaScript-介绍" class="headerlink" title="JavaScript 介绍"></a>JavaScript 介绍</h2><p>它是一种解释型的编程语言，由 <code>ECMA</code> 通过 <code>ECMAScript</code> （又称为 <code>ECMA-262</code>）实现语言的标准化。<code>JavaScript</code> 是被主流浏览器支持的。它的 <a href="http://www.w3school.com.cn/js/pro_js_implement.asp" target="_blank" rel="external">实现</a> 应该包含三个部分:</p>
+<ul>
+<li>ECMAScript: 语言核心，操作基本语法和对象，比如 <code>Array</code> 数组操作。</li>
+<li>DOM: 文档对象模型，操作网页内容的方法和接口, 比如<code>document</code>, <code>event</code>, <code>document.getElementById</code> 等等。</li>
+<li>BOM: 浏览器对象模型， 操作与浏览器进行交互的方法和接口，比如 <code>window</code> , <code>history</code>, <code>location</code> 等等。</li>
+</ul>
+<p>关于 <code>DOM</code> 和 <code>BOM</code> 的区别：</p>
+<ul>
+<li><code>DOM</code> 操作的是网页内的东西，<code>BOM</code> 操作的是浏览器相关内容。</li>
+<li><code>DOM</code> 是 <code>W3C</code> 的标准， 而 <code>BOM</code> 是各个浏览器厂商根据 <code>DOM</code> 在各自浏览器上的实现。</li>
+<li><code>document</code> 对象是 <code>DOM</code> 的规范实现，也是 <code>BOM</code> 的对象。</li>
+</ul>
+<p>还有一个常见的问题：<strong>ECMAScript和JavaScript到底是什么关系？</strong></p>
+<p>要讲清楚这个问题，需要回顾历史。1996年11月，JavaScript 的创造者 Netscape 公司，决定将 JavaScript 提交给国际标准化组织 ECMA，希望这种语言能够成为国际标准。次年，ECMA 发布262号标准文件（ECMA-262）的第一版，规定了浏览器脚本语言的标准，并将这种语言称为 ECMAScript，这个版本就是1.0版。</p>
+<p>该标准从一开始就是针对 JavaScript 语言制定的，但是之所以不叫 JavaScript，有两个原因。一是商标，Java是Sun公司的商标，根据授权协议，只有Netscape公司可以合法地使用 JavaScript 这个名字，且JavaScript 本身也已经被 Netscape 公司注册为商标。二是想体现这门语言的制定者是 ECMA，不是 Netscape，这样有利于保证这门语言的开放性和中立性。</p>
+<p>因此，ECMAScript 和 JavaScript 的关系是，前者是后者的规格，后者是前者的一种实现（另外的 ECMAScript 扩展还有 Jscript 和 ActionScript）。JavaScript 存在的意义主要是为了解决在客户端对网页进行操作。</p>
+<h2 id="ECMA-组织"><a href="#ECMA-组织" class="headerlink" title="ECMA 组织"></a>ECMA 组织</h2><p>以前是叫 <code>European Computer Manufacturers Association</code>, 1994 年改名为 <code>Ecma International</code>, 是一家国际性会员制度的信息和电信标准组织。官网为 <a href="http://www.ecma-international.org/" target="_blank" rel="external">ecma-international</a>。相关的标准都可以从中查询到，我们一般关注的就是 <a href="http://www.ecma-international.org/publications/standards/Ecma-262-arch.htm" target="_blank" rel="external">ECMA-262 标准</a>。</p>
+<h2 id="ECMAScript"><a href="#ECMAScript" class="headerlink" title="ECMAScript"></a>ECMAScript</h2><p>ECMAScript 是由 ECMA-262 标准化的脚本语言的名称, JavaScript 是它的一种实现， 其他的实现还有 Falsh 中的 ActionScript。ECMA-262 标准（第 2 段）的描述如下：</p>
+<blockquote>
+<p>“ECMAScript 可以为不同种类的宿主环境提供核心的脚本编程能力，因此核心的脚本语言是与任何特定的宿主环境分开进行规定的… …”</p>
+</blockquote>
+<p>ECMAScript 仅仅是一个描述，定义了脚本语言的所有属性、方法和对象。其他语言可以实现 ECMAScript 来作为功能的基准，JavaScript 就是这样, ECMAScript 是它的核心。</p>
+<h2 id="TC39"><a href="#TC39" class="headerlink" title="TC39"></a>TC39</h2><p>标准需要有人制定， TC39 就是一组开发 ECMA-262 标准规范的人。 它是 <code>Ecma第39号技术委员会</code> 的意思。</p>
+<h2 id="ECMAScript-版本"><a href="#ECMAScript-版本" class="headerlink" title="ECMAScript 版本"></a>ECMAScript 版本</h2><p>我们常见的 <code>ES3</code>, <code>ES5</code>, <code>ES6</code> 就是 ECMAScript 的版本。它对应的也是 <code>ECMA-262</code> 的版本。它的历史大概如下:</p>
+<ul>
+<li>1996年11月，网景公司将 JavaScript 提交给 ECMA 进行标准化。</li>
+<li>1997年6月，ECMAScript 1.0版发布。</li>
+<li>1998年6月，ECMAScript 2.0版发布。</li>
+<li>1999年12月，ECMAScript 3.0版发布，成为JavaScript的通行标准，得到了广泛支持。</li>
+<li>2007年10月，ECMAScript 4.0版草案发布，对3.0版做了大幅升级，预计次年8月发布正式版本。草案发布后，由于4.0版的目标过于激进，各方对于是否通过这个标准，发生了严重分歧。以Yahoo、Microsoft、Google为首的大公司，反对JavaScript的大幅升级，主张小幅改动；以JavaScript创造者Brendan Eich为首的Mozilla公司，则坚持当前的草案。</li>
+<li>2008年7月，由于对于下一个版本应该包括哪些功能，各方分歧太大，争论过于激进，ECMA开会决定，中止ECMAScript 4.0的开发，将其中涉及现有功能改善的一小部分，发布为ECMAScript 3.1，而将其他激进的设想扩大范围，放入以后的版本，由于会议的气氛，该版本的项目代号起名为Harmony（和谐）。会后不久，ECMAScript 3.1就改名为ECMAScript 5。</li>
+<li>2009年12月，ECMAScript 5.0版正式发布。Harmony项目则一分为二，一些较为可行的设想定名为JavaScript.next继续开发，后来演变成ECMAScript 6；一些不是很成熟的设想，则被视为JavaScript.next.next，在更远的将来再考虑推出。</li>
+<li>2011年6月，ECMAscript 5.1版发布，并且成为ISO国际标准（ISO/IEC 16262:2011）。</li>
+<li>2013年3月，ECMAScript 6草案冻结，不再添加新功能。新的功能设想将被放到ECMAScript 7。</li>
+<li>2013年12月，ECMAScript 6草案发布。然后是12个月的讨论期，听取各方反馈。</li>
+<li>2015年6月17日，ECMAScript 6发布正式版本，即ECMAScript 2015。</li>
+</ul>
+<h2 id="浏览器对-ECMAScript-的支持"><a href="#浏览器对-ECMAScript-的支持" class="headerlink" title="浏览器对 ECMAScript 的支持"></a>浏览器对 ECMAScript 的支持</h2><p>浏览器是我们执行 JavaScript 的宿主环境之一，指定的标准需要宿主环境提供支持。目前所有浏览器都遵守 ECMA-262 第三版。需要注意的是 IE 浏览器， IE9及其以上版本才提供对 ES5 的支持。 所以在 IE6~8 下，如果我们需要使用 ES5 的一些方法，需要自行添加 <code>polyfill</code> 。同样的，目前大部分主流浏览器 (Chrome, Safari, firefox)，是支持到 ES5 的，如果我们需要使用 ES6 标准，需要借助语法转换工具，比如 <a href="https://babeljs.io/" target="_blank" rel="external">Babel</a>, 对我们的代码进行转码，变成 ES5 支持的代码，然后在浏览器中运行。</p>
+<p>关于 ECMAScript 浏览器兼容性，可以查询： <a href="http://kangax.github.io/compat-table/es5/" target="_blank" rel="external">ECMAScript compat-table</a>。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="http://www.w3school.com.cn/js/pro_js_implement.asp" target="_blank" rel="external">JavaScript 实现</a></li>
+<li><a href="https://vkanakaraj.wordpress.com/2009/12/18/javascript-vs-dom-vs-bom-relationship-explained/" target="_blank" rel="external">JavaScript Vs DOM Vs BOM, relationship explained</a></li>
+<li><a href="http://www.ecma-international.org/publications/standards/Ecma-262-arch.htm" target="_blank" rel="external">ECMA-262 标准</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2015/11/ecmascript-specification.html" target="_blank" rel="external">读懂 ECMAScript 规格</a></li>
+<li><a href="http://www.07net01.com/2015/08/913846.html" target="_blank" rel="external">ECMAScript各版本简介及特性</a></li>
+<li><a href="http://www.w3cplus.com/js/ecmascript-lesson-1.html" target="_blank" rel="external">《献给你，我深爱的ECMAScript》开篇</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;学习 JavaScript 的过程中，你肯定听说过 ECMAScript 。但是你知道它到底是什么吗?&lt;br&gt;
+    
+    </summary>
+    
+      <category term="JavaScript" scheme="http://finalhome.org/categories/JavaScript/"/>
+    
+    
+      <category term="JavaScript" scheme="http://finalhome.org/tags/JavaScript/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用ES6编写gulp和webpack配置文件</title>
+    <link href="http://finalhome.org/JavaScript/%E4%BD%BF%E7%94%A8es6%E7%BC%96%E5%86%99gulp%E5%92%8Cwebpack%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/"/>
+    <id>http://finalhome.org/JavaScript/使用es6编写gulp和webpack配置文件/</id>
+    <published>2016-08-30T07:40:10.000Z</published>
+    <updated>2016-09-06T14:39:16.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>ES6 已经可以逐步应用到我们的工程之中了，针对构建工具，我们也可以使用 ES6 来编辑配置文件。比如 <code>gulpfile</code> 和 <code>webpack.config</code> 文件。<br><a id="more"></a></p>
+<h2 id="gulp"><a href="#gulp" class="headerlink" title="gulp"></a>gulp</h2><p><code>gulp</code> 版本在 3.9 以上的，支持我们使用 ES6 语法编写 <code>gulpfile</code> 文件。</p>
+<p>通过 <code>gulp -v</code> 查看项目的 <code>gulp</code> 版本，如果低于 3.9, 需要更新。</p>
+<p>安装 <code>babel</code> 相关库，<code>npm install babel-core babel-preset-es2015 --save-dev</code>。</p>
+<p>创建 <code>.babelrc</code>, 配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;presets&quot;: [&quot;es2015&quot;]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接下来，我们创建 <code>gulpfile.babel.js</code> 替代 <code>gulpfile.js</code>，然后我们就可以在此文件中使用 ES6 语法构建响应的 task 了。比如:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">import gulp from &apos;gulp&apos;;</div><div class="line"></div><div class="line">gulp.task(&apos;default&apos;, () =&gt; console.log(&apos;Default task called&apos;));</div></pre></td></tr></table></figure>
+<h2 id="webpack"><a href="#webpack" class="headerlink" title="webpack"></a>webpack</h2><p>类似 <code>gulp</code>, <code>webpack</code> 也支持使用 ES6 语法去构建配置文件。这是 <code>webpack</code> 的一个特性，但是没有列在文档中，在项目的 issue 中，有人回复提及过这个特性。</p>
+<p>当我们创建 <code>webpack.config.[LOADER].js</code> 时候， webpack 会用相应的 loader 去转换一遍配置文件。使用 <code>babel</code> 时，我们需要安装:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm i -D webpack babel-loader babel-core babel-preset-es2015</div></pre></td></tr></table></figure>
+<p>并且创建 <code>.babelrc</code> 文件，写入相关配置。</p>
+<p>最后，我们创建 <code>webpack.config.babel.js</code> 文件，就可以在其中以 ES6 语法去书写了, 比如:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">import webpack from &apos;webpack&apos;;</div><div class="line"></div><div class="line">export default &#123;</div><div class="line">    entry: &apos;./src/app.js&apos;,</div><div class="line">    output: &#123;</div><div class="line">        path: &apos;./bin&apos;,</div><div class="line">        filename: &apos;app.bundle.js&apos;,</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;ES6 已经可以逐步应用到我们的工程之中了，针对构建工具，我们也可以使用 ES6 来编辑配置文件。比如 &lt;code&gt;gulpfile&lt;/code&gt; 和 &lt;code&gt;webpack.config&lt;/code&gt; 文件。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="JavaScript" scheme="http://finalhome.org/categories/JavaScript/"/>
+    
+    
+      <category term="JavaScript" scheme="http://finalhome.org/tags/JavaScript/"/>
+    
+      <category term="ES6" scheme="http://finalhome.org/tags/ES6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>实战运用 Babel</title>
+    <link href="http://finalhome.org/JavaScript/%E5%AE%9E%E6%88%98%E8%BF%90%E7%94%A8Babel/"/>
+    <id>http://finalhome.org/JavaScript/实战运用Babel/</id>
+    <published>2016-08-30T02:00:00.000Z</published>
+    <updated>2016-09-06T14:39:16.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>babel 是一个转码工具，可以将使用 ES6 语法编写的代码，转换为 ES5 代码，从而在现有的环境中运行。<br><a id="more"></a></p>
+<p>我们运行的场景大概有分为 demo性质的小练习 与 实际的工程项目。</p>
+<h2 id="babelrc-文件"><a href="#babelrc-文件" class="headerlink" title=".babelrc 文件"></a><code>.babelrc</code> 文件</h2><p>使用 Babel 的时候，基本上我们都要配置 <code>.babelrc</code> 文件，用来指定使用的 <code>preset</code> 和 <code>plugin</code>。比如:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;preset&quot;: [&quot;es2015&quot;]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="Read-Eval-Print-Loop-REPL"><a href="#Read-Eval-Print-Loop-REPL" class="headerlink" title="Read-Eval-Print-Loop (REPL)"></a>Read-Eval-Print-Loop (REPL)</h2><p>如果你想立即尝试一下ES6，那么Babel这个在线的交互式运行环境最合适: <a href="http://babeljs.io/repl/" target="_blank" rel="external">Babel REPL</a>。</p>
+<p>比如你输入:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="keyword">let</span> a = <span class="number">10</span>;</div><div class="line">&#125;</div><div class="line"><span class="built_in">console</span>.log(a);</div></pre></td></tr></table></figure></p>
+<p>就会立刻转码为:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">"use strict"</span>;</div><div class="line"></div><div class="line">&#123;</div><div class="line">  <span class="keyword">var</span> _a = <span class="number">10</span>;</div><div class="line">&#125;</div><div class="line"><span class="built_in">console</span>.log(a);</div></pre></td></tr></table></figure></p>
+<p>并且在右下方有输出模式。</p>
+<h2 id="命令行"><a href="#命令行" class="headerlink" title="命令行"></a>命令行</h2><p>在线运行可以使得我们尝试一下ES6的语法，但是当我们想要在本地运行的时候，就需要借助Babel-cli或babel-node（包含在babel-cli中）了。全局安装，<code>npm install -g babel-cli</code>。如果只是想针对某个项目安装的话，使用:<code>npm install --save-dev babel-cli</code>或者在<code>package.json</code>中，添加:<br><figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"name"</span>: <span class="string">"my-project"</span>,</div><div class="line">  <span class="attr">"version"</span>: <span class="string">"1.0.0"</span>,</div><div class="line">  <span class="attr">"devDependencies"</span>: &#123;</div><div class="line">    <span class="attr">"babel-cli"</span>: <span class="string">"^6.0.0"</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>尽管你可以把 Babel CLI 全局安装在你的机器上，但是按项目逐个安装在本地会更好。</strong>有两个主要的原因:</p>
+<ul>
+<li>在同一台机器上的不同项目或许会依赖不同版本的 Babel 并允许你有选择的更新。</li>
+<li>这意味着你对工作环境没有隐式依赖，这让你的项目有很好的可移植性并且易于安装。</li>
+</ul>
+<p>安装在本地的话，运行需要指定<code>node_modules</code>下面的模块，即<code>node_modules\.bin\babel --help</code>方式。但还有一个快捷方式，配置<code>npm run</code>,在<code>package.json</code>中添加:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&quot;scripts&quot;: &#123;</div><div class="line">  &quot;build&quot;: &quot;babel src -d lib&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="babel-register"><a href="#babel-register" class="headerlink" title="babel-register"></a>babel-register</h2><p>babel-register模块改写require命令，为它加上一个钩子。此后，每当使用require加载.js、.jsx、.es和.es6后缀名的文件，就会先用Babel进行转码。</p>
+<p>这种方法并不适合正式产品环境使用。 直接部署用此方式编译的代码不是好的做法。 在部署之前预先编译会更好。 不过用在构建脚本或是其他本地运行的脚本中是非常合适的。</p>
+<p>babel-register只会对require命令加载的文件转码，而不会对当前文件转码。另外，由于它是实时转码，所以只适合在开发环境使用。</p>
+<h2 id="工程中使用"><a href="#工程中使用" class="headerlink" title="工程中使用"></a>工程中使用</h2><p>在工程项目中，我们使用的基本是基于 <code>gulp</code> 或 <code>webpack</code> 的构建的。添加对应的模块，我们就可以在工程中使用 ES6 语法去书写代码了。</p>
+<h3 id="gulp"><a href="#gulp" class="headerlink" title="gulp"></a>gulp</h3><p>需要安装: <code>npm i -D gulp-babel</code> 模块。</p>
+<p>配置 <code>gulpfile.js</code> 文件:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">var gulp = require(&quot;gulp&quot;);</div><div class="line">var babel = require(&quot;gulp-babel&quot;);</div><div class="line"></div><div class="line">gulp.task(&quot;default&quot;, function () &#123;</div><div class="line">  return gulp.src(&quot;src/app.js&quot;)</div><div class="line">    .pipe(babel())</div><div class="line">    .pipe(gulp.dest(&quot;dist&quot;));</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h3 id="webpack"><a href="#webpack" class="headerlink" title="webpack"></a>webpack</h3><p>需要安装: <code>npm i -D babel-loader babel-core</code> 模块。</p>
+<p>配置 <code>webpack.config.js</code> 文件:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">module.exports = &#123;</div><div class="line">    entry: &apos;./src/app.js&apos;,</div><div class="line">    output: &#123;</div><div class="line">        path: &apos;./bin&apos;,</div><div class="line">        filename: &apos;app.bundle.js&apos;,</div><div class="line">    &#125;,</div><div class="line">    module: &#123;</div><div class="line">        loaders: [&#123;</div><div class="line">            test: /\.jsx?$/,</div><div class="line">            exclude: /node_modules/,</div><div class="line">            loader: &apos;babel-loader&apos;,</div><div class="line">        &#125;]</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h3><ul>
+<li>通常项目中，我们还需要添加 <code>babel-preset-es2015</code>, 并且设置 <code>.babelrc</code> 文件。</li>
+<li>实际项目运行的时候，为了保证浏览器兼容性，我们也会引入 <code>babel-polyfill</code>。</li>
+<li>添加 <code>sourcemap</code> 文件，通常还需要引入其他模块，比如 <code>gulp-sourcemaps</code>。</li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;babel 是一个转码工具，可以将使用 ES6 语法编写的代码，转换为 ES5 代码，从而在现有的环境中运行。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="JavaScript" scheme="http://finalhome.org/categories/JavaScript/"/>
+    
+    
+      <category term="JavaScript" scheme="http://finalhome.org/tags/JavaScript/"/>
+    
+      <category term="ES6" scheme="http://finalhome.org/tags/ES6/"/>
+    
+  </entry>
+  
+  <entry>
     <title>hexo速食指南</title>
     <link href="http://finalhome.org/hexo%E7%9B%B8%E5%85%B3/hexo%E9%80%9F%E9%A3%9F%E6%8C%87%E5%8D%97/"/>
     <id>http://finalhome.org/hexo相关/hexo速食指南/</id>
     <published>2016-08-29T08:00:07.000Z</published>
-    <updated>2016-08-29T15:59:05.000Z</updated>
+    <updated>2016-09-06T14:39:16.000Z</updated>
     
     <content type="html"><![CDATA[<p>基于 Hexo 3.x版本, 配合 github，带领大家快速构建自己的 blog。<a id="more"></a></p>
 <p>之前搭建自己 blog 的时候，整理过几篇文章，一年多过去了，Hexo 也已经升级到了 3.x 版本，和之前的版本使用上稍有差别。这次更新 hexo，顺便再次记录一下博客的构建。</p>
@@ -56,7 +298,7 @@
 <p>填上我们项目的url, branch 信息，即可通过 <code>hexo deploy</code> 实现发布到对应 github 仓库中了。</p>
 <p><strong>注意</strong>： github 默认提供一个 <code>username.github.io</code> 仓库， 用来给我们存放个人相关站点， 通过域名 <code>username.github.io</code> 即可访问。原来需要设置<code>gh-page</code>分支，现在也可以直接指定静态资源访问的分支了。如有不明白的地方，自行 google 一下吧， 只要达到将静态文件存放到这个仓库中，就能实现访问了。</p>
 <h2 id="主题切换"><a href="#主题切换" class="headerlink" title="主题切换"></a>主题切换</h2><p>基本的 blog 系统算是完成了，我们对界面或许还有些追求， Hexo 也提供了许多主题供我们选择，在 <a href="https://hexo.io/themes/" target="_blank" rel="external">Hexo Themes</a> 可以查看。</p>
-<p>选择了一个主题之后，我们可以将它 <code>clone</code> 或 <code>download</code> 到本地，放置在 <code>theme</code> 目录下， 然后修改 <code>_config.yml</code> 文件，配置主题名称, 比如我的这个主题 <code>Hacker</code>: </p>
+<p>选择了一个主题之后，我们可以将它 <code>clone</code> 或 <code>download</code> 到本地，放置在 <code>theme</code> 目录下， 然后修改 <code>_config.yml</code> 文件，配置主题名称, 比如我的这个主题 <code>Hacker</code>:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">theme: Hacker</div></pre></td></tr></table></figure>
 <p>主题相关的设置，比如是否有评论组件，google统计等设置，均在主题目录下的 <code>_config.yml</code> 中进行配置，具体的配置要查看主题文档。</p>
 <h2 id="添加插件"><a href="#添加插件" class="headerlink" title="添加插件"></a>添加插件</h2><p>通常我们还会为博客生成 <code>sitemap</code> 和 <code>RSS</code> 订阅需要的文件，活着添加本地保存刷新功能。这些是需要插件完成的，下载对应的插件，然后在 <code>_config.yml</code> 中进行对应配置即可。这里推荐几个插件:</p>
@@ -73,6 +315,11 @@
 <li>在<code>source</code>目录下添加 <code>CNAME</code>： 通过<code>username.github.io</code>，能够跳转到自己的域名</li>
 </ul>
 <p><code>CNAME</code>文件内容，就是自己的域名地址。</p>
+<h2 id="资源管理"><a href="#资源管理" class="headerlink" title="资源管理"></a>资源管理</h2><p>主要是对图片和项目工程的管理。</p>
+<p>图片，Hexo 建议我们将工程用到的图片直接放置在 <code>source/images</code> 目录中，如果是文章依赖的图片，通过修改 <code>_config.yml</code> 中的 <code>post_asset_folder: true</code>, 再次创建新文章的时候，就会创建一个和文章同名的目录，用来存放我们的素材。</p>
+<p>工程上面，我们放置到 github 上的，是生成的静态资源。我们项目实际的工程是放置在本地的，所以不利于同步和管理。我目前使用的是在 <code>username.github.io</code> 上创建一个 <code>source</code> 分支，用来存放管理源文件。这样，我在一台新的电脑上，只需要 :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">git checkout source</div><div class="line">npm install</div><div class="line">hexo deploy -g</div></pre></td></tr></table></figure>
+<p>就可以在新的机器上完成写作与部署了。</p>
 <h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>最后说一点，博客记录的是自己的产出，多花点时间专注在内容上 :)</p>
 ]]></content>
     
@@ -921,179 +1168,6 @@
       <category term="JavaScript" scheme="http://finalhome.org/tags/JavaScript/"/>
     
       <category term="模块化" scheme="http://finalhome.org/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>RequireJS-使用</title>
-    <link href="http://finalhome.org/JavaScript/RequireJS-%E4%BD%BF%E7%94%A8/"/>
-    <id>http://finalhome.org/JavaScript/RequireJS-使用/</id>
-    <published>2014-04-17T06:45:41.000Z</published>
-    <updated>2016-08-29T13:58:52.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>前面介绍过了模块化的概念，那么就说说AMD的具体实现–RequireJS。<br><a id="more"></a></p>
-<h2 id="为什么使用RequireJS"><a href="#为什么使用RequireJS" class="headerlink" title="为什么使用RequireJS"></a>为什么使用RequireJS</h2><p>RequireJS的提出就是为了在浏览器端更好的管理JS文件，使之模块化。主要解决的问题有两点：</p>
-<ol>
-<li>实现js文件的异步加载，避免网页失去响应；</li>
-<li>管理模块之间的依赖性，便于代码的编写和维护。</li>
-</ol>
-<h2 id="引入RequireJS"><a href="#引入RequireJS" class="headerlink" title="引入RequireJS"></a>引入RequireJS</h2><p>从官网下载好<code>require.js</code>，我们按照官网提供的结构，建立一下目录：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">project-directory/</div><div class="line">    project.html</div><div class="line">    scripts/</div><div class="line">        main.js</div><div class="line">        require.js</div><div class="line">        helper/</div><div class="line">            util.js</div></pre></td></tr></table></figure></p>
-<p>HTML文件如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html&gt;</div><div class="line">    &lt;head&gt;</div><div class="line">        &lt;title&gt;My Sample Project&lt;/title&gt;</div><div class="line">        &lt;!-- data-main attribute tells require.js to load</div><div class="line">             scripts/main.js after require.js loads. --&gt;</div><div class="line">        &lt;script data-main=&quot;scripts/main&quot; src=&quot;scripts/require.js&quot;&gt;&lt;/script&gt;</div><div class="line">    &lt;/head&gt;</div><div class="line">    &lt;body&gt;</div><div class="line">        &lt;h1&gt;My Sample Project&lt;/h1&gt;</div><div class="line">    &lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure></p>
-<p>此时的<code>script</code>标签可以放在<code>head</code>中，也可以放在<code>body</code>尾部。通过<code>data-main</code>指定的文件，就已经通过异步去操作了。</p>
-<p>main.js当作主文件, 需要依赖util文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">require([&quot;helper/util&quot;], function(util) &#123;</div><div class="line">    //This function is called when scripts/helper/util.js is loaded.</div><div class="line">    //If util.js calls define(), then this function is not fired until</div><div class="line">    //util&apos;s dependencies have loaded, and the util argument will hold</div><div class="line">    //the module value for &quot;helper/util&quot;.</div><div class="line">    console.log(&quot;helper/util&quot;, util);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<p>util文件定义一个模块:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">define(function() &#123;　　　　</div><div class="line">    var add = function(x, y) &#123;　　　　　　</div><div class="line">        return x + y;　　　　</div><div class="line">    &#125;;　　　　</div><div class="line">    return &#123;　　　　　　</div><div class="line">        add: add　　　　</div><div class="line">    &#125;;　　</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<p>打开<code>project.html</code>文件，控制台会输出:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">helper/util </div><div class="line">Object &#123;add: function&#125;</div></pre></td></tr></table></figure></p>
-<p>这样，算是完成了对requireJS的初次体验。</p>
-<h2 id="Module编写"><a href="#Module编写" class="headerlink" title="Module编写"></a>Module编写</h2><p>CommonJS规范推荐所有文件都是模块，AMD使用<code>define</code>定义一个模块：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">// 没有依赖，不做处理，直接返回对象</div><div class="line">define(&#123;</div><div class="line">    color: &quot;black&quot;,</div><div class="line">    size: &quot;unisize&quot;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">// 没有依赖，但是做一些处理，返回对象</div><div class="line">define(function () &#123;</div><div class="line">    //Do setup work here</div><div class="line"></div><div class="line">    return &#123;</div><div class="line">        color: &quot;black&quot;,</div><div class="line">        size: &quot;unisize&quot;</div><div class="line">    &#125;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">// 有依赖，做处理，返回对象</div><div class="line">define([&quot;./cart&quot;, &quot;./inventory&quot;], function(cart, inventory) &#123;</div><div class="line">        //return an object to define the &quot;my/shirt&quot; module.</div><div class="line">        return &#123;</div><div class="line">            color: &quot;blue&quot;,</div><div class="line">            size: &quot;large&quot;,</div><div class="line">            addToCart: function() &#123;</div><div class="line">                inventory.decrement(this);</div><div class="line">                cart.add(this);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">);</div><div class="line"></div><div class="line">// 返回函数</div><div class="line">define([&quot;my/cart&quot;, &quot;my/inventory&quot;],</div><div class="line">    function(cart, inventory) &#123;</div><div class="line">        //return a function to define &quot;foo/title&quot;.</div><div class="line">        //It gets or sets the window title.</div><div class="line">        return function(title) &#123;</div><div class="line">            return title ? (window.title = title) :</div><div class="line">                   inventory.storeName + &apos; &apos; + cart.name;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">);</div></pre></td></tr></table></figure></p>
-<p>使用的时候通过<code>require</code>引入，然后定义一个名称，这个名称就是返回的对象的引用。</p>
-<h2 id="RequireJS的config"><a href="#RequireJS的config" class="headerlink" title="RequireJS的config"></a>RequireJS的config</h2><p>requirejs的配置文件可以写在html文件中，也可以写在<code>data-main</code>指定的文件中。但是小心写在<code>data-main</code>中，它的执行时异步的，不一定比其他文件先执行。基本写法如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">require.config(&#123;</div><div class="line">    baseUrl: &quot;/another/path&quot;,</div><div class="line">    paths: &#123;</div><div class="line">        &quot;some&quot;: &quot;some/v1.0&quot;</div><div class="line">    &#125;,</div><div class="line">    waitSeconds: 15</div><div class="line">  &#125;);</div><div class="line">  require( [&quot;some/module&quot;, &quot;my/module&quot;, &quot;a.js&quot;, &quot;b.js&quot;],</div><div class="line">    function(someModule,    myModule) &#123;</div><div class="line">        //This function will be called when all the dependencies</div><div class="line">        //listed above are loaded. Note that this function could</div><div class="line">        //be called before the page is loaded.</div><div class="line">        //This callback is optional.</div><div class="line">    &#125;</div><div class="line">  );</div></pre></td></tr></table></figure></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;前面介绍过了模块化的概念，那么就说说AMD的具体实现–RequireJS。&lt;br&gt;
-    
-    </summary>
-    
-      <category term="JavaScript" scheme="http://finalhome.org/categories/JavaScript/"/>
-    
-    
-      <category term="JavaScript" scheme="http://finalhome.org/tags/JavaScript/"/>
-    
-      <category term="模块化" scheme="http://finalhome.org/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>模块加载机制</title>
-    <link href="http://finalhome.org/JavaScript/%E6%A8%A1%E5%9D%97%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/"/>
-    <id>http://finalhome.org/JavaScript/模块加载机制/</id>
-    <published>2014-04-16T03:31:27.000Z</published>
-    <updated>2016-08-29T13:58:52.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>想要与人合作，就需要写出可维护的代码，把代码封装为模块，可以方便使用。封装的过程就会涉及到模块如何组织与加载。JS规范目前主要有三类，CommonJS, AMD和CMD。<br><a id="more"></a></p>
-<h2 id="CommonJS"><a href="#CommonJS" class="headerlink" title="CommonJS"></a>CommonJS</h2><p>Node.js就是CommonJS的一个部分实现。CommonJS是一个规范，要求你去实现它的定义。</p>
-<p>CommonJS规范的加载是同步的，只有在加载完成之后，才能执行后面的操作，比较适合在服务器端，因为所有的文件都已经在硬盘之中，调用不存在延时。</p>
-<p>根据CommonJS规范，一个单独的文件就是一个模块。加载模块使用require方法，该方法读取一个文件并执行，最后返回文件内部的exports对象。Node.js就是这么干的:</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// example.js</span></div><div class="line"><span class="built_in">console</span>.log(<span class="string">"evaluating example.js"</span>);</div><div class="line"></div><div class="line"><span class="keyword">var</span> invisible = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">"invisible"</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line">exports.message = <span class="string">"hi"</span>;</div><div class="line"></div><div class="line">exports.say = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.message);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// loadModule.js</span></div><div class="line"><span class="keyword">var</span> example = <span class="built_in">require</span>(<span class="string">'./example.js'</span>);</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(<span class="string">"example"</span>, example);</div><div class="line"></div><div class="line">example.say();</div></pre></td></tr></table></figure>
-<p>这是两个文件，存放在同一个目录中。运行<code>node loadModule.js</code>显示：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">H:\Workspace\OSChinaGit\CodeTest\NodeJS\Modules&gt;node loadModule.js</div><div class="line">evaluating example.js</div><div class="line">example &#123; message: <span class="string">'hi'</span>, say: [Function] &#125;</div><div class="line">hi</div></pre></td></tr></table></figure></p>
-<h2 id="AMD"><a href="#AMD" class="headerlink" title="AMD"></a>AMD</h2><p>CommonJS提供了同步加载的方式，在浏览器环境中，更多的是需要异步加载。所以诞生了AMD的加载方式。模块的加载不影响它后面语句的运行。所有依赖这个模块的语句，都定义在一个回调函数中，等到加载完成之后，这个回调函数才会运行。</p>
-<p>AMD是一种强依赖关系，所有依赖模块必须提前声明好，这样虽然对开发过程不算友好，但是性能上更优一些。使用方法主要是<code>require</code>和<code>define</code>。</p>
-<p>define定义一个模块：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">define([<span class="string">'package/lib'</span>], <span class="function"><span class="keyword">function</span>(<span class="params">lib</span>)</span>&#123;</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>)</span>&#123;</div><div class="line">        lib.log(<span class="string">'hello world!'</span>);</div><div class="line">    &#125; </div><div class="line"> </div><div class="line">    <span class="keyword">return</span> &#123;</div><div class="line">        foo: foo</div><div class="line">    &#125;;</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<p>AMD规范允许输出的模块兼容CommonJS规范，这时define方法需要写成下面这样：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">define(<span class="function"><span class="keyword">function</span> (<span class="params">require, exports, module</span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> someModule = <span class="built_in">require</span>(<span class="string">"someModule"</span>);</div><div class="line">    <span class="keyword">var</span> anotherModule = <span class="built_in">require</span>(<span class="string">"anotherModule"</span>);</div><div class="line"></div><div class="line">    someModule.doTehAwesome();</div><div class="line">    anotherModule.doMoarAwesome();</div><div class="line"></div><div class="line">    exports.asplode = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</div><div class="line">        someModule.doTehAwesome();</div><div class="line">        anotherModule.doMoarAwesome();</div><div class="line">    &#125;;</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<p>require使用模块:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">require</span>([<span class="string">'package/lib'</span>], <span class="function"><span class="keyword">function</span>(<span class="params">lib</span>)</span>&#123;</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>)</span>&#123;</div><div class="line">        lib.log(<span class="string">'hello world!'</span>);</div><div class="line">    &#125; </div><div class="line"> </div><div class="line">    <span class="keyword">return</span> &#123;</div><div class="line">        foo: foo</div><div class="line">    &#125;;</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<h2 id="CMD"><a href="#CMD" class="headerlink" title="CMD"></a>CMD</h2><p>CMD更倾向在浏览器端使用，这是淘宝的玉伯发明的加载方式。和AMD的主要区别就是对依赖关系加载时序的处理。依赖不必开始就声明好，用到时再声明。</p>
-<p>由于对CMD了解较少，暂时不多说，日后补充！</p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li><a href="http://www.commonjs.org/" target="_blank" rel="external">CommonJS官网</a></li>
-<li><a href="https://github.com/amdjs/amdjs-api/wiki/AMD" target="_blank" rel="external">AMD规范</a></li>
-<li><a href="https://github.com/seajs/seajs/issues/242" target="_blank" rel="external">CMD规范</a></li>
-<li><a href="https://github.com/seajs/seajs/issues/240" target="_blank" rel="external">玉伯解释模块系统</a></li>
-<li><a href="https://github.com/seajs/seajs/issues/588" target="_blank" rel="external">前端模块化开发那点历史</a></li>
-<li><a href="http://www.douban.com/note/283566440/" target="_blank" rel="external">SeaJS与RequireJS最大的区别</a></li>
-<li><a href="https://github.com/seajs/seajs/issues/269" target="_blank" rel="external">CommonJS到Sea.js</a></li>
-</ul>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;想要与人合作，就需要写出可维护的代码，把代码封装为模块，可以方便使用。封装的过程就会涉及到模块如何组织与加载。JS规范目前主要有三类，CommonJS, AMD和CMD。&lt;br&gt;
-    
-    </summary>
-    
-      <category term="JavaScript" scheme="http://finalhome.org/categories/JavaScript/"/>
-    
-    
-      <category term="JavaScript" scheme="http://finalhome.org/tags/JavaScript/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>翻越GWF</title>
-    <link href="http://finalhome.org/%E6%95%B0%E7%A0%81%E7%BB%8F%E9%AA%8C/%E7%BF%BB%E8%B6%8AGWF/"/>
-    <id>http://finalhome.org/数码经验/翻越GWF/</id>
-    <published>2014-04-15T06:16:17.000Z</published>
-    <updated>2016-08-29T13:58:52.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>在国内，特别是程序员，是需要查阅很多国外资料的。但是国内的限制你懂的。今天就来说说如何绕过这些限制。<br><a id="more"></a></p>
-<h2 id="免费的方案"><a href="#免费的方案" class="headerlink" title="免费的方案"></a>免费的方案</h2><p><code>goagent</code>, <a href="https://code.google.com/p/goagent/" target="_blank" rel="external">goagent项目地址</a>。这是利用Google Appengine设置代理，好处就是免费，达到浏览器翻墙的效果。很久以前，我一直是用它，很稳定，适合学生。</p>
-<p>具体使用方法，项目里面介绍的很详细，按步骤来就可以。</p>
-<h2 id="SSH"><a href="#SSH" class="headerlink" title="SSH"></a>SSH</h2><p><code>Secure Shell</code>的缩写，是一种建立在应用层和传输层基础上的安全协议。主要用来远程连接，也可以作为代理使用，推荐配合clowwindy的<code>shadowsocks</code>使用。<a href="https://github.com/clowwindy/shadowsocks/wiki/Ports-and-Clients" target="_blank" rel="external">shadowsocks项目地址</a>。</p>
-<p>shadowsocks连接方式配合chrome插件<code>proxy switchSharp</code>，能很好的实现分流（翻墙的才走代理）。</p>
-<p>我有一点疑问关于SSH的连接，貌似不用输入用户名。只提供ip，端口和密码即可？</p>
-<h2 id="VPN"><a href="#VPN" class="headerlink" title="VPN"></a>VPN</h2><p>这个是最普遍的翻墙方式，但是所有代理都会走VPN。对于有流量限制和下载的情况来说，需要来回切换，很麻烦。所以我找到了一下如果让VPN实现分流的操作，这里提供一些方式：</p>
-<h3 id="PAC"><a href="#PAC" class="headerlink" title="PAC"></a>PAC</h3><p>pac是系统级别的代理配置，属于应用层，所以所有应用都会走代理，通过PAC进行判断，可以实现分流操作。开启之后，所有请求会先走VPN再PAC判断，走两层代理。</p>
-<p>这里有一个更优的<code>GFWList</code>，也是由clowwindy大神提供的，<a href="https://github.com/clowwindy/gfwlist2pac" target="_blank" rel="external">gwflist2pac</a>。</p>
-<h3 id="修改路由表"><a href="#修改路由表" class="headerlink" title="修改路由表"></a>修改路由表</h3><p>如果让VPN做动态判断，只能在开启VPN后，修改系统的路由表。可以查看chnroutes, <a href="https://github.com/fivesheep/chnroutes/wiki" target="_blank" rel="external">chnroutes项目地址</a>。MacTalk君有一篇<a href="http://macshuo.com/?tag=chnroutes" target="_blank" rel="external">文章</a>可以参考.</p>
-<p>chnroutes会定期更新，这里提供一个下载地址<a href="http://chnroutes-dl.appspot.com/" target="_blank" rel="external">chnroutes定期更新下载</a>。</p>
-<h2 id="一些资源"><a href="#一些资源" class="headerlink" title="一些资源"></a>一些资源</h2><ul>
-<li><a href="https://github.com/cyfdecyf/cow" target="_blank" rel="external">Cow</a></li>
-<li><a href="https://vpnso.com/" target="_blank" rel="external">东哥的服务</a></li>
-<li><a href="https://www.runos.us/" target="_blank" rel="external">目前自用的VPN</a></li>
-</ul>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在国内，特别是程序员，是需要查阅很多国外资料的。但是国内的限制你懂的。今天就来说说如何绕过这些限制。&lt;br&gt;
-    
-    </summary>
-    
-      <category term="数码经验" scheme="http://finalhome.org/categories/%E6%95%B0%E7%A0%81%E7%BB%8F%E9%AA%8C/"/>
-    
-    
-      <category term="Windows" scheme="http://finalhome.org/tags/Windows/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Windows下提高效率的软件</title>
-    <link href="http://finalhome.org/%E6%95%B0%E7%A0%81%E7%BB%8F%E9%AA%8C/Windows%E4%B8%8B%E6%8F%90%E9%AB%98%E6%95%88%E7%8E%87%E7%9A%84%E8%BD%AF%E4%BB%B6/"/>
-    <id>http://finalhome.org/数码经验/Windows下提高效率的软件/</id>
-    <published>2014-04-04T01:22:30.000Z</published>
-    <updated>2016-08-29T13:58:52.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>一些常用的软件就不一一介绍了，说些小众但是高效的。<a id="more"></a></p>
-<h2 id="Launchy"><a href="#Launchy" class="headerlink" title="Launchy"></a>Launchy</h2><p>一个快捷启动的工具，可以添加一些目录，加载其中的<code>.exe</code>文件，直接搜索即可启动。同样，也可以快速打开某个目录。我设置了快捷键<code>alt + s</code>。</p>
-<p>这个工具里面包含了一个插件，叫做<code>weby</code>, 可以设置一些搜索引擎，比如<code>google</code>, 快捷访问并且查询。利用这个功能，我添加了<code>Name:ddg</code>, 设置<code>URL:https://duckduckgo.com/?q=%1</code>, 这样启动之后，输入<code>ddg</code>-&gt;<code>tab</code>,加上查询字段就可以直接打开浏览器搜索。</p>
-<h2 id="MasterSeeker"><a href="#MasterSeeker" class="headerlink" title="MasterSeeker"></a>MasterSeeker</h2><p>功能和<code>Everything</code>类似，但是个人感觉比<code>Everything</code>更加易用。</p>
-<p>虽然<code>Everything</code>的速度很快，但是查询的可定制的不强。而<code>MaskerSeeker</code>可以指定查询文件，文件夹，包括文件大小。</p>
-<p>不方便的地方是索引需要手动更新，但是也很快啦。不会很耽误时间。比起搜索的准确性，我宁愿索引建立的时间长一些。</p>
-<p>默认快捷键<code>ctrl + ~</code>。</p>
-<h2 id="Listary"><a href="#Listary" class="headerlink" title="Listary"></a>Listary</h2><p>这是一个资源管理器的插件，可以模糊查询当前目录及其子目录下的文件，达到快速定位的功能。默认自动在资源管理器中开启，只需要使用键盘输入关键字即可。</p>
-<p>此软件还有一个Pro版本，但是个人目前没有使用需求。</p>
-<h2 id="Clover-3"><a href="#Clover-3" class="headerlink" title="Clover 3"></a>Clover 3</h2><p>一个实现资源管理器多标签功能的插件，类似Chrome。可以添加和管理书签。</p>
-<p>之前我开多个目录切换的时候，真是太TM耗时了，现在有了这个，配合<code>Listary</code>, 方便！</p>
-<p>唯一的缺点就是偶尔不稳定，会自动关闭，但是再次开启，可以打开上次的目录。</p>
-<h2 id="Ditto"><a href="#Ditto" class="headerlink" title="Ditto"></a>Ditto</h2><p>剪切板历史记录工具，不管你复制，裁切过什么，它都可以帮你记录下来。我设置了快捷键<code>alt + v</code>，这样正常复制粘贴不受影响，一旦我需要查看剪切板历史，调用一下就好。</p>
-<h2 id="CMD扩展工具"><a href="#CMD扩展工具" class="headerlink" title="CMD扩展工具"></a>CMD扩展工具</h2><h3 id="Clink"><a href="#Clink" class="headerlink" title="Clink"></a>Clink</h3><p>安装之后，可以在<code>cmd</code>中实现复制，粘贴等功能。</p>
-<h3 id="gow"><a href="#gow" class="headerlink" title="gow"></a>gow</h3><p>当你只需要 *nix 工具的时候装 Cygwin 未免小题大做。 Gow 就是实现了常用的linux命令，并且整合到cmd中的工具。</p>
-<h2 id="teracopy"><a href="#teracopy" class="headerlink" title="teracopy"></a>teracopy</h2><p>大多数时候我都用 Windows 8.1 自带的复制，不过如果我真要搬运一大堆东西的话我会用 TeraCopy。正如其名它做的事情就是复制，而且在速度上，无出其右。</p>
-<h2 id="PicPick"><a href="#PicPick" class="headerlink" title="PicPick"></a>PicPick</h2><p>这是一个设计的辅助工具，提供了截图，标注，吸取颜色，测量距离，角度等功能，关键还是免费的！</p>
-<p>对于这个软件，我经常用到的功能就是：</p>
-<ol>
-<li><p>截图</p>
-<p> 设置快捷键<code>shift + print</code></p>
-</li>
-<li><p>标尺</p>
-<p> 设置快捷键<code>shift + c</code></p>
-</li>
-<li><p>吸取颜色</p>
-<p> 设置快捷键<code>shift + b</code>, 注意如果直接在PSD上吸取颜色，结果其实和PSD里设置的颜色不一致。</p>
-</li>
-</ol>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;一些常用的软件就不一一介绍了，说些小众但是高效的。
-    
-    </summary>
-    
-      <category term="数码经验" scheme="http://finalhome.org/categories/%E6%95%B0%E7%A0%81%E7%BB%8F%E9%AA%8C/"/>
-    
-    
-      <category term="Windows" scheme="http://finalhome.org/tags/Windows/"/>
     
   </entry>
   

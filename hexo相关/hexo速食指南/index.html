@@ -121,7 +121,7 @@
 <p>填上我们项目的url, branch 信息，即可通过 <code>hexo deploy</code> 实现发布到对应 github 仓库中了。</p>
 <p><strong>注意</strong>： github 默认提供一个 <code>username.github.io</code> 仓库， 用来给我们存放个人相关站点， 通过域名 <code>username.github.io</code> 即可访问。原来需要设置<code>gh-page</code>分支，现在也可以直接指定静态资源访问的分支了。如有不明白的地方，自行 google 一下吧， 只要达到将静态文件存放到这个仓库中，就能实现访问了。</p>
 <h2 id="主题切换"><a href="#主题切换" class="headerlink" title="主题切换"></a>主题切换</h2><p>基本的 blog 系统算是完成了，我们对界面或许还有些追求， Hexo 也提供了许多主题供我们选择，在 <a href="https://hexo.io/themes/" target="_blank" rel="external">Hexo Themes</a> 可以查看。</p>
-<p>选择了一个主题之后，我们可以将它 <code>clone</code> 或 <code>download</code> 到本地，放置在 <code>theme</code> 目录下， 然后修改 <code>_config.yml</code> 文件，配置主题名称, 比如我的这个主题 <code>Hacker</code>: </p>
+<p>选择了一个主题之后，我们可以将它 <code>clone</code> 或 <code>download</code> 到本地，放置在 <code>theme</code> 目录下， 然后修改 <code>_config.yml</code> 文件，配置主题名称, 比如我的这个主题 <code>Hacker</code>:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">theme: Hacker</div></pre></td></tr></table></figure>
 <p>主题相关的设置，比如是否有评论组件，google统计等设置，均在主题目录下的 <code>_config.yml</code> 中进行配置，具体的配置要查看主题文档。</p>
 <h2 id="添加插件"><a href="#添加插件" class="headerlink" title="添加插件"></a>添加插件</h2><p>通常我们还会为博客生成 <code>sitemap</code> 和 <code>RSS</code> 订阅需要的文件，活着添加本地保存刷新功能。这些是需要插件完成的，下载对应的插件，然后在 <code>_config.yml</code> 中进行对应配置即可。这里推荐几个插件:</p>
@@ -138,6 +138,11 @@
 <li>在<code>source</code>目录下添加 <code>CNAME</code>： 通过<code>username.github.io</code>，能够跳转到自己的域名</li>
 </ul>
 <p><code>CNAME</code>文件内容，就是自己的域名地址。</p>
+<h2 id="资源管理"><a href="#资源管理" class="headerlink" title="资源管理"></a>资源管理</h2><p>主要是对图片和项目工程的管理。</p>
+<p>图片，Hexo 建议我们将工程用到的图片直接放置在 <code>source/images</code> 目录中，如果是文章依赖的图片，通过修改 <code>_config.yml</code> 中的 <code>post_asset_folder: true</code>, 再次创建新文章的时候，就会创建一个和文章同名的目录，用来存放我们的素材。</p>
+<p>工程上面，我们放置到 github 上的，是生成的静态资源。我们项目实际的工程是放置在本地的，所以不利于同步和管理。我目前使用的是在 <code>username.github.io</code> 上创建一个 <code>source</code> 分支，用来存放管理源文件。这样，我在一台新的电脑上，只需要 :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">git checkout source</div><div class="line">npm install</div><div class="line">hexo deploy -g</div></pre></td></tr></table></figure>
+<p>就可以在新的机器上完成写作与部署了。</p>
 <h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>最后说一点，博客记录的是自己的产出，多花点时间专注在内容上 :)</p>
 
       
@@ -211,16 +216,8 @@
   </p>
 </footer>
     
-<script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-    ga('create', 'UA-42849828-1', 'auto');
-    ga('send', 'pageview');
-
-</script>
+    
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5563232'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/stat.php%3Fid%3D5563232%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 
   </div>
 </div>
