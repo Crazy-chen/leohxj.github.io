@@ -56,7 +56,7 @@ GitBook version: 3.2.0
 ## 编译书籍
 `gitbook build` 命令。
 
-## SUMMARY.md
+## SUMMARY
 `SUMMARY.md` 是用来定义书籍的章节的，用来生成目录。比如：
 
 ```
@@ -228,7 +228,7 @@ Markdown will dictates _most_ of your **book's structure**
 原理是借助 Webhook，当你的 github 仓库有提交时，同步 GitBook 仓库。
 
 ## 绑定域名
-默认发布在 GitBook 上的项目，URL 规则是这样的「 `https://www.gitbook.com/book/{username}/{bookname}`,如果我们要为此绑定域名，需要两处设置：
+默认发布在 GitBook 上的项目，URL 规则是这样的: `https://www.gitbook.com/book/{username}/{bookname}`,如果我们要为此绑定域名，需要两处设置：
 
 - GitBook 对于的项目设置中，修改 `Domain`，添加自定义域名
 - 在你的域名服务商提供的控制面板中，设置 `CNAME`，绑定 `www.gitbooks.io`，开启 `domain forwarding`
