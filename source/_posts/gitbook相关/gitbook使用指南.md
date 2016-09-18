@@ -84,7 +84,12 @@ Introduction
 
 
 
-`3.x.x` 版本后，默认推荐不为章节编码，生成的内容如下：
+`3.x.x` 版本后，默认不为章节生成硬编码, 而是推荐使用 `Parts` 概念维护目录，可见:
+
+- [issue: 章节号没了](https://github.com/rustcc/RustPrimer/issues/412)
+- [issue: Multi part books](https://github.com/GitbookIO/gitbook/pull/312)
+
+生成的内容如下：
 
 ```
 Introduction
@@ -96,7 +101,7 @@ Part II
     Better tools for authors
 ```
 
-如果你想要展示章节编码，需要添加设置, 修改 `book.json`:
+如果你想要展示章节硬编码，需要添加设置, 修改 `book.json`:
 
 ```
 "pluginsConfig": {
@@ -118,7 +123,7 @@ Part II
     1.3.2 Better tools for authors
 ```
 
-所有内容都会以 `1.x` 编码开始。原因是我们没有使用 `Part` 分割章节， 这也是 `3.x.x` 版本后推荐的做法，我们修改 `SUMMARY.md`:
+所有内容都会以 `1.x` 编码开始，这是一个 [Bug](https://github.com/GitbookIO/gitbook/issues/1301), 团队的人正在解决。当然，我们还是推荐使用使用 `Part` 分割章节（`3.x.x` 版本后推荐的做法），我们修改 `SUMMARY.md`:
 
 ```
 # Summary
@@ -161,6 +166,40 @@ Introduction
     2.1 We love feedback
     2.2 Better tools for authors
 ```
+
+针对真实项目，我整理一个目录结构，支持多级分类:
+
+```
+# Summary
+* [Introduction](README.md)
+
+# 一级分类，不显示，会以横线分隔，相当于注释
+* [Introduction](part1/README.md)
+* [Part1 Section 1](part1/section-1.md)
+* [Part1 Section 2](part1/subsection-x/README.md)
+    * [Part1 Section 2-1](part1/subsection-x/subsection-x-1.md)
+    * [Part1 Section 2-2](part1/subsection-x/subsection-x-2.md)
+
+# 一级分类，不显示，会以横线分隔，相当于注释
+* [Introduction](part2/README.md)
+* [part2 Section 1](part2/section-1.md)
+* 未完成的时候
+    * [part2 Section 2-1](part2/subsection-x/subsection-x-1.md)
+    * [part2 Section 2-2](part2/subsection-x/subsection-x-2.md)
+
+## 二级分类，显示，不可点
+
+* An article in part 2
+
+### 三级分类，显示，不可点，和二级效果一致
+* An article in part 3
+
+
+# 一级分类，不显示，会以横线分隔
+
+* An article in an untitled part
+```
+
 
 ## PAGES
 每篇文章，就是一个单独的 `markdown` 文件，支持 [GitHub Flavored Markdown syntax](https://guides.github.com/features/mastering-markdown/), 比如:
