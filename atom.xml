@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://finalhome.org/"/>
-  <updated>2016-09-17T13:20:34.000Z</updated>
+  <updated>2016-11-05T17:05:19.000Z</updated>
   <id>http://finalhome.org/</id>
   
   <author>
@@ -16,30 +16,173 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>spacemacs 初体验</title>
+    <link href="http://finalhome.org/Emacs%E7%9B%B8%E5%85%B3/windows%E4%B8%8B%E5%AE%89%E8%A3%85spacemacs/"/>
+    <id>http://finalhome.org/Emacs相关/windows下安装spacemacs/</id>
+    <published>2016-11-04T08:00:00.000Z</published>
+    <updated>2016-11-05T17:05:19.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>前段时间听了代码时间的一期播客: <a href="https://codetimecn.com/episodes/emacs" target="_blank" rel="external">emacs 陈斌</a> 最近又看到了 <a href="http://spacemacs.org/" target="_blank" rel="external">spacemacs</a>： 一个结合 Emacs 与 Vim 方式的全局配置，就像 <a href="http://ohmyz.sh/" target="_blank" rel="external">oh-my-zsh</a> 基于 zsh，简单的安装既让你有种老司机的感觉。<a id="more"></a></p>
+<h2 id="安装-Emacs"><a href="#安装-Emacs" class="headerlink" title="安装 Emacs"></a>安装 Emacs</h2><p>spacemacs 是基于 Emacs 的配置。所以我们要先安装 Emacs, 关于 Emacs 版本又有很多，官方下载的算是基础版本，也有一些第三方编译的版本，包含了一些常用的模块，比如图片模块。 spacemacs <a href="https://github.com/syl20bnr/spacemacs#prerequisites" target="_blank" rel="external">推荐安装的版本</a> 也是基于编译的，而不是 GNU Emacs 官方提供的下载。</p>
+<p>我在 Windows 和 MacOS 下都安装了 Emacs:</p>
+<ul>
+<li>Windows 下使用的就是: <a href="https://sourceforge.net/projects/emacsbinw64/files/release/" target="_blank" rel="external">emacs-w64-25.1-O2-with-modules.7z</a></li>
+<li>MacOs 下是通过 brew 安装的</li>
+</ul>
+<p>PS: 而在后续的使用过程中，其实还需要安装好 git, cygwin 等工具。</p>
+<h2 id="安装-spacemacs"><a href="#安装-spacemacs" class="headerlink" title="安装 spacemacs"></a>安装 spacemacs</h2><p>由于 spacemacs 就是 emacs 的配置，所以安装它其实就是替换 <code>.emacs.d</code> 和 <code>.emacs</code>。</p>
+<ol>
+<li>先备份, 并删除 <code>.emacs</code> 文件：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">cd ~</div><div class="line">mv .emacs.d .emacs.d.bak</div><div class="line">mv .emacs .emacs.bak</div></pre></td></tr></table></figure>
+<ol>
+<li>clone 项目到 <code>.emacs.d</code> 目录：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d</div></pre></td></tr></table></figure>
+<ol>
+<li><p>启动 Emacs, 这里会进行 spacemacs 的初始化，问答形式完成一些基础配置， 直接全部回车即可，生成 <code>.spacemacs</code> 配置文件。</p>
+</li>
+<li><p>如果网络没有问题，会直接更新所有需要的模块</p>
+</li>
+<li><p>(可选) 下载并安装 <a href="https://github.com/adobe-fonts/source-code-pro" target="_blank" rel="external">Source Code Pro 字体</a></p>
+</li>
+</ol>
+<p>当然，多数国内环境下，网络会出问题。所以我们可以在完成第三步后，退出 Emacs， 去修改配置文件 <code>.spacemacs</code>:</p>
+<ul>
+<li><code>dotspacemacs-elpa-https</code>: 设置为 <code>nil</code>, 让其走 http 协议</li>
+<li><p>可添加国内镜像地址: 在 dotspacemacs/user-init 中添加:</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">(setq configuration-layer--elpa-archives</div><div class="line">    &apos;((&quot;melpa-cn&quot; . &quot;http://elpa.zilongshanren.com/melpa/&quot;)</div><div class="line">      (&quot;org-cn&quot;   . &quot;http://elpa.zilongshanren.com/org/&quot;)</div><div class="line">      (&quot;gnu-cn&quot;   . &quot;http://elpa.zilongshanren.com/gnu/&quot;)))</div></pre></td></tr></table></figure>
+</li>
+<li><p>清空 <code>.emacs.d/elpa</code> 目录</p>
+</li>
+<li>重启 Emacs</li>
+</ul>
+<p>安装模块后，下次进入启动的时候就会比较短， 欢迎界面每次会展示所有模块加载时间, 比如: <code>213 packages loaded in 4.740s (e:155 r:2 l:10 b:46)</code>, 这后面的几个字符，我单独解释下:</p>
+<ul>
+<li>e: elpa stats</li>
+<li>r: recipe stats</li>
+<li>l: local stats</li>
+<li>b: build-in stats</li>
+</ul>
+<h2 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h2><p>在 spacemacs 下有个很重要的概念，叫做引导键，用来触发组合性质的功能， <code>SPC</code> 就是这个引导键，对应键盘的是空格键。</p>
+<p>光标移动使用的是 <code>vim</code> 模式， 如有不熟悉的，可以在主界面点击 ? -&gt; <code>evil tutor</code> 学习或者通过 <code>SPC SPC evil-tutor-start</code> 进入。</p>
+<p>而整体的 Emacs 向导，通过 <code>SPC SPC help-with-tutorial</code> 进入。</p>
+<p>一些常用的，我先列在这里：</p>
+<ul>
+<li>返回主页面: <code>SPC-b-h</code></li>
+<li>新建缓冲区: <code>SPC-b-N</code></li>
+<li>保存缓冲区: <code>SPC-f-s</code></li>
+<li>显示所有缓冲区: <code>C-x C-b</code></li>
+<li>切换窗口: <code>C-x o</code></li>
+<li>退出: <code>C-x C-c</code></li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="http://emacs.sexy/" target="_blank" rel="external">Emacs sexy</a></li>
+<li><a href="http://sachachua.com/blog/2013/05/how-to-learn-emacs-a-hand-drawn-one-pager-for-beginners/" target="_blank" rel="external">How to Learn Emacs: A Hand-drawn One-pager for Beginners</a></li>
+<li><a href="https://codetimecn.com/episodes/emacs" target="_blank" rel="external">emacs 陈斌</a></li>
+<li><a href="https://www.gnu.org/software/emacs/" target="_blank" rel="external">GNU Emacs</a></li>
+<li><a href="http://spacemacs.org/" target="_blank" rel="external">spacemacs</a></li>
+<li><a href="http://elpa.emacs-china.org/" target="_blank" rel="external">Emacs China: ELPA 镜像</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;前段时间听了代码时间的一期播客: &lt;a href=&quot;https://codetimecn.com/episodes/emacs&quot;&gt;emacs 陈斌&lt;/a&gt; 最近又看到了 &lt;a href=&quot;http://spacemacs.org/&quot;&gt;spacemacs&lt;/a&gt;： 一个结合 Emacs 与 Vim 方式的全局配置，就像 &lt;a href=&quot;http://ohmyz.sh/&quot;&gt;oh-my-zsh&lt;/a&gt; 基于 zsh，简单的安装既让你有种老司机的感觉。
+    
+    </summary>
+    
+      <category term="Emacs相关" scheme="http://finalhome.org/categories/Emacs%E7%9B%B8%E5%85%B3/"/>
+    
+    
+      <category term="Emacs" scheme="http://finalhome.org/tags/Emacs/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SVN 忽略文件的设置</title>
+    <link href="http://finalhome.org/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/svn%E5%BF%BD%E7%95%A5%E6%96%87%E4%BB%B6%E7%9A%84%E8%AE%BE%E7%BD%AE/"/>
+    <id>http://finalhome.org/开发工具/svn忽略文件的设置/</id>
+    <published>2016-09-20T09:00:00.000Z</published>
+    <updated>2016-11-05T10:00:37.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>git 有 <code>.gitirnore</code> 文件来设置项目的忽略文件规则，那 SVN 呢？<a id="more"></a></p>
+<p>工作中我有遇到这么一个 SVN 仓库，里面包含了多个项目，不同的人在维护。</p>
+<p>而在我的项目文件中，不希望提交某些文件，比如 <code>node_modules</code>，之前我的做法是每个版本迁出的时候，手动去添加各个需要忽略的文件。我希望能有一个类似 <code>.gitignore</code> 的方式，去维护我 SVN 仓库下需要忽略的文件。</p>
+<h2 id="TortoiseSVN-GUI"><a href="#TortoiseSVN-GUI" class="headerlink" title="TortoiseSVN GUI"></a>TortoiseSVN GUI</h2><p>就是那个 “小乌龟” 软件，一个 GUI 的 SVN 管理工具。</p>
+<p>我们常规的做法就是对需要忽略的文件或目录，右击，选择 <code>TortoiseSVN -&gt; Add to ignore list</code> （已添加的版本管理中的也类似，菜单名会变为 <code>Unversion and add to ignore list</code>）,其中会给出两种忽略方式, 比如 <code>node_modules</code> 目录：</p>
+<ul>
+<li>node_modules： 只忽略当前路径下的</li>
+<li>node_modules(recursive)： 忽略整个工程下的</li>
+</ul>
+<p>这就是我们常用的设置方式，也是我想要优化的地方。</p>
+<h2 id="TortoiseSVN-Command"><a href="#TortoiseSVN-Command" class="headerlink" title="TortoiseSVN Command"></a>TortoiseSVN Command</h2><p>其实 svn 也是有对应的命令行命令的，比如 <code>svn status</code>, <code>svn update</code>, <code>svn add</code>, <code>svn commit</code> 等。对应也有文档： <a href="https://tortoisesvn.net/docs/release/TortoiseSVN_zh_CN/tsvn-cli-main.html" target="_blank" rel="external">TortoiseSVN 命令</a></p>
+<p>其中就有介绍如何加入忽略列表:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">svn propget svn:ignore PATH &gt; tempfile</div><div class="line">&#123;edit new ignore item into tempfile&#125;</div><div class="line">svn propset svn:ignore -F tempfile PATH</div></pre></td></tr></table></figure>
+<p>这就是命令行下添加忽略规则的方式，我们可以看到实际是加到项目的 <code>properties</code> 中，这里使用的一个文件去维护忽略规则，<strong>这其实就是我想要的方式</strong>。</p>
+<p>导入忽略规则后，我们在项目中右击，通过 <code>TortoiseSVN -&gt; Properties</code> 可以查看，修改，以及导入导出。关于忽略的两种方式，实际对应的属性也是两个：</p>
+<ul>
+<li><code>svn:ignore</code></li>
+<li><code>svn:global-ignore</code></li>
+</ul>
+<h2 id="优化方案"><a href="#优化方案" class="headerlink" title="优化方案"></a>优化方案</h2><p>通过命令行的方式，我们可以看到忽略规则是可以被导入导出的。这样我们就可以通过文件去维护项目的忽略列表，虽然这个忽略规则不会自动被识别，但是已经可以简化我们许多人工点击的操作了。</p>
+<p>操作如下：</p>
+<ul>
+<li>生成忽略文件, 两种方式：<ul>
+<li>通过 <code>TortoiseSVN GUI</code> 方式，点击操作设置相关忽略文件</li>
+<li>维护 <code>.svnignore</code> 和 <code>.svnignore-global</code> 两个文件，分别通过命令行导入</li>
+</ul>
+</li>
+<li>在项目中右击，通过 <code>TortoiseSVN -&gt; Properties</code> 对配置导出</li>
+<li>在新项目中， 通过 <code>TortoiseSVN -&gt; Properties</code> 导入配置</li>
+</ul>
+<p>配置导出的时候，注意全选，然后 <code>export</code> ，导出的文件是 <code>.svnprops</code>。</p>
+<p>我们也可以只导出忽略规则，方式到对应的 <code>.svnignore</code> 和 <code>.svnignore-global</code> 文件中。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://tortoisesvn.net/docs/release/TortoiseSVN_zh_CN/tsvn-dug-ignore.html" target="_blank" rel="external">Tortoisesvn: 忽略文件和目录</a></li>
+<li><a href="https://tortoisesvn.net/docs/release/TortoiseSVN_zh_CN/tsvn-cli-main.html#tsvn-cli-addignore" target="_blank" rel="external">Tortoisesvn 命令: 加入忽略列表</a></li>
+<li><a href="http://stackoverflow.com/questions/86049/how-do-i-ignore-files-in-subversion" target="_blank" rel="external">How do I ignore files in Subversion?</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;git 有 &lt;code&gt;.gitirnore&lt;/code&gt; 文件来设置项目的忽略文件规则，那 SVN 呢？
+    
+    </summary>
+    
+      <category term="开发工具" scheme="http://finalhome.org/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
+    
+    
+      <category term="SVN" scheme="http://finalhome.org/tags/SVN/"/>
+    
+  </entry>
+  
+  <entry>
     <title>gitbook 使用指南</title>
     <link href="http://finalhome.org/gitbook%E7%9B%B8%E5%85%B3/gitbook%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/"/>
     <id>http://finalhome.org/gitbook相关/gitbook使用指南/</id>
     <published>2016-09-17T08:00:07.000Z</published>
-    <updated>2016-09-17T13:20:34.000Z</updated>
+    <updated>2016-11-05T10:00:37.000Z</updated>
     
     <content type="html"><![CDATA[<p>我之前使用 <code>gitbook</code> 的时候还是 <code>1.x.x</code> 版本，现在都已经 <code>3.x.x</code> 了。<a id="more"></a></p>
-<h2 id="什么是-GitBook"><a href="#什么是-GitBook" class="headerlink" title="什么是 GitBook"></a>什么是 GitBook</h2><p>一个致力于解决文档，书籍书写与发布的技术方案, 于 2014 年中旬创立，建立了一套开源书籍的书写规范和相关的构建工具。后来也创立了一个网站， <a href="https://gitbook.com/" target="_blank" rel="external">GitBook.com</a>, 供世界各地的人发布和管理自己的书籍。</p>
-<h2 id="安装-GitBook"><a href="#安装-GitBook" class="headerlink" title="安装 GitBook"></a>安装 GitBook</h2><p><code>GitBook 3.x.x</code> 版本需要 <code>node &gt;=4.0.0</code>, 这里插一句，大多数情况下，node 还是推荐使用 LTS 版本，最新版本的特性有些库支持还是有问题的，而且会存在不兼容的情况。</p>
-<p>通过 <code>npm install gitbook-cli -g</code> 全局安装 <code>gitbook</code> 命令，安装完成后，有几个常用的命令:</p>
+<h2 id="什么是-GitBook"><a href="#什么是-GitBook" class="headerlink" title="什么是 GitBook"></a>什么是 GitBook</h2><p>一个致力于解决文档，书籍书写与发布的技术方案，于 2014 年中旬创立，建立了一套开源书籍的书写规范和相关的构建工具。后来也创立了一个网站，<a href="https://gitbook.com/" target="_blank" rel="external">GitBook.com</a>，供世界各地的人发布和管理自己的书籍。</p>
+<h2 id="安装-GitBook"><a href="#安装-GitBook" class="headerlink" title="安装 GitBook"></a>安装 GitBook</h2><p><code>GitBook 3.x.x</code> 版本需要 <code>node &gt;=4.0.0</code>，这里插一句，大多数情况下，node 还是推荐使用 LTS 版本，最新版本的特性有些库支持还是有问题的，而且会存在不兼容的情况。</p>
+<p>通过 <code>npm install gitbook-cli -g</code> 全局安装 <code>gitbook</code> 命令，安装完成后，有几个常用的命令：</p>
 <ul>
-<li><code>gitbook --version</code>: 查看当前使用的版本</li>
-<li><code>gitbook ls</code>: 系统存在的 gitbook 版本</li>
-<li><code>gitbook ls-remote</code>: 所有 gitbook 版本</li>
-<li><code>gitbook fetch</code>: 下载对应的 gitbook 版本</li>
-<li><code>gitbook current</code>: 当前目录使用的 gitbook 版本</li>
+<li><code>gitbook --version</code>：查看当前使用的版本</li>
+<li><code>gitbook ls</code>：系统存在的 gitbook 版本</li>
+<li><code>gitbook ls-remote</code>：所有 gitbook 版本</li>
+<li><code>gitbook fetch</code>：下载对应的 gitbook 版本</li>
+<li><code>gitbook current</code>：当前目录使用的 gitbook 版本</li>
 </ul>
-<p>当前版本下，默认安装的是:</p>
+<p>当前版本下，默认安装的是：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">CLI version: 2.3.0</div><div class="line">GitBook version: 3.2.0</div></pre></td></tr></table></figure>
 <p>如果我们需要使用不同的版本，需要自己安装，或者通过 <code>book.json</code> 配置 <code>gitbook</code> 版本。比如：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;gitbook&quot;: &quot;~2.x.x&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>这样在含有 <code>book.json</code> 的目录下运行 <code>gitbook</code> 相关命令，就是基于指定的版本了。</p>
 <h3 id="查看相关命令"><a href="#查看相关命令" class="headerlink" title="查看相关命令"></a>查看相关命令</h3><p>通过 <code>gitbook</code> 和 <code>gitbook help</code> 可以查看相关的命令。</p>
-<h2 id="创建书籍"><a href="#创建书籍" class="headerlink" title="创建书籍"></a>创建书籍</h2><p><code>gitbook init &lt;folder&gt;</code> 创建项目， 生成:</p>
+<h2 id="创建书籍"><a href="#创建书籍" class="headerlink" title="创建书籍"></a>创建书籍</h2><p><code>gitbook init &lt;folder&gt;</code> 创建项目，生成：</p>
 <ul>
 <li>README.md</li>
 <li>SUMMARY.md</li>
@@ -47,33 +190,40 @@
 <p>如果对项目需要配置，还需自行添加 <code>book.json</code> 文件。</p>
 <h2 id="运行书籍"><a href="#运行书籍" class="headerlink" title="运行书籍"></a>运行书籍</h2><p><code>gitbook serve</code> 命令。</p>
 <h2 id="编译书籍"><a href="#编译书籍" class="headerlink" title="编译书籍"></a>编译书籍</h2><p><code>gitbook build</code> 命令。</p>
-<h2 id="SUMMARY-md"><a href="#SUMMARY-md" class="headerlink" title="SUMMARY.md"></a>SUMMARY.md</h2><p><code>SUMMARY.md</code> 是用来定义书籍的章节的，用来生成目录。比如:</p>
+<h2 id="SUMMARY"><a href="#SUMMARY" class="headerlink" title="SUMMARY"></a>SUMMARY</h2><p><code>SUMMARY.md</code> 是用来定义书籍的章节的，用来生成目录。比如：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># Summary</div><div class="line"></div><div class="line">* [Introduction](README.md)</div><div class="line">* [Part I](part1/README.md)</div><div class="line">    * [Writing is nice](part1/writing.md)</div><div class="line">    * [GitBook is nice](part1/gitbook.md)</div><div class="line">* [Part II](part2/README.md)</div><div class="line">    * [We love feedback](part2/feedback_please.md)</div><div class="line">    * [Better tools for authors](part2/better_tools.md)</div></pre></td></tr></table></figure>
-<p>在 <code>2.x.x</code> 版本中，这样会生成目录:</p>
+<p>在 <code>2.x.x</code> 版本中，这样会生成目录：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Introduction</div><div class="line">1.Part I</div><div class="line">    1.1 Writing is nice</div><div class="line">    1.2 GitBook is nice</div><div class="line">2.Part II</div><div class="line">    2.1 We love feedback</div><div class="line">    2.2 Better tools for authors</div></pre></td></tr></table></figure>
-<p><code>3.x.x</code> 版本后，默认推荐不为章节编码，生成的内容如下：</p>
+<p><code>3.x.x</code> 版本后，默认不为章节生成硬编码，而是推荐使用 <code>Parts</code> 概念维护目录，可见：</p>
+<ul>
+<li><a href="https://github.com/rustcc/RustPrimer/issues/412" target="_blank" rel="external">issue：章节号没了</a></li>
+<li><a href="https://github.com/GitbookIO/gitbook/pull/312" target="_blank" rel="external">issue: Multi part books</a></li>
+</ul>
+<p>生成的内容如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Introduction</div><div class="line">Part I</div><div class="line">    Writing is nice</div><div class="line">    GitBook is nice</div><div class="line">Part II</div><div class="line">    We love feedback</div><div class="line">    Better tools for authors</div></pre></td></tr></table></figure>
-<p>如果你想要展示章节编码，需要添加设置, 修改 <code>book.json</code>:</p>
+<p>如果你想要展示章节硬编码，需要添加设置，修改 <code>book.json</code>：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&quot;pluginsConfig&quot;: &#123;</div><div class="line">       &quot;theme-default&quot;: &#123;</div><div class="line">           &quot;showLevel&quot;: true</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
-<p>这样生成的目录会是这样:</p>
+<p>这样生成的目录会是这样：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">1.1 Introduction</div><div class="line">1.2 Part I</div><div class="line">    1.2.1 Writing is nice</div><div class="line">    1.2.2 GitBook is nice</div><div class="line">1.3 Part II</div><div class="line">    1.3.1 We love feedback</div><div class="line">    1.3.2 Better tools for authors</div></pre></td></tr></table></figure>
-<p>所有内容都会以 <code>1.x</code> 编码开始。原因是我们没有使用 <code>Part</code> 分割章节， 这也是 <code>3.x.x</code> 版本后推荐的做法，我们修改 <code>SUMMARY.md</code>:</p>
+<p>所有内容都会以 <code>1.x</code> 编码开始，这是一个 <a href="https://github.com/GitbookIO/gitbook/issues/1301" target="_blank" rel="external">Bug</a>，团队的人正在解决。当然，我们还是推荐使用使用 <code>Part</code> 分割章节（<code>3.x.x</code>版本后推荐的做法），我们修改 <code>SUMMARY.md</code>：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"># Summary</div><div class="line"></div><div class="line">* [Introduction](README.md)</div><div class="line"></div><div class="line"># Part I</div><div class="line">* [Part I](part1/README.md)</div><div class="line">    * [Writing is nice](part1/writing.md)</div><div class="line">    * [GitBook is nice](part1/gitbook.md)</div><div class="line"></div><div class="line"># Part II</div><div class="line">* [Part II](part2/README.md)</div><div class="line">    * [We love feedback](part2/feedback_please.md)</div><div class="line">    * [Better tools for authors](part2/better_tools.md)</div></pre></td></tr></table></figure>
-<p>这样之后，显示的编码会变成这样:</p>
+<p>这样之后，显示的编码会变成这样：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">1.1 Introduction</div><div class="line">2.1 Part I</div><div class="line">    2.1.1 Writing is nice</div><div class="line">    2.1.2 GitBook is nice</div><div class="line">3.1 Part II</div><div class="line">    3.1.1 We love feedback</div><div class="line">    3.1.2 Better tools for authors</div></pre></td></tr></table></figure>
-<p>不带编码显示是这样, 会带上分割线:</p>
+<p>不带编码显示是这样，会带上分割线：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">Introduction</div><div class="line">-----</div><div class="line">1.Part I</div><div class="line">    1.1 Writing is nice</div><div class="line">    1.2 GitBook is nice</div><div class="line">-----</div><div class="line">2.Part II</div><div class="line">    2.1 We love feedback</div><div class="line">    2.2 Better tools for authors</div></pre></td></tr></table></figure>
-<h2 id="PAGES"><a href="#PAGES" class="headerlink" title="PAGES"></a>PAGES</h2><p>每篇文章，就是一个单独的 <code>markdown</code> 文件，支持 <a href="https://guides.github.com/features/mastering-markdown/" target="_blank" rel="external">GitHub Flavored Markdown syntax</a>, 比如:</p>
+<p>针对真实项目，我整理一个目录结构，支持多级分类：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"># Summary</div><div class="line">* [Introduction](README.md)</div><div class="line"></div><div class="line"># 一级分类，不显示，会以横线分隔，相当于注释</div><div class="line">* [Introduction](part1/README.md)</div><div class="line">* [Part1 Section 1](part1/section-1.md)</div><div class="line">* [Part1 Section 2](part1/subsection-x/README.md)</div><div class="line">    * [Part1 Section 2-1](part1/subsection-x/subsection-x-1.md)</div><div class="line">    * [Part1 Section 2-2](part1/subsection-x/subsection-x-2.md)</div><div class="line"></div><div class="line"># 一级分类，不显示，会以横线分隔，相当于注释</div><div class="line">* [Introduction](part2/README.md)</div><div class="line">* [part2 Section 1](part2/section-1.md)</div><div class="line">* 未完成的时候</div><div class="line">    * [part2 Section 2-1](part2/subsection-x/subsection-x-1.md)</div><div class="line">    * [part2 Section 2-2](part2/subsection-x/subsection-x-2.md)</div><div class="line"></div><div class="line">## 二级分类，显示，不可点</div><div class="line"></div><div class="line">* An article in part 2</div><div class="line"></div><div class="line">### 三级分类，显示，不可点，和二级效果一致</div><div class="line">* An article in part 3</div><div class="line"></div><div class="line"></div><div class="line"># 一级分类，不显示，会以横线分隔</div><div class="line"></div><div class="line">* An article in an untitled part</div></pre></td></tr></table></figure>
+<h2 id="PAGES"><a href="#PAGES" class="headerlink" title="PAGES"></a>PAGES</h2><p>每篇文章，就是一个单独的 <code>markdown</code> 文件，支持 <a href="https://guides.github.com/features/mastering-markdown/" target="_blank" rel="external">GitHub Flavored Markdown syntax</a>，比如：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># Title of the chapter</div><div class="line"></div><div class="line">This is a great introduction.</div><div class="line"></div><div class="line">## Section 1</div><div class="line"></div><div class="line">Markdown will dictates _most_ of your **book&apos;s structure**</div><div class="line"></div><div class="line">## Section 2</div><div class="line"></div><div class="line">...</div></pre></td></tr></table></figure>
 <h2 id="发布"><a href="#发布" class="headerlink" title="发布"></a>发布</h2><p>你可以选择在 <a href="https://www.gitbook.com/new" target="_blank" rel="external">GitBook New</a> 上创建，选择在线编辑或者通过 <code>git clone</code> 下载到本地编辑。</p>
-<p>你还可以将在 Github 上创建的书籍，同步到 GitBook 中， 在 GitBook 的项目设置中，手动添加对应的 Github 仓库，注意要保证 GitBook 对你的 Github 有访问权限。</p>
-<p>原理是借助 Webhook, 当你的 github 仓库有提交时，同步 GitBook 仓库。</p>
-<h2 id="绑定域名"><a href="#绑定域名" class="headerlink" title="绑定域名"></a>绑定域名</h2><p>默认发布在 GitBook 上的项目，URL规则是这样的: <code>https://www.gitbook.com/book/{username}/{bookname}</code>, 如果我们要为此绑定域名，需要两处设置:</p>
+<p>你还可以将在 Github 上创建的书籍，同步到 GitBook 中，在 GitBook 的项目设置中，手动添加对应的 Github 仓库，注意要保证 GitBook 对你的 Github 有访问权限。</p>
+<p>原理是借助 Webhook，当你的 github 仓库有提交时，同步 GitBook 仓库。</p>
+<h2 id="绑定域名"><a href="#绑定域名" class="headerlink" title="绑定域名"></a>绑定域名</h2><p>默认发布在 GitBook 上的项目，URL 规则是这样的: <code>https://www.gitbook.com/book/{username}/{bookname}</code>,如果我们要为此绑定域名，需要两处设置：</p>
 <ul>
-<li>GitBook对于的项目设置中，修改 <code>Domain</code>, 添加自定义域名</li>
-<li>在你的域名服务商提供的控制面板中，设置 <code>CNAME</code>， 绑定 <code>www.gitbooks.io</code>，开启 <code>domain forwarding</code></li>
+<li>GitBook 对于的项目设置中，修改 <code>Domain</code>，添加自定义域名</li>
+<li>在你的域名服务商提供的控制面板中，设置 <code>CNAME</code>，绑定 <code>www.gitbooks.io</code>，开启 <code>domain forwarding</code></li>
 </ul>
-<h2 id="缘由"><a href="#缘由" class="headerlink" title="缘由"></a>缘由</h2><p>重新使用 GitBook 是因为上周有人发邮件给我，说放在 GitBook 上的 <a href="https://www.gitbook.com/book/leohxj/a-programmer-prepares/details" target="_blank" rel="external">&lt;程序员的自我修养&gt;</a> 这本书，下载为 PDF格式时字体有些怪异，希望我能将书开源到 github 上供他自己编译，考虑到此书确实也很久没有更新了，我决定借此机会重启这一系列的更新，希望能将自己这一两年积累的知识贡献出来。</p>
+<h2 id="缘由"><a href="#缘由" class="headerlink" title="缘由"></a>缘由</h2><p>重新使用 GitBook 是因为上周有人发邮件给我，说放在 GitBook 上的 <a href="https://www.gitbook.com/book/leohxj/a-programmer-prepares/details" target="_blank" rel="external">《程序员的自我修养》</a>这本书，下载为 PDF 格式时字体有些怪异，希望我能将书开源到 github 上供他自己编译，考虑到此书确实也很久没有更新了，我决定借此机会重启这一系列的更新，希望能将自己这一两年积累的知识贡献出来。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li><a href="https://www.gitbook.com/" target="_blank" rel="external">GitBook 官网</a></li>
 <li><a href="https://github.com/GitbookIO/gitbook" target="_blank" rel="external">GitbookIO/gitbook</a></li>
@@ -1100,74 +1250,6 @@
       <category term="Ubuntu" scheme="http://finalhome.org/tags/Ubuntu/"/>
     
       <category term="Virtualbox" scheme="http://finalhome.org/tags/Virtualbox/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>RequireJS-简化版almond</title>
-    <link href="http://finalhome.org/JavaScript/RequireJS-%E7%AE%80%E5%8C%96%E7%89%88almond/"/>
-    <id>http://finalhome.org/JavaScript/RequireJS-简化版almond/</id>
-    <published>2014-04-20T06:45:41.000Z</published>
-    <updated>2016-08-29T13:58:52.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>almond是requireJS作者的另一个简化版AMD加载项目，它的特点是在build之后，网络请求只留一个，而requireJS的请求有两个（另一个是requireJS本身）。并且自身只有1kb左右的大小(服务器开启gzip后)。<br><a id="more"></a></p>
-<h2 id="使用almond"><a href="#使用almond" class="headerlink" title="使用almond"></a>使用almond</h2><p>开发过程还是使用requireJS，只是build的时候，去掉requireJS而加入almond而已。能够减少requireJS的多余大小和一次请求。</p>
-<p>使用方式通过<code>r.js</code>，<code>almond-build.js</code>文件如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">(&#123;</div><div class="line">    baseUrl: &quot;.&quot;,</div><div class="line">    paths: &#123;</div><div class="line">        jquery: &quot;some/other/jquery&quot;</div><div class="line">    &#125;,</div><div class="line">    name: &quot;./almond&quot;,</div><div class="line">    include: &quot;main&quot;,</div><div class="line">    out: &quot;main-built.js&quot;,</div><div class="line">    wrap: true</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
-<p>保证<code>r.js</code>和<code>almond-build.js</code>在<code>script</code>目录下，运行<code>node r.js -o almond-build.js</code>即可。生成的<code>main-built.js</code>文件，可以直接通过<code>script</code>引入到index.html中。</p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li><a href="https://github.com/jrburke/almond" target="_blank" rel="external">almond项目地址</a></li>
-</ul>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;almond是requireJS作者的另一个简化版AMD加载项目，它的特点是在build之后，网络请求只留一个，而requireJS的请求有两个（另一个是requireJS本身）。并且自身只有1kb左右的大小(服务器开启gzip后)。&lt;br&gt;
-    
-    </summary>
-    
-      <category term="JavaScript" scheme="http://finalhome.org/categories/JavaScript/"/>
-    
-    
-      <category term="JavaScript" scheme="http://finalhome.org/tags/JavaScript/"/>
-    
-      <category term="模块化" scheme="http://finalhome.org/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>RequireJS-优化</title>
-    <link href="http://finalhome.org/JavaScript/RequireJS-%E4%BC%98%E5%8C%96/"/>
-    <id>http://finalhome.org/JavaScript/RequireJS-优化/</id>
-    <published>2014-04-19T06:45:41.000Z</published>
-    <updated>2016-08-29T13:58:52.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>开发完成之后，部署的时候需要对requirejs进行优化。以合并文件，减少请求。<br><a id="more"></a></p>
-<h2 id="使用r-js"><a href="#使用r-js" class="headerlink" title="使用r.js"></a>使用r.js</h2><p>可以通过官网下载<code>r.js</code>，也可以使用<code>npm install -g requirejs</code>安装。windows用户注意需要在cmd中重新定义下r.js命名： <code>DOSKEY r.js=r.js.cmd $*</code>。</p>
-<h3 id="命令行模式"><a href="#命令行模式" class="headerlink" title="命令行模式"></a>命令行模式</h3><p>保证r.js和<code>data-main</code>指定的文件在同一目录，可以在命名行下使用 <code>node r.js -o baseUrl=. paths.jquery=some/other/jquery name=main out=main-built.js</code>。</p>
-<h3 id="build-js配置文件模式"><a href="#build-js配置文件模式" class="headerlink" title="build.js配置文件模式"></a>build.js配置文件模式</h3><p>也可以在配置一个<code>build.js</code>文件，比如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">(&#123;</div><div class="line">    baseUrl: &quot;.&quot;,</div><div class="line">    paths: &#123;</div><div class="line">        jquery: &quot;some/other/jquery&quot;</div><div class="line">    &#125;,</div><div class="line">    name: &quot;main&quot;,</div><div class="line">    out: &quot;main-built.js&quot;</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
-<p>通过<code>node r.js -o build.js</code>调用生成<code>main-built.js</code>文件。</p>
-<h3 id="使用build过后的文件"><a href="#使用build过后的文件" class="headerlink" title="使用build过后的文件"></a>使用build过后的文件</h3><p>把<code>data-main</code>修改为生成好的文件，这样请求就只有<code>require.js</code>和<code>main-built.js</code>两个文件了。</p>
-<h2 id="使用r-js发布整个项目"><a href="#使用r-js发布整个项目" class="headerlink" title="使用r.js发布整个项目"></a>使用r.js发布整个项目</h2><p>r.js也可以build整个项目，完成css的合并，js的压缩：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">(&#123;</div><div class="line">    appDir: &quot;../&quot;,</div><div class="line">    baseUrl: &quot;scripts&quot;,</div><div class="line">    dir: &quot;../../appdirectory-build&quot;,</div><div class="line">    modules: [</div><div class="line">        &#123;</div><div class="line">            name: &quot;main&quot;</div><div class="line">        &#125;</div><div class="line">    ]</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
-<p>将此文件存为<code>app-build.js</code>，然后运行<code>node r.js -o app-build.js</code>，就会在项目目录同级创建一个目录。</p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li><a href="http://nomospace.github.io/posts/r.js-example.build.js.html" target="_blank" rel="external">r.js配置文件不完整中文注释</a></li>
-<li><a href="http://blog.segmentfault.com/f2e/1190000000394849" target="_blank" rel="external">前端优化：RequireJS Optimizer 的使用和配置方法</a></li>
-<li><a href="http://requirejs.org/docs/optimization.html" target="_blank" rel="external">requirejs官方优化文档</a></li>
-</ul>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;开发完成之后，部署的时候需要对requirejs进行优化。以合并文件，减少请求。&lt;br&gt;
-    
-    </summary>
-    
-      <category term="JavaScript" scheme="http://finalhome.org/categories/JavaScript/"/>
-    
-    
-      <category term="JavaScript" scheme="http://finalhome.org/tags/JavaScript/"/>
-    
-      <category term="模块化" scheme="http://finalhome.org/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/"/>
     
   </entry>
   

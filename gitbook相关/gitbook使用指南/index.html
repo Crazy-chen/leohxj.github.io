@@ -88,23 +88,23 @@
     <div class="entry">
       
         <p>我之前使用 <code>gitbook</code> 的时候还是 <code>1.x.x</code> 版本，现在都已经 <code>3.x.x</code> 了。<a id="more"></a></p>
-<h2 id="什么是-GitBook"><a href="#什么是-GitBook" class="headerlink" title="什么是 GitBook"></a>什么是 GitBook</h2><p>一个致力于解决文档，书籍书写与发布的技术方案, 于 2014 年中旬创立，建立了一套开源书籍的书写规范和相关的构建工具。后来也创立了一个网站， <a href="https://gitbook.com/" target="_blank" rel="external">GitBook.com</a>, 供世界各地的人发布和管理自己的书籍。</p>
-<h2 id="安装-GitBook"><a href="#安装-GitBook" class="headerlink" title="安装 GitBook"></a>安装 GitBook</h2><p><code>GitBook 3.x.x</code> 版本需要 <code>node &gt;=4.0.0</code>, 这里插一句，大多数情况下，node 还是推荐使用 LTS 版本，最新版本的特性有些库支持还是有问题的，而且会存在不兼容的情况。</p>
-<p>通过 <code>npm install gitbook-cli -g</code> 全局安装 <code>gitbook</code> 命令，安装完成后，有几个常用的命令:</p>
+<h2 id="什么是-GitBook"><a href="#什么是-GitBook" class="headerlink" title="什么是 GitBook"></a>什么是 GitBook</h2><p>一个致力于解决文档，书籍书写与发布的技术方案，于 2014 年中旬创立，建立了一套开源书籍的书写规范和相关的构建工具。后来也创立了一个网站，<a href="https://gitbook.com/" target="_blank" rel="external">GitBook.com</a>，供世界各地的人发布和管理自己的书籍。</p>
+<h2 id="安装-GitBook"><a href="#安装-GitBook" class="headerlink" title="安装 GitBook"></a>安装 GitBook</h2><p><code>GitBook 3.x.x</code> 版本需要 <code>node &gt;=4.0.0</code>，这里插一句，大多数情况下，node 还是推荐使用 LTS 版本，最新版本的特性有些库支持还是有问题的，而且会存在不兼容的情况。</p>
+<p>通过 <code>npm install gitbook-cli -g</code> 全局安装 <code>gitbook</code> 命令，安装完成后，有几个常用的命令：</p>
 <ul>
-<li><code>gitbook --version</code>: 查看当前使用的版本</li>
-<li><code>gitbook ls</code>: 系统存在的 gitbook 版本</li>
-<li><code>gitbook ls-remote</code>: 所有 gitbook 版本</li>
-<li><code>gitbook fetch</code>: 下载对应的 gitbook 版本</li>
-<li><code>gitbook current</code>: 当前目录使用的 gitbook 版本</li>
+<li><code>gitbook --version</code>：查看当前使用的版本</li>
+<li><code>gitbook ls</code>：系统存在的 gitbook 版本</li>
+<li><code>gitbook ls-remote</code>：所有 gitbook 版本</li>
+<li><code>gitbook fetch</code>：下载对应的 gitbook 版本</li>
+<li><code>gitbook current</code>：当前目录使用的 gitbook 版本</li>
 </ul>
-<p>当前版本下，默认安装的是:</p>
+<p>当前版本下，默认安装的是：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">CLI version: 2.3.0</div><div class="line">GitBook version: 3.2.0</div></pre></td></tr></table></figure>
 <p>如果我们需要使用不同的版本，需要自己安装，或者通过 <code>book.json</code> 配置 <code>gitbook</code> 版本。比如：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;gitbook&quot;: &quot;~2.x.x&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>这样在含有 <code>book.json</code> 的目录下运行 <code>gitbook</code> 相关命令，就是基于指定的版本了。</p>
 <h3 id="查看相关命令"><a href="#查看相关命令" class="headerlink" title="查看相关命令"></a>查看相关命令</h3><p>通过 <code>gitbook</code> 和 <code>gitbook help</code> 可以查看相关的命令。</p>
-<h2 id="创建书籍"><a href="#创建书籍" class="headerlink" title="创建书籍"></a>创建书籍</h2><p><code>gitbook init &lt;folder&gt;</code> 创建项目， 生成:</p>
+<h2 id="创建书籍"><a href="#创建书籍" class="headerlink" title="创建书籍"></a>创建书籍</h2><p><code>gitbook init &lt;folder&gt;</code> 创建项目，生成：</p>
 <ul>
 <li>README.md</li>
 <li>SUMMARY.md</li>
@@ -112,33 +112,40 @@
 <p>如果对项目需要配置，还需自行添加 <code>book.json</code> 文件。</p>
 <h2 id="运行书籍"><a href="#运行书籍" class="headerlink" title="运行书籍"></a>运行书籍</h2><p><code>gitbook serve</code> 命令。</p>
 <h2 id="编译书籍"><a href="#编译书籍" class="headerlink" title="编译书籍"></a>编译书籍</h2><p><code>gitbook build</code> 命令。</p>
-<h2 id="SUMMARY-md"><a href="#SUMMARY-md" class="headerlink" title="SUMMARY.md"></a>SUMMARY.md</h2><p><code>SUMMARY.md</code> 是用来定义书籍的章节的，用来生成目录。比如:</p>
+<h2 id="SUMMARY"><a href="#SUMMARY" class="headerlink" title="SUMMARY"></a>SUMMARY</h2><p><code>SUMMARY.md</code> 是用来定义书籍的章节的，用来生成目录。比如：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># Summary</div><div class="line"></div><div class="line">* [Introduction](README.md)</div><div class="line">* [Part I](part1/README.md)</div><div class="line">    * [Writing is nice](part1/writing.md)</div><div class="line">    * [GitBook is nice](part1/gitbook.md)</div><div class="line">* [Part II](part2/README.md)</div><div class="line">    * [We love feedback](part2/feedback_please.md)</div><div class="line">    * [Better tools for authors](part2/better_tools.md)</div></pre></td></tr></table></figure>
-<p>在 <code>2.x.x</code> 版本中，这样会生成目录:</p>
+<p>在 <code>2.x.x</code> 版本中，这样会生成目录：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Introduction</div><div class="line">1.Part I</div><div class="line">    1.1 Writing is nice</div><div class="line">    1.2 GitBook is nice</div><div class="line">2.Part II</div><div class="line">    2.1 We love feedback</div><div class="line">    2.2 Better tools for authors</div></pre></td></tr></table></figure>
-<p><code>3.x.x</code> 版本后，默认推荐不为章节编码，生成的内容如下：</p>
+<p><code>3.x.x</code> 版本后，默认不为章节生成硬编码，而是推荐使用 <code>Parts</code> 概念维护目录，可见：</p>
+<ul>
+<li><a href="https://github.com/rustcc/RustPrimer/issues/412" target="_blank" rel="external">issue：章节号没了</a></li>
+<li><a href="https://github.com/GitbookIO/gitbook/pull/312" target="_blank" rel="external">issue: Multi part books</a></li>
+</ul>
+<p>生成的内容如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Introduction</div><div class="line">Part I</div><div class="line">    Writing is nice</div><div class="line">    GitBook is nice</div><div class="line">Part II</div><div class="line">    We love feedback</div><div class="line">    Better tools for authors</div></pre></td></tr></table></figure>
-<p>如果你想要展示章节编码，需要添加设置, 修改 <code>book.json</code>:</p>
+<p>如果你想要展示章节硬编码，需要添加设置，修改 <code>book.json</code>：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&quot;pluginsConfig&quot;: &#123;</div><div class="line">       &quot;theme-default&quot;: &#123;</div><div class="line">           &quot;showLevel&quot;: true</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
-<p>这样生成的目录会是这样:</p>
+<p>这样生成的目录会是这样：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">1.1 Introduction</div><div class="line">1.2 Part I</div><div class="line">    1.2.1 Writing is nice</div><div class="line">    1.2.2 GitBook is nice</div><div class="line">1.3 Part II</div><div class="line">    1.3.1 We love feedback</div><div class="line">    1.3.2 Better tools for authors</div></pre></td></tr></table></figure>
-<p>所有内容都会以 <code>1.x</code> 编码开始。原因是我们没有使用 <code>Part</code> 分割章节， 这也是 <code>3.x.x</code> 版本后推荐的做法，我们修改 <code>SUMMARY.md</code>:</p>
+<p>所有内容都会以 <code>1.x</code> 编码开始，这是一个 <a href="https://github.com/GitbookIO/gitbook/issues/1301" target="_blank" rel="external">Bug</a>，团队的人正在解决。当然，我们还是推荐使用使用 <code>Part</code> 分割章节（<code>3.x.x</code>版本后推荐的做法），我们修改 <code>SUMMARY.md</code>：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"># Summary</div><div class="line"></div><div class="line">* [Introduction](README.md)</div><div class="line"></div><div class="line"># Part I</div><div class="line">* [Part I](part1/README.md)</div><div class="line">    * [Writing is nice](part1/writing.md)</div><div class="line">    * [GitBook is nice](part1/gitbook.md)</div><div class="line"></div><div class="line"># Part II</div><div class="line">* [Part II](part2/README.md)</div><div class="line">    * [We love feedback](part2/feedback_please.md)</div><div class="line">    * [Better tools for authors](part2/better_tools.md)</div></pre></td></tr></table></figure>
-<p>这样之后，显示的编码会变成这样:</p>
+<p>这样之后，显示的编码会变成这样：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">1.1 Introduction</div><div class="line">2.1 Part I</div><div class="line">    2.1.1 Writing is nice</div><div class="line">    2.1.2 GitBook is nice</div><div class="line">3.1 Part II</div><div class="line">    3.1.1 We love feedback</div><div class="line">    3.1.2 Better tools for authors</div></pre></td></tr></table></figure>
-<p>不带编码显示是这样, 会带上分割线:</p>
+<p>不带编码显示是这样，会带上分割线：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">Introduction</div><div class="line">-----</div><div class="line">1.Part I</div><div class="line">    1.1 Writing is nice</div><div class="line">    1.2 GitBook is nice</div><div class="line">-----</div><div class="line">2.Part II</div><div class="line">    2.1 We love feedback</div><div class="line">    2.2 Better tools for authors</div></pre></td></tr></table></figure>
-<h2 id="PAGES"><a href="#PAGES" class="headerlink" title="PAGES"></a>PAGES</h2><p>每篇文章，就是一个单独的 <code>markdown</code> 文件，支持 <a href="https://guides.github.com/features/mastering-markdown/" target="_blank" rel="external">GitHub Flavored Markdown syntax</a>, 比如:</p>
+<p>针对真实项目，我整理一个目录结构，支持多级分类：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"># Summary</div><div class="line">* [Introduction](README.md)</div><div class="line"></div><div class="line"># 一级分类，不显示，会以横线分隔，相当于注释</div><div class="line">* [Introduction](part1/README.md)</div><div class="line">* [Part1 Section 1](part1/section-1.md)</div><div class="line">* [Part1 Section 2](part1/subsection-x/README.md)</div><div class="line">    * [Part1 Section 2-1](part1/subsection-x/subsection-x-1.md)</div><div class="line">    * [Part1 Section 2-2](part1/subsection-x/subsection-x-2.md)</div><div class="line"></div><div class="line"># 一级分类，不显示，会以横线分隔，相当于注释</div><div class="line">* [Introduction](part2/README.md)</div><div class="line">* [part2 Section 1](part2/section-1.md)</div><div class="line">* 未完成的时候</div><div class="line">    * [part2 Section 2-1](part2/subsection-x/subsection-x-1.md)</div><div class="line">    * [part2 Section 2-2](part2/subsection-x/subsection-x-2.md)</div><div class="line"></div><div class="line">## 二级分类，显示，不可点</div><div class="line"></div><div class="line">* An article in part 2</div><div class="line"></div><div class="line">### 三级分类，显示，不可点，和二级效果一致</div><div class="line">* An article in part 3</div><div class="line"></div><div class="line"></div><div class="line"># 一级分类，不显示，会以横线分隔</div><div class="line"></div><div class="line">* An article in an untitled part</div></pre></td></tr></table></figure>
+<h2 id="PAGES"><a href="#PAGES" class="headerlink" title="PAGES"></a>PAGES</h2><p>每篇文章，就是一个单独的 <code>markdown</code> 文件，支持 <a href="https://guides.github.com/features/mastering-markdown/" target="_blank" rel="external">GitHub Flavored Markdown syntax</a>，比如：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># Title of the chapter</div><div class="line"></div><div class="line">This is a great introduction.</div><div class="line"></div><div class="line">## Section 1</div><div class="line"></div><div class="line">Markdown will dictates _most_ of your **book&apos;s structure**</div><div class="line"></div><div class="line">## Section 2</div><div class="line"></div><div class="line">...</div></pre></td></tr></table></figure>
 <h2 id="发布"><a href="#发布" class="headerlink" title="发布"></a>发布</h2><p>你可以选择在 <a href="https://www.gitbook.com/new" target="_blank" rel="external">GitBook New</a> 上创建，选择在线编辑或者通过 <code>git clone</code> 下载到本地编辑。</p>
-<p>你还可以将在 Github 上创建的书籍，同步到 GitBook 中， 在 GitBook 的项目设置中，手动添加对应的 Github 仓库，注意要保证 GitBook 对你的 Github 有访问权限。</p>
-<p>原理是借助 Webhook, 当你的 github 仓库有提交时，同步 GitBook 仓库。</p>
-<h2 id="绑定域名"><a href="#绑定域名" class="headerlink" title="绑定域名"></a>绑定域名</h2><p>默认发布在 GitBook 上的项目，URL规则是这样的: <code>https://www.gitbook.com/book/{username}/{bookname}</code>, 如果我们要为此绑定域名，需要两处设置:</p>
+<p>你还可以将在 Github 上创建的书籍，同步到 GitBook 中，在 GitBook 的项目设置中，手动添加对应的 Github 仓库，注意要保证 GitBook 对你的 Github 有访问权限。</p>
+<p>原理是借助 Webhook，当你的 github 仓库有提交时，同步 GitBook 仓库。</p>
+<h2 id="绑定域名"><a href="#绑定域名" class="headerlink" title="绑定域名"></a>绑定域名</h2><p>默认发布在 GitBook 上的项目，URL 规则是这样的: <code>https://www.gitbook.com/book/{username}/{bookname}</code>,如果我们要为此绑定域名，需要两处设置：</p>
 <ul>
-<li>GitBook对于的项目设置中，修改 <code>Domain</code>, 添加自定义域名</li>
-<li>在你的域名服务商提供的控制面板中，设置 <code>CNAME</code>， 绑定 <code>www.gitbooks.io</code>，开启 <code>domain forwarding</code></li>
+<li>GitBook 对于的项目设置中，修改 <code>Domain</code>，添加自定义域名</li>
+<li>在你的域名服务商提供的控制面板中，设置 <code>CNAME</code>，绑定 <code>www.gitbooks.io</code>，开启 <code>domain forwarding</code></li>
 </ul>
-<h2 id="缘由"><a href="#缘由" class="headerlink" title="缘由"></a>缘由</h2><p>重新使用 GitBook 是因为上周有人发邮件给我，说放在 GitBook 上的 <a href="https://www.gitbook.com/book/leohxj/a-programmer-prepares/details" target="_blank" rel="external">&lt;程序员的自我修养&gt;</a> 这本书，下载为 PDF格式时字体有些怪异，希望我能将书开源到 github 上供他自己编译，考虑到此书确实也很久没有更新了，我决定借此机会重启这一系列的更新，希望能将自己这一两年积累的知识贡献出来。</p>
+<h2 id="缘由"><a href="#缘由" class="headerlink" title="缘由"></a>缘由</h2><p>重新使用 GitBook 是因为上周有人发邮件给我，说放在 GitBook 上的 <a href="https://www.gitbook.com/book/leohxj/a-programmer-prepares/details" target="_blank" rel="external">《程序员的自我修养》</a>这本书，下载为 PDF 格式时字体有些怪异，希望我能将书开源到 github 上供他自己编译，考虑到此书确实也很久没有更新了，我决定借此机会重启这一系列的更新，希望能将自己这一两年积累的知识贡献出来。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li><a href="https://www.gitbook.com/" target="_blank" rel="external">GitBook 官网</a></li>
 <li><a href="https://github.com/GitbookIO/gitbook" target="_blank" rel="external">GitbookIO/gitbook</a></li>

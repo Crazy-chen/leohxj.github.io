@@ -1,0 +1,205 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>SVN 忽略文件的设置 | FinalHome | 最初的梦想</title>
+
+  
+  <meta name="author" content="Leo Hui">
+  
+
+  
+  <meta name="description" content="description by Leo">
+  
+
+  
+  
+  <meta name="keywords" content="SVN">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="SVN 忽略文件的设置"/>
+
+  <meta property="og:site_name" content="FinalHome"/>
+
+  
+  <meta property="og:image" content="/favicon.ico"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="FinalHome" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+</head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">FinalHome</a>
+    </h1>
+    <p class="site-description">最初的梦想</p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
+      
+        <li><a href="/">主页</a></li>
+      
+        <li><a href="/archives">归档</a></li>
+      
+        <li><a href="/about">关于</a></li>
+      
+        <li><a href="/projects">项目</a></li>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>SVN 忽略文件的设置</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/开发工具/svn忽略文件的设置/" rel="bookmark">
+        <time class="entry-date published" datetime="2016-09-20T09:00:00.000Z">
+          2016-09-20
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <p>git 有 <code>.gitirnore</code> 文件来设置项目的忽略文件规则，那 SVN 呢？<a id="more"></a></p>
+<p>工作中我有遇到这么一个 SVN 仓库，里面包含了多个项目，不同的人在维护。</p>
+<p>而在我的项目文件中，不希望提交某些文件，比如 <code>node_modules</code>，之前我的做法是每个版本迁出的时候，手动去添加各个需要忽略的文件。我希望能有一个类似 <code>.gitignore</code> 的方式，去维护我 SVN 仓库下需要忽略的文件。</p>
+<h2 id="TortoiseSVN-GUI"><a href="#TortoiseSVN-GUI" class="headerlink" title="TortoiseSVN GUI"></a>TortoiseSVN GUI</h2><p>就是那个 “小乌龟” 软件，一个 GUI 的 SVN 管理工具。</p>
+<p>我们常规的做法就是对需要忽略的文件或目录，右击，选择 <code>TortoiseSVN -&gt; Add to ignore list</code> （已添加的版本管理中的也类似，菜单名会变为 <code>Unversion and add to ignore list</code>）,其中会给出两种忽略方式, 比如 <code>node_modules</code> 目录：</p>
+<ul>
+<li>node_modules： 只忽略当前路径下的</li>
+<li>node_modules(recursive)： 忽略整个工程下的</li>
+</ul>
+<p>这就是我们常用的设置方式，也是我想要优化的地方。</p>
+<h2 id="TortoiseSVN-Command"><a href="#TortoiseSVN-Command" class="headerlink" title="TortoiseSVN Command"></a>TortoiseSVN Command</h2><p>其实 svn 也是有对应的命令行命令的，比如 <code>svn status</code>, <code>svn update</code>, <code>svn add</code>, <code>svn commit</code> 等。对应也有文档： <a href="https://tortoisesvn.net/docs/release/TortoiseSVN_zh_CN/tsvn-cli-main.html" target="_blank" rel="external">TortoiseSVN 命令</a></p>
+<p>其中就有介绍如何加入忽略列表:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">svn propget svn:ignore PATH &gt; tempfile</div><div class="line">&#123;edit new ignore item into tempfile&#125;</div><div class="line">svn propset svn:ignore -F tempfile PATH</div></pre></td></tr></table></figure>
+<p>这就是命令行下添加忽略规则的方式，我们可以看到实际是加到项目的 <code>properties</code> 中，这里使用的一个文件去维护忽略规则，<strong>这其实就是我想要的方式</strong>。</p>
+<p>导入忽略规则后，我们在项目中右击，通过 <code>TortoiseSVN -&gt; Properties</code> 可以查看，修改，以及导入导出。关于忽略的两种方式，实际对应的属性也是两个：</p>
+<ul>
+<li><code>svn:ignore</code></li>
+<li><code>svn:global-ignore</code></li>
+</ul>
+<h2 id="优化方案"><a href="#优化方案" class="headerlink" title="优化方案"></a>优化方案</h2><p>通过命令行的方式，我们可以看到忽略规则是可以被导入导出的。这样我们就可以通过文件去维护项目的忽略列表，虽然这个忽略规则不会自动被识别，但是已经可以简化我们许多人工点击的操作了。</p>
+<p>操作如下：</p>
+<ul>
+<li>生成忽略文件, 两种方式：<ul>
+<li>通过 <code>TortoiseSVN GUI</code> 方式，点击操作设置相关忽略文件</li>
+<li>维护 <code>.svnignore</code> 和 <code>.svnignore-global</code> 两个文件，分别通过命令行导入</li>
+</ul>
+</li>
+<li>在项目中右击，通过 <code>TortoiseSVN -&gt; Properties</code> 对配置导出</li>
+<li>在新项目中， 通过 <code>TortoiseSVN -&gt; Properties</code> 导入配置</li>
+</ul>
+<p>配置导出的时候，注意全选，然后 <code>export</code> ，导出的文件是 <code>.svnprops</code>。</p>
+<p>我们也可以只导出忽略规则，方式到对应的 <code>.svnignore</code> 和 <code>.svnignore-global</code> 文件中。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://tortoisesvn.net/docs/release/TortoiseSVN_zh_CN/tsvn-dug-ignore.html" target="_blank" rel="external">Tortoisesvn: 忽略文件和目录</a></li>
+<li><a href="https://tortoisesvn.net/docs/release/TortoiseSVN_zh_CN/tsvn-cli-main.html#tsvn-cli-addignore" target="_blank" rel="external">Tortoisesvn 命令: 加入忽略列表</a></li>
+<li><a href="http://stackoverflow.com/questions/86049/how-do-i-ignore-files-in-subversion" target="_blank" rel="external">How do I ignore files in Subversion?</a></li>
+</ul>
+
+      
+    </div>
+
+  </div>
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+      
+
+    <span class="post-categories">
+      <i class="icon-categories"></i>
+        <a href="/categories/开发工具/">开发工具</a>
+    </span>
+    
+
+    
+    
+
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/SVN/">SVN</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+  
+	<div id="comment">
+	
+	
+	<!-- 多说评论框 start -->
+	 <div class="ds-thread" data-thread-key="/开发工具/svn忽略文件的设置/" data-title="SVN 忽略文件的设置" data-url="http://finalhome.org/开发工具/svn忽略文件的设置/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"leohxj"};
+	  (function() {
+	    var ds = document.createElement('script');
+	    ds.type = 'text/javascript';ds.async = true;
+	    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+	    ds.charset = 'UTF-8';
+	    (document.getElementsByTagName('head')[0] 
+	     || document.getElementsByTagName('body')[0]).appendChild(ds);
+	  })();
+	  </script>
+	<!-- 多说公共JS代码 end -->
+	
+	</div>
+
+
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    </br>
+    
+    &copy; 2016 Leo Hui
+    
+  </p>
+</footer>
+    
+    
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5563232'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/stat.php%3Fid%3D5563232%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+  </div>
+</div>
+</body>
+</html>
