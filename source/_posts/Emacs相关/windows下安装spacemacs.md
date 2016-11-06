@@ -62,9 +62,11 @@ git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
 
 
 ## 基本操作
-在 spacemacs 下有个很重要的概念，叫做引导键，用来出发组合性质的功能， `SPC` 就是这个引导键，对应键盘的是空格键。
+在 spacemacs 下有个很重要的概念，叫做引导键，用来触发组合性质的功能， `SPC` 就是这个引导键，对应键盘的是空格键。
 
-光标移动使用的是 `vim` 模式， 如有不熟悉的，可以在主界面点击 ? -> `evil tutor` 学习。
+光标移动使用的是 `vim` 模式， 如有不熟悉的，可以在主界面点击 ? -> `evil tutor` 学习或者通过 `SPC SPC evil-tutor-start` 进入。
+
+而整体的 Emacs 向导，通过 `SPC SPC help-with-tutorial` 进入。
 
 一些常用的，我先列在这里：
 
@@ -78,6 +80,7 @@ git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
 
 ## 参考
 - [Emacs sexy](http://emacs.sexy/)
+- [How to Learn Emacs: A Hand-drawn One-pager for Beginners](http://sachachua.com/blog/2013/05/how-to-learn-emacs-a-hand-drawn-one-pager-for-beginners/)
 - [emacs 陈斌](https://codetimecn.com/episodes/emacs)
 - [GNU Emacs](https://www.gnu.org/software/emacs/)
 - [spacemacs](http://spacemacs.org/)
