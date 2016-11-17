@@ -1,0 +1,202 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>vim下如何共享系统剪切板 | FinalHome | 最初的梦想</title>
+
+  
+  <meta name="author" content="Leo Hui">
+  
+
+  
+  <meta name="description" content="description by Leo">
+  
+
+  
+  
+  <meta name="keywords" content="Emacs,vim">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="vim下如何共享系统剪切板"/>
+
+  <meta property="og:site_name" content="FinalHome"/>
+
+  
+  <meta property="og:image" content="/favicon.ico"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="FinalHome" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+</head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">FinalHome</a>
+    </h1>
+    <p class="site-description">最初的梦想</p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
+      
+        <li><a href="/">主页</a></li>
+      
+        <li><a href="/archives">归档</a></li>
+      
+        <li><a href="/about">关于</a></li>
+      
+        <li><a href="/projects">项目</a></li>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>vim下如何共享系统剪切板</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/Emacs相关/vim下如何共享系统剪切板/" rel="bookmark">
+        <time class="entry-date published" datetime="2016-11-17T13:00:00.000Z">
+          2016-11-17
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <p>最近使用了 spacemacs 后，其内置的 evil(vim) 模式使用了一段时间，发现对编码效率还是很有提高的。于是把自己最近用的较多的 Atom 和 WebStorm 都装上了 vim-mode。使用过程中，发现除了光标移动方式不用以外，剪切板的共享也是新手会遇到的另外一个问题。<a id="more"></a></p>
+<h2 id="vim下复制与粘贴"><a href="#vim下复制与粘贴" class="headerlink" title="vim下复制与粘贴"></a>vim下复制与粘贴</h2><ul>
+<li>yank: <code>y</code> 打头的一些命令，比如 <code>yy</code> 复制整行。</li>
+<li>visual mode: <code>v</code> 进入 visual mode 后，可以移动光标选取内容。按 <code>y</code> 即可复制。<code>x</code> 或 <code>d</code> 即可裁切。</li>
+<li>paster: <code>p</code>, 就是粘贴的意思。</li>
+</ul>
+<p>默认情况下 vim 是使用自己的寄存器对剪切记录作存储，与系统剪切板想独立。通过 <code>:help registers</code> 即可查看相关文档。而在使用中，可以通过 <code>:reg</code> 查看当前寄存器存储情况。</p>
+<p>vim 具有9种寄存器：</p>
+<ul>
+<li>无名（unnamed）寄存器：””，缓存最后一次操作内容；</li>
+<li>数字（numbered）寄存器：”0 ～”9，缓存最近操作内容，复制与删除有别, “0寄存器缓存最近一次复制的内容，”1-“9缓存最近9次删除内容</li>
+<li>行内删除（small delete）寄存器：”-，缓存行内删除内容；</li>
+<li>具名（named）寄存器：”a ～ “z或”A - “0Z，指定时可用；</li>
+<li>只读（read-only）寄存器：”:,”.,”%,”#，分别缓存最近命令、最近插入文本、当前文件名、当前交替文件名；</li>
+<li>表达式（expression）寄存器：”=，只读，用于执行表达式命令；</li>
+<li>选择及拖拽（selection and drop）寄存器：”*,”+,”~，存取GUI选择文本，可用于与外部应用交互，使用前提为系统剪切板（clipboard）可用；</li>
+<li>黑洞（black hole）寄存器：”_，不缓存操作内容（干净删除）；</li>
+<li>模式寄存器（last search pattern）：”/，缓存最近的搜索模式。</li>
+</ul>
+<p>注意其中，<strong>第七个</strong>即系统的剪切板记录。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><h3 id="quot-命令方式"><a href="#quot-命令方式" class="headerlink" title="&quot;+ 命令方式"></a><code>&quot;+</code> 命令方式</h3><p>vim 下如果系统粘贴系统剪切板的内容，使用命令 <code>&quot;+p</code> 替代 <code>p</code>。 裁切或者复制的时候，也是一样加上前缀 <code>&quot;+</code> 或 <code>&quot;*</code>。（这两个寄存器在大部分系统下是同系统剪切板的）</p>
+<h3 id="Insert-方式"><a href="#Insert-方式" class="headerlink" title="Insert 方式"></a><code>Insert</code> 方式</h3><ul>
+<li><code>Ctrl+Insert</code>: 调用系统粘贴</li>
+<li><code>Shift+Insert</code>: 调用系统复制</li>
+</ul>
+<p>这种方式在某些小新键盘上找不到 <code>insert</code> 按键，就很尴尬了。所以使用频率最低。</p>
+<h3 id="set-clipboard-unnamed-方式"><a href="#set-clipboard-unnamed-方式" class="headerlink" title="set clipboard=unnamed 方式"></a><code>set clipboard=unnamed</code> 方式</h3><p>这个是最直接的方式， 在 <code>~/.vimrc</code> 就是配置文件里，加上 <code>set clipboard=unnamed</code> ，使得其启动时自动执行。</p>
+<h2 id="各个软件下的具体设置"><a href="#各个软件下的具体设置" class="headerlink" title="各个软件下的具体设置"></a>各个软件下的具体设置</h2><h3 id="spacemacs"><a href="#spacemacs" class="headerlink" title="spacemacs"></a>spacemacs</h3><p>貌似都可以直接读取系统剪切板，我也就安装了基本的 layer。没有对这个特殊处理。</p>
+<h3 id="JetBrains-的-IDE"><a href="#JetBrains-的-IDE" class="headerlink" title="JetBrains 的 IDE"></a>JetBrains 的 IDE</h3><p>使用的插件为 <a href="https://github.com/JetBrains/ideavim" target="_blank" rel="external">ideavim</a>, 功能还是很强大的，会和 IDE 自身的快捷键有些冲突。我会将 <code>Ctrl+A/E/F/B/N/P</code> 保留作为光标快速移动方式。</p>
+<p>ideavim 默认使用的是 vim 自己的寄存器，所以我们要创建一个 <code>~/.ideavimrc</code>, 将 <code>set clipboard=unnamed</code> 填入重启即可。</p>
+<h3 id="Atom"><a href="#Atom" class="headerlink" title="Atom"></a>Atom</h3><p>使用的插件为 <a href="https://atom.io/packages/vim-mode-plus" target="_blank" rel="external">vim-mode-plus</a>, 在其设置项中，有一个选项可以控制是否使用系统剪切板。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="http://stackoverflow.com/questions/3961859/how-to-copy-to-clipboard-in-vim" target="_blank" rel="external">how-to-copy-to-clipboard-in-vim</a></li>
+</ul>
+
+      
+    </div>
+
+  </div>
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+      
+
+    <span class="post-categories">
+      <i class="icon-categories"></i>
+        <a href="/categories/Emacs相关/">Emacs相关</a>
+    </span>
+    
+
+    
+    
+
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/Emacs/">Emacs</a><a href="/tags/vim/">vim</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+  
+	<div id="comment">
+	
+	
+	<!-- 多说评论框 start -->
+	 <div class="ds-thread" data-thread-key="/Emacs相关/vim下如何共享系统剪切板/" data-title="vim下如何共享系统剪切板" data-url="http://finalhome.org/Emacs相关/vim下如何共享系统剪切板/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"leohxj"};
+	  (function() {
+	    var ds = document.createElement('script');
+	    ds.type = 'text/javascript';ds.async = true;
+	    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+	    ds.charset = 'UTF-8';
+	    (document.getElementsByTagName('head')[0] 
+	     || document.getElementsByTagName('body')[0]).appendChild(ds);
+	  })();
+	  </script>
+	<!-- 多说公共JS代码 end -->
+	
+	</div>
+
+
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    </br>
+    
+    &copy; 2016 Leo Hui
+    
+  </p>
+</footer>
+    
+    
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5563232'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/stat.php%3Fid%3D5563232%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+  </div>
+</div>
+</body>
+</html>

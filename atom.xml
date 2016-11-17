@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://finalhome.org/"/>
-  <updated>2016-11-13T15:03:09.000Z</updated>
+  <updated>2016-11-17T13:42:49.000Z</updated>
   <id>http://finalhome.org/</id>
   
   <author>
@@ -14,6 +14,64 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>vim下如何共享系统剪切板</title>
+    <link href="http://finalhome.org/Emacs%E7%9B%B8%E5%85%B3/vim%E4%B8%8B%E5%A6%82%E4%BD%95%E5%85%B1%E4%BA%AB%E7%B3%BB%E7%BB%9F%E5%89%AA%E5%88%87%E6%9D%BF/"/>
+    <id>http://finalhome.org/Emacs相关/vim下如何共享系统剪切板/</id>
+    <published>2016-11-17T13:00:00.000Z</published>
+    <updated>2016-11-17T13:42:49.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近使用了 spacemacs 后，其内置的 evil(vim) 模式使用了一段时间，发现对编码效率还是很有提高的。于是把自己最近用的较多的 Atom 和 WebStorm 都装上了 vim-mode。使用过程中，发现除了光标移动方式不用以外，剪切板的共享也是新手会遇到的另外一个问题。<a id="more"></a></p>
+<h2 id="vim下复制与粘贴"><a href="#vim下复制与粘贴" class="headerlink" title="vim下复制与粘贴"></a>vim下复制与粘贴</h2><ul>
+<li>yank: <code>y</code> 打头的一些命令，比如 <code>yy</code> 复制整行。</li>
+<li>visual mode: <code>v</code> 进入 visual mode 后，可以移动光标选取内容。按 <code>y</code> 即可复制。<code>x</code> 或 <code>d</code> 即可裁切。</li>
+<li>paster: <code>p</code>, 就是粘贴的意思。</li>
+</ul>
+<p>默认情况下 vim 是使用自己的寄存器对剪切记录作存储，与系统剪切板想独立。通过 <code>:help registers</code> 即可查看相关文档。而在使用中，可以通过 <code>:reg</code> 查看当前寄存器存储情况。</p>
+<p>vim 具有9种寄存器：</p>
+<ul>
+<li>无名（unnamed）寄存器：””，缓存最后一次操作内容；</li>
+<li>数字（numbered）寄存器：”0 ～”9，缓存最近操作内容，复制与删除有别, “0寄存器缓存最近一次复制的内容，”1-“9缓存最近9次删除内容</li>
+<li>行内删除（small delete）寄存器：”-，缓存行内删除内容；</li>
+<li>具名（named）寄存器：”a ～ “z或”A - “0Z，指定时可用；</li>
+<li>只读（read-only）寄存器：”:,”.,”%,”#，分别缓存最近命令、最近插入文本、当前文件名、当前交替文件名；</li>
+<li>表达式（expression）寄存器：”=，只读，用于执行表达式命令；</li>
+<li>选择及拖拽（selection and drop）寄存器：”*,”+,”~，存取GUI选择文本，可用于与外部应用交互，使用前提为系统剪切板（clipboard）可用；</li>
+<li>黑洞（black hole）寄存器：”_，不缓存操作内容（干净删除）；</li>
+<li>模式寄存器（last search pattern）：”/，缓存最近的搜索模式。</li>
+</ul>
+<p>注意其中，<strong>第七个</strong>即系统的剪切板记录。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><h3 id="quot-命令方式"><a href="#quot-命令方式" class="headerlink" title="&quot;+ 命令方式"></a><code>&quot;+</code> 命令方式</h3><p>vim 下如果系统粘贴系统剪切板的内容，使用命令 <code>&quot;+p</code> 替代 <code>p</code>。 裁切或者复制的时候，也是一样加上前缀 <code>&quot;+</code> 或 <code>&quot;*</code>。（这两个寄存器在大部分系统下是同系统剪切板的）</p>
+<h3 id="Insert-方式"><a href="#Insert-方式" class="headerlink" title="Insert 方式"></a><code>Insert</code> 方式</h3><ul>
+<li><code>Ctrl+Insert</code>: 调用系统粘贴</li>
+<li><code>Shift+Insert</code>: 调用系统复制</li>
+</ul>
+<p>这种方式在某些小新键盘上找不到 <code>insert</code> 按键，就很尴尬了。所以使用频率最低。</p>
+<h3 id="set-clipboard-unnamed-方式"><a href="#set-clipboard-unnamed-方式" class="headerlink" title="set clipboard=unnamed 方式"></a><code>set clipboard=unnamed</code> 方式</h3><p>这个是最直接的方式， 在 <code>~/.vimrc</code> 就是配置文件里，加上 <code>set clipboard=unnamed</code> ，使得其启动时自动执行。</p>
+<h2 id="各个软件下的具体设置"><a href="#各个软件下的具体设置" class="headerlink" title="各个软件下的具体设置"></a>各个软件下的具体设置</h2><h3 id="spacemacs"><a href="#spacemacs" class="headerlink" title="spacemacs"></a>spacemacs</h3><p>貌似都可以直接读取系统剪切板，我也就安装了基本的 layer。没有对这个特殊处理。</p>
+<h3 id="JetBrains-的-IDE"><a href="#JetBrains-的-IDE" class="headerlink" title="JetBrains 的 IDE"></a>JetBrains 的 IDE</h3><p>使用的插件为 <a href="https://github.com/JetBrains/ideavim" target="_blank" rel="external">ideavim</a>, 功能还是很强大的，会和 IDE 自身的快捷键有些冲突。我会将 <code>Ctrl+A/E/F/B/N/P</code> 保留作为光标快速移动方式。</p>
+<p>ideavim 默认使用的是 vim 自己的寄存器，所以我们要创建一个 <code>~/.ideavimrc</code>, 将 <code>set clipboard=unnamed</code> 填入重启即可。</p>
+<h3 id="Atom"><a href="#Atom" class="headerlink" title="Atom"></a>Atom</h3><p>使用的插件为 <a href="https://atom.io/packages/vim-mode-plus" target="_blank" rel="external">vim-mode-plus</a>, 在其设置项中，有一个选项可以控制是否使用系统剪切板。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="http://stackoverflow.com/questions/3961859/how-to-copy-to-clipboard-in-vim" target="_blank" rel="external">how-to-copy-to-clipboard-in-vim</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近使用了 spacemacs 后，其内置的 evil(vim) 模式使用了一段时间，发现对编码效率还是很有提高的。于是把自己最近用的较多的 Atom 和 WebStorm 都装上了 vim-mode。使用过程中，发现除了光标移动方式不用以外，剪切板的共享也是新手会遇到的另外一个问题。
+    
+    </summary>
+    
+      <category term="Emacs相关" scheme="http://finalhome.org/categories/Emacs%E7%9B%B8%E5%85%B3/"/>
+    
+    
+      <category term="Emacs" scheme="http://finalhome.org/tags/Emacs/"/>
+    
+      <category term="vim" scheme="http://finalhome.org/tags/vim/"/>
+    
+  </entry>
   
   <entry>
     <title>如何搭建优雅的开发环境-外设篇</title>
@@ -1264,41 +1322,6 @@
       <category term="express" scheme="http://finalhome.org/tags/express/"/>
     
       <category term="mongodb" scheme="http://finalhome.org/tags/mongodb/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>UbuntuServer的初次设置</title>
-    <link href="http://finalhome.org/Linux/UbuntuServer%E7%9A%84%E5%88%9D%E6%AC%A1%E8%AE%BE%E7%BD%AE/"/>
-    <id>http://finalhome.org/Linux/UbuntuServer的初次设置/</id>
-    <published>2014-05-16T07:59:09.000Z</published>
-    <updated>2016-08-29T13:58:52.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>上一篇说完了Windows下搭建UbuntuServer开发环境，这篇就说说初次进入UbuntuServer的设置。<br><a id="more"></a></p>
-<h2 id="初次设置"><a href="#初次设置" class="headerlink" title="初次设置"></a>初次设置</h2><p>安装UbuntuServer的时候，推荐只选择安装<code>openssh-server</code>服务。</p>
-<p>进入系统后，首先需要修改root密码，<code>sudo passwd</code>。</p>
-<p>如果是本地虚拟机跑UbuntuServer，推荐更换软件源：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">更换软件源</div><div class="line">给两个源地址：</div><div class="line">http://mirrors.163.com/和http://mirrors.ustc.edu.cn/</div><div class="line">给个更换源的方法:(http://mirrors.163.com/.help/ubuntu.html)</div><div class="line">cd /etc/apt</div><div class="line">备份软件源文件。</div><div class="line">sudo mv sources.list sources.list.backup</div><div class="line">输入你的密码</div><div class="line">sudo wget http://mirrors.163.com/.help/sources.list.lucid</div><div class="line">sudo mv sources.list.lucid sources.list</div><div class="line">换好软件源了，更新一下源列表。</div><div class="line">sudo apt-get update</div><div class="line">接下来从源列表安装更新</div><div class="line">sudo apt-get dist-upgrade</div></pre></td></tr></table></figure></p>
-<p>接下来，安装必要的软件和环境:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install -y dkms build-essential linux-headers-generic linux-headers-$(uname -r)</div><div class="line"></div><div class="line">sudo apt-get install curl</div><div class="line"></div><div class="line"># 如果之前没有安装openssh</div><div class="line">sudo apt-get install openssh-server</div></pre></td></tr></table></figure></p>
-<p>一般的软件，通过<code>apt-get</code>安装即可，版本求新的请通过:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./configure &amp;&amp; make &amp;&amp; make install</div></pre></td></tr></table></figure></p>
-<h2 id="node开发环境搭建"><a href="#node开发环境搭建" class="headerlink" title="node开发环境搭建"></a>node开发环境搭建</h2><p>最近使用node+express+mongodb制作了一个段地址网站，搭建在UbuntuServer上。所以有必要说下<code>node</code>的环境搭建：</p>
-<h3 id="git"><a href="#git" class="headerlink" title="git"></a>git</h3><p><code>sudo apt-get install git</code></p>
-<h3 id="nodejs"><a href="#nodejs" class="headerlink" title="nodejs"></a>nodejs</h3><p>通过 PPA 在 Ubuntu 上安装最新版本的 node.js:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install python-software-properties python g++ make</div><div class="line">sudo add-apt-repository ppa:chris-lea/node.js</div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install nodejs</div></pre></td></tr></table></figure></p>
-<p>这种安装方式可能存在命名冲突，所以ubuntu下使用的命令是<code>nodejs</code>，没特殊必要，可以不修改，如果想要修改为<code>node</code>，使用软连接<code>sudo ln -s /usr/bin/nodejs /usr/bin/node</code></p>
-<p>不推荐下载github上的代码编译，原因是版本太新，容易和npm上的包不兼容。</p>
-<h3 id="npm"><a href="#npm" class="headerlink" title="npm"></a>npm</h3><p><code>sudo apt-get install npm</code></p>
-<h3 id="mongodb"><a href="#mongodb" class="headerlink" title="mongodb"></a>mongodb</h3><p>老老实实按照官方文档来: <a href="http://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/" target="_blank" rel="external">点这里</a>。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;上一篇说完了Windows下搭建UbuntuServer开发环境，这篇就说说初次进入UbuntuServer的设置。&lt;br&gt;
-    
-    </summary>
-    
-      <category term="Linux" scheme="http://finalhome.org/categories/Linux/"/>
-    
-    
-      <category term="Ubuntu" scheme="http://finalhome.org/tags/Ubuntu/"/>
     
   </entry>
   
