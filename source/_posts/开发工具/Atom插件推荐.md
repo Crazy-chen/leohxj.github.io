@@ -1,0 +1,134 @@
+title: Atom 插件推荐
+date: 2016-11-18 16:03:27
+categories: [开发工具]
+tags: [Atom]
+---
+
+
+最近将主要的编辑器从 Sublime 切换为 Atom 了。对 Atom 的插件系统还是很满意的，但是速度还是 sublime 快。配置了一段时间，列举一些有用的插件给大家。
+<!--more-->
+
+atom 官方自带了一些插件，可以在 `Settings->Package->Core Package` 中查看，比如 `linter`, `language-html` 等都自带安装了。
+
+# language
+
+- [language-markdown](https://atom.io/packages/language-markdown)
+- [language-babel](https://atom.io/packages/language-babel)
+- [language-source](https://atom.io/packages/language-source): Adds basic comment, indent, and outdent patterns used as a fallback by all source files in Atom.
+- [language-vue](https://atom.io/packages/language-vue): Adds syntax highlighting and snippets to Vue component files in Atom.
+
+# linter
+
+- [linter](https://atom.io/packages/linter)
+- [All linter](http://atomlinter.github.io/): 列举了所有的 linter
+- [linter-markdown](https://atom.io/packages/linter-markdown)
+- [linter-csslint](https://atom.io/packages/linter-csslint)
+- [linter-eslint](https://atom.io/packages/linter-eslint)
+- [linter-htmlhint](https://atom.io/packages/linter-htmlhint)
+
+# autocomplete
+
+- [atom-ternjs](https://atom.io/packages/atom-ternjs)
+- [emmet](https://atom.io/packages/emmet)
+- [autocomplete-plus](https://atom.io/packages/autocomplete-plus): 内置的插件
+- [autocomplete-paths](https://atom.io/packages/autocomplete-paths): 文件路径补全
+- [autocomplete-modules](https://atom.io/packages/autocomplete-modules)
+
+# markdown
+
+- [markdown-preview](https://atom.io/packages/markdown-preview): atom 自带的预览插件，可以用下面的替换
+- [markdown-preview-plus](https://atom.io/packages/markdown-preview-plus): Markdown Preview Plus (MPP) is a fork of Markdown Preview that provides a real-time preview of markdown documents.
+- [markdown-writer](https://atom.io/packages/markdown-writer): 提供书写时的一些辅助特性
+- [Tidy Markdown](https://atom.io/packages/tidy-markdown): 文件保存的时候，帮助纠正书写错误
+- [markdown-assistant](https://atom.io/packages/markdown-assistant): 拖拽图片，自动上传云服务上。
+- [markdown-scroll-sync](https://atom.io/packages/markdown-scroll-sync): 编辑和预览同步滚动
+- [markdown-pdf](https://atom.io/packages/markdown-pdf): 生成pdf, png, jpeg 图片
+
+# 代码书写辅助类
+
+- [dash](https://atom.io/packages/dash): Simple Dash documentation integration for Atom.可在 windows 下使用，客户端用 zeal 即可。
+- [docblockr](https://atom.io/packages/docblockr): 注释书写插件
+- [atom-beautify](https://atom.io/packages/atom-beautify): 代码格式化
+- [color-picker](https://atom.io/packages/color-picker): 颜色选取插件
+- [pigments](https://atom.io/packages/pigments): 颜色可视化插件
+- [elastic-tabstops](https://atom.io/packages/elastic-tabstops): An experimental implementation of Elastic tabstops for Atom
+- [hyperclick](https://atom.io/packages/hyperclick): Pluggable text-clicking UI for Atom.
+- [js-hyperclick](https://atom.io/packages/js-hyperclick): 配合上面一个插件使用
+- [regex-railroad-diagram](https://atom.io/packages/regex-railroad-diagram): 正则表达式可视化
+
+# 适合前端的
+
+- [atom-html-preview](https://atom.io/packages/atom-html-preview)
+- [open-in-browsers](https://atom.io/packages/open-in-browsers)
+- [css-comb](https://atom.io/packages/css-comb): 这个插件支持读取 `.csscomb.json`
+
+# git 相关
+- [git-time-machine](https://atom.io/packages/git-time-machine): 可视化查看提交记录
+
+# 编辑器辅助类
+
+- [sync-settings](https://atom.io/packages/sync-settings): 通过 gist 同步 Atom 配置
+- [Editor-setting](https://atom.io/packages/editor-settings): 不同文件打开不同扩展
+- [open-recent](https://atom.io/packages/open-recent): 查看最近打开的文件
+- [project-plus](https://atom.io/packages/project-plus): 快速切换 project
+- [advanced-open-file](https://atom.io/packages/advanced-open-file): Open and create files and directories easily.
+- [file-icons](https://atom.io/packages/file-icons): 增加文件图标的显示
+- [file-icon-supplement](https://atom.io/packages/file-icon-supplement): file-icons 的提升
+- [minimap](https://atom.io/packages/minimap): 增加右侧代码预览
+- [minimal-highlight-selected](https://atom.io/packages/minimap-highlight-selected): 在右侧minimap视图中标明高亮部分
+- [tool-bar](https://atom.io/packages/tool-bar): 增加快速导航栏，类似vs code 右侧那个
+- [tool-bar plugin](https://atom.io/packages/search?utf8=%E2%9C%93&q=keyword%3Atool-bar): 上面的插件只是提供功能，还需要安装对应的插件，展示具体的内容
+- [typewriter](https://atom.io/packages/typewriter): A better writing experience for Atom
+- [Zen](https://atom.io/packages/Zen): 书写的勿扰模式
+- [highlight-selected](https://atom.io/packages/highlight-selected): 高亮所选择内容
+- [highlight-line](https://atom.io/packages/highlight-line): 高亮当前行
+- [editorconfig](https://atom.io/packages/editorconfig): 编辑器格式统一插件，借助 `.editorconfig` 文件，团队开发必备
+- [vim-mode-plus](https://atom.io/packages/vim-mode-plus): vim-mode improved. 替代官方的 vim-mode
+- [vim-mode-plus-ex-mode](https://atom.io/packages/vim-mode-plus-ex-mode): 提供`:w` 类似功能，按键快捷键需要自己定义
+- [smalls](https://atom.io/packages/smalls): 光标快速跳转插件
+- [easy-motion-redux](https://atom.io/packages/easy-motion-redux): 可是区域内光标快速跳转插件
+- [wakatime](https://atom.io/packages/wakatime): 记录使用编辑器的时间，很多编辑器或IDE都有这个插件
+- [package-generator](https://atom.io/packages/package-generator): Generates and opens a new sample package or syntax theme in Atom.
+- [spacemacs-evil-keys](https://atom.io/packages/spacemacs-evil-keys): 模拟 spacemacs evil 模式, 不建议使用，如果喜欢还是直接使用spacemacs 吧
+- [proton-mode](https://atom.io/packages/proton-mode): spacemacs and sublimious style editing in Atom. (效果和上面类似，功能应该更强大)，不建议使用，如果喜欢还是直接使用spacemacs 吧。因为这个插件会建立自己的插件系统，对你以后的配置会做修改。
+
+# funny
+
+- [Activate Power Mode](https://github.com/JoelBesada/activate-power-mode): 打字效果，配合tickeys音效，不用买机械键盘了。
+
+# 优秀的插件开发者
+
+- [atom](https://atom.io/users/atom): atom 官方, 应该基本都是内置的插件
+- [atom-community](https://atom.io/users/atom-community): atom 社区
+- [steelbrain's Packages](https://atom.io/users/steelbrain/packages): linter
+- [t9md](https://atom.io/users/t9md): vim-mode-plus
+
+
+# 管理配置
+## 配置同步
+使用上述提到的 [sync-settings](https://atom.io/packages/sync-settings) 插件完成。步骤如下:
+
+- 安装 sync-settings 插件
+- 打开 [Create a new personal access token](https://github.com/settings/tokens/new), 填入 `Token description` （如果快捷键或者某些配置在不同系统下不一致，建议分开多套备份）, 勾选 `gist`, 点击 `Generate token`, 完成后界面上有一串字符，可以拷贝。就是你的 `Personal Access Token`
+- 打开 [Create new gist](https://gist.github.com/), 在输入框中随便填入内容。点击 `Create secret gist`. （如果你想要分享你的配置，也可以点击 publish）。完成后，选择生成文件的后缀字符，`gitst:xxxxx`， `xxxxx` 就是你的 `Gist Id`。
+- 将上述两个内容，填入 `sync-settings` 中对应字段
+- 通过 `Command Palette` 打开 `sync-settings:backup` 完成备份，其他功能也都是在 `sync-settings:` 命令下。
+- 备份成功，Atom 右上角会有绿色弹框提示，如果失败，可以打开 `Toggle Developer Tools` 查看控制台，看是否是网络原因报错，可能需要设置代理，可以参考： [issue: Uncaught SyntaxError: Unexpected token c ](https://github.com/atom-community/sync-settings/issues/273) ， 其中有人提及。
+
+
+## 配置恢复
+安装 [sync-settings](https://atom.io/packages/sync-settings) 插件完成后，将 settings 设置完成，通过命令 `sync settings: restore` 即可开始恢复配置，在其恢复过程中，可切换开启 `Toggle Developer Tools` 查看过程，以及是否有 package 安装失败。
+
+
+## Atom 默认的配置文件
+- init.coffee
+- config.cson
+- keymap.cson
+- snippets.cson
+- style.less
+
+但是其实还有些是插件自身的配置，比如:
+
+- projects.cson: 管理切换 project 的
+- toolbar.cson: toolbar 管理
+- project.json: sync-settings 添加的
