@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://finalhome.org/"/>
-  <updated>2016-11-17T13:42:49.000Z</updated>
+  <updated>2016-11-20T09:16:23.000Z</updated>
   <id>http://finalhome.org/</id>
   
   <author>
@@ -14,6 +14,324 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>WebStorm 上手设置</title>
+    <link href="http://finalhome.org/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/webstorm%E4%B8%8A%E6%89%8B%E8%AE%BE%E7%BD%AE/"/>
+    <id>http://finalhome.org/开发工具/webstorm上手设置/</id>
+    <published>2016-11-20T14:26:46.000Z</published>
+    <updated>2016-11-20T09:16:23.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>WebStorm 是 JetBrains 出品的一个针对前端开发的 IDE，它们家的 IDE 插件系统其实是公用的，IDEA 通过插件也可以完成 前端开发。<br><a id="more"></a></p>
+<h2 id="配色设置"><a href="#配色设置" class="headerlink" title="配色设置"></a>配色设置</h2><p>其实内置的配色也不错，只是我个人喜欢灰蓝系列的，且和其他几个编辑器配色保持了统一，我使用的是： <a href="http://color-themes.com/?view=theme&amp;id=563a1a7880b4acf11273ae9b" target="_blank" rel="external">Base16 Ocean</a>。下载后，通过 <code>import settings</code> 导入，一般字体默认会比较小，我们需要再对这个配色方案 <code>Save As..</code> 存为一个自定义的配色，然后修改里面的字体，字号，以及比如 js 文件下全局变量名颜色（有的默认颜色比较刺眼）。字体推荐 <code>Source Code Pro</code>， 字号选择 16。</p>
+<h2 id="插件安装"><a href="#插件安装" class="headerlink" title="插件安装"></a>插件安装</h2><p>IDE 自身带了很大插件，不需要特殊安装就以及很好使用了。但是我是个折腾的人，比较注重效率问题，所以我安装了这样几个插件:</p>
+<ul>
+<li><a href="https://github.com/hsz/idea-gitignore" target="_blank" rel="external">.ignore</a>: 管理 ignore 文件</li>
+<li><a href="https://github.com/johnlindquist/AceJump" target="_blank" rel="external">AceJump</a>: 光标快速跳转</li>
+<li><a href="https://github.com/gdelmas/IntelliJDashPlugin" target="_blank" rel="external">Dash</a>: 调用 Dash 或 Zeal 文档查询工具</li>
+<li><a href="https://github.com/JetBrains/ideavim" target="_blank" rel="external">IdeaVim</a>: vim-mode, 需要共享剪切板的话，配置<code>~/.ideavimrc</code></li>
+<li><a href="http://www.jetbrains.com/" target="_blank" rel="external">Markdown Support</a>: 支持 Markdown 语法与预览</li>
+</ul>
+<h3 id="IdeaVim-设置"><a href="#IdeaVim-设置" class="headerlink" title="IdeaVim 设置"></a>IdeaVim 设置</h3><p>vim 快捷键与 WebStrom 自带的快捷键会有冲突，需要进行设置，决定在 vim-mode 下，冲突的快捷键，具体制定什么操作，具体的设置在 <code>Settings -&gt; Other Settings -&gt; Vim Emulation</code> 中。</p>
+<ul>
+<li><code>Ctrl + a/b/e/f/p/n</code> 保留为系统的光标移动。</li>
+<li><code>ctrl + h/o/d/u</code> 作为 vim 方式</li>
+</ul>
+<h2 id="安装设置"><a href="#安装设置" class="headerlink" title="安装设置"></a>安装设置</h2><h3 id="自定义快捷键"><a href="#自定义快捷键" class="headerlink" title="自定义快捷键"></a>自定义快捷键</h3><p>默认的快捷键，可以从 <a href="https://resources.jetbrains.com/assets/products/webstorm/WebStorm_ReferenceCard.pdf" target="_blank" rel="external">WebStorm_ReferenceCard</a> 查看。</p>
+<p>但是针对个人，我们可以优化这些快捷键，我优化了以下内容:</p>
+<ul>
+<li>Search Everything: <code>Alt+p</code></li>
+<li>Find Action: <code>Ctrl+Shift+p</code></li>
+<li>Close: <code>Ctrl+w</code></li>
+<li>Select Next Tab: <code>Ctrl+Tab</code></li>
+<li>Select Previous Tab: <code>Ctrl+Shift+Tab</code></li>
+</ul>
+<h3 id="常用快捷键"><a href="#常用快捷键" class="headerlink" title="常用快捷键"></a>常用快捷键</h3><ul>
+<li>Recent File: <code>cmd+e</code></li>
+<li><code>gd</code>: find definition</li>
+</ul>
+<h2 id="配置管理"><a href="#配置管理" class="headerlink" title="配置管理"></a>配置管理</h2><p>通过 <code>Export Settings</code> 即可导出配置，然后下次通过 <code>Import Settings</code> 完成导入。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;WebStorm 是 JetBrains 出品的一个针对前端开发的 IDE，它们家的 IDE 插件系统其实是公用的，IDEA 通过插件也可以完成 前端开发。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="开发工具" scheme="http://finalhome.org/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
+    
+    
+      <category term="JetBrains" scheme="http://finalhome.org/tags/JetBrains/"/>
+    
+      <category term="WebStorm" scheme="http://finalhome.org/tags/WebStorm/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>spacemacs 下 vim 基本命令</title>
+    <link href="http://finalhome.org/Emacs%E7%9B%B8%E5%85%B3/spacemacs-vim%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/"/>
+    <id>http://finalhome.org/Emacs相关/spacemacs-vim基本命令/</id>
+    <published>2016-11-19T13:00:00.000Z</published>
+    <updated>2016-11-20T09:15:11.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>spacemacs 使用的是 <a href="https://gitorious.org/evil/pages/Home" target="_blank" rel="external">emacs: evil</a> 插件。主要是以 vim 光标移动为主，向导可以参考 vimtutor, 或者 <a href="https://github.com/syl20bnr/evil-tutor" target="_blank" rel="external">evil-tutor</a> 进行学习。<br><a id="more"></a></p>
+<h2 id="vim-模式"><a href="#vim-模式" class="headerlink" title="vim 模式"></a>vim 模式</h2><h3 id="普通模式-normal-mode"><a href="#普通模式-normal-mode" class="headerlink" title="普通模式(normal-mode)"></a>普通模式(normal-mode)</h3><p>Vim启动后的默认模式, 主要移动光标，和对字符删除与替换。通过 <code>i</code> 等命令进入插入模式。</p>
+<h3 id="插入模式-insert-mode"><a href="#插入模式-insert-mode" class="headerlink" title="插入模式(insert-mode)"></a>插入模式(insert-mode)</h3><p>在这个模式中，大多数按键都会向文本缓冲中插入文本。大多数新用户希望文本编辑器编辑过程中一直保持这个模式。在插入模式中，可以按ESC键回到普通模式。</p>
+<h3 id="可视模式-visual-mode"><a href="#可视模式-visual-mode" class="headerlink" title="可视模式(visual-mode)"></a>可视模式(visual-mode)</h3><p>这个模式与普通模式比较相似。但是移动命令会扩大高亮的文本区域。高亮区域可以是字符、行或者是一块文本。当执行一个非移动命令时，命令会被执行到这块高亮的区域上。Vim的”文本对象”也能和移动命令一样用在这个模式中。</p>
+<h3 id="选择模式-select-mode"><a href="#选择模式-select-mode" class="headerlink" title="选择模式(select-mode)"></a>选择模式(select-mode)</h3><p>这个模式和无模式编辑器的行为比较相似（Windows标准文本控件的方式）。这个模式中，可以用鼠标或者光标键高亮选择文本，不过输入任何字符的话，Vim会用这个字符替换选择的高亮文本块，并且自动进入插入模式。</p>
+<h3 id="命令模式-command-mode"><a href="#命令模式-command-mode" class="headerlink" title="命令模式(command-mode)"></a>命令模式(command-mode)</h3><p>在命令行模式中可以输入会被解释成并执行的文本。例如执行命令（”:”键），搜索（”/“和”?”键）或者过滤命令（”!”键）。在命令执行之后，Vim返回到命令行模式之前的模式，通常是普通模式。</p>
+<h3 id="EX-模式-ex-mode"><a href="#EX-模式-ex-mode" class="headerlink" title="EX-模式(ex-mode)"></a>EX-模式(ex-mode)</h3><p>这和命令行模式比较相似，在使用”:visual”命令离开Ex模式前，可以一次执行多条命令。</p>
+<h2 id="vim-基本命令"><a href="#vim-基本命令" class="headerlink" title="vim 基本命令"></a>vim 基本命令</h2><ul>
+<li><code>:</code>: 进入命令模式</li>
+<li><code>esc</code>: 返回普通模式</li>
+<li><code>Ctrl-o</code>: 进入衍生模式，比如插入模式下，<code>ctrl-o</code> 输入一个普通模式下的命令，执行完毕后，自动返回 插入模式。</li>
+</ul>
+<h3 id="光标移动"><a href="#光标移动" class="headerlink" title="光标移动"></a>光标移动</h3><ul>
+<li><code>h,j,k,l</code>: 普通模式下，光标移动，左，下，上，右。（逆时针）</li>
+<li><code>5h</code>: 重复执行5次h, 光标左移5位</li>
+<li><code>0</code>: 行首</li>
+<li><code>^</code>: 行首第一个非空白字符</li>
+<li><code>$</code>: 行尾</li>
+<li><p><code>g_</code>: 行尾最后一个非空白字符</p>
+</li>
+<li><p><code>w,e,b</code>: 普通模式下，光标以单词纬度移动。</p>
+</li>
+<li><p><code>W,E,B</code>: 同上，但是移动的单词可以包含标点。比如连字符<code>-</code></p>
+</li>
+<li><p><code>Ctrl-d</code>, <code>Ctrl-u</code>: 半个屏幕向下，向上滚动。</p>
+</li>
+<li><code>Ctrl-B, Ctrl-F</code>: 滚动一个屏幕，通常会被我覆盖，我用来定义 emacs 光标移动方式。</li>
+<li><code>zt,zz,zm</code>: 使当前行，处于屏幕的顶部，中间，底部。</li>
+<li><p><code>H,M,L</code>: 光标定位到当前屏幕的，顶部，中间，底部。</p>
+</li>
+<li><p><code>gg</code>: 定位到文本开始处</p>
+</li>
+<li><code>G</code>: 定位到文本最后一行</li>
+<li><code>5G</code>: 移动到第五行</li>
+<li><code>:5</code>: 同上，移动到指定行</li>
+<li><p><code>gd</code>: 找到当前变量定义处。</p>
+</li>
+<li><p><code>%</code>: 跳转匹配的括号, (,{,[,],},)</p>
+</li>
+<li><code>()</code>: back, forword</li>
+<li><code>{}</code>: back,forword paragraph</li>
+<li><p><code>[{</code>,<code>]}</code>: back, forword block</p>
+</li>
+<li><p><code>fx,Fx</code>: x是一个字符，向后跳到x字符出现的位置</p>
+</li>
+<li><code>tx,Tx</code>: x是一个字符，向前跳到x字符出现的位置</li>
+<li><code>*</code>: 向后跳转到当前字符相同处, spacemacs 中无效</li>
+<li><code>#</code>: 向前跳转到当前字符相同处，spacemacs 中无效</li>
+</ul>
+<h3 id="编辑模式"><a href="#编辑模式" class="headerlink" title="编辑模式"></a>编辑模式</h3><ul>
+<li><code>i</code>: 当前光标前插入</li>
+<li><code>a</code>: 当前光标后插入</li>
+<li><code>I</code>: 当前行首插入</li>
+<li><code>A</code>: 当前行尾插入</li>
+<li><code>o</code>: 当前行后插入</li>
+<li><code>O</code>: 当前行前插入</li>
+<li><p><code>wi</code>, <code>bi</code>, <code>ea</code>: 下一个单词前，单词后插入</p>
+</li>
+<li><p><code>r</code>: 重写当前一个字符</p>
+</li>
+<li><p><code>R</code>: 重写多个字符，需要手动退出</p>
+</li>
+<li><p><code>J</code>: 何必当前行和下一行</p>
+</li>
+<li><p><code>xp</code>: 交换当前和下一个字符位置</p>
+</li>
+<li><p><code>u</code>: undo</p>
+</li>
+<li><code>Ctrl+r</code>: redo</li>
+<li><code>.</code>: repeat last command, 可用于 redo</li>
+</ul>
+<h3 id="复制，粘贴，裁切"><a href="#复制，粘贴，裁切" class="headerlink" title="复制，粘贴，裁切"></a>复制，粘贴，裁切</h3><ul>
+<li><code>x</code>: 删除当前光标字符</li>
+<li><code>X</code>: 删除当前光标前字符</li>
+<li><code>D</code>: 删除当前行后字符</li>
+<li><code>C</code>: 重写当前行后字符，就是执行了 <code>D</code>， <code>a</code></li>
+<li><code>cc</code>: 重写当前行，相当于 <code>dd</code>, <code>i</code></li>
+<li><code>cw</code>: 重写当前词，相当于 <code>dw</code>, <code>i</code></li>
+<li><code>s</code>: 重写当前字符</li>
+<li><code>S</code>: 相当于 <code>cc</code></li>
+<li><code>d</code>: 执行关于删除的引导键, 比如 <code>d0</code>, <code>d$</code></li>
+<li><code>dd</code>: 删除当前行</li>
+<li><code>dw</code>: 向后删除当前词</li>
+<li><code>db</code>: 向前删除当前词</li>
+<li><p><code>ndw</code>: n表示重复执行</p>
+</li>
+<li><p><code>yy</code>: yank 就是拷贝的意思，拷贝当前行</p>
+</li>
+<li><code>yw</code>: 复制当前光标到当前词尾的字符</li>
+<li><p><code>yb</code>: 复制当前光标到当前词首的字符</p>
+</li>
+<li><p><code>p</code>: 当前光标后粘贴</p>
+</li>
+<li><p><code>P</code>: 当前光标前粘贴</p>
+</li>
+<li><p><code>v</code>: 进入 visual 模式</p>
+</li>
+<li><code>V</code>: 进入visual 模式，选取单位位行</li>
+<li><code>Ctrl+v</code>: 进入 visual 模式，选取单位为块</li>
+<li><code>&lt;</code>: 进入 visual 模式后， 向左进行 index</li>
+<li><code>&gt;</code>: 进入 visual 模式后， 向右进行 index</li>
+<li><code>y</code>: 进入 visual 模式后，复制选中字符</li>
+<li><code>x</code>: 进入 visual 模式后， 裁切选中字符</li>
+<li><code>d</code>: 进入 visual 模式后，删除选中字符， 效果同上</li>
+<li><code>~</code>: 进入 visual 模式后，将选中字符大小写交换</li>
+</ul>
+<h3 id="小技巧"><a href="#小技巧" class="headerlink" title="小技巧"></a>小技巧</h3><ul>
+<li>插入3个 go, 可使用 <code>3i go {esc}</code></li>
+<li>查找当前光标后，第三个s, 可使用 <code>3fs</code></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;spacemacs 使用的是 &lt;a href=&quot;https://gitorious.org/evil/pages/Home&quot;&gt;emacs: evil&lt;/a&gt; 插件。主要是以 vim 光标移动为主，向导可以参考 vimtutor, 或者 &lt;a href=&quot;https://github.com/syl20bnr/evil-tutor&quot;&gt;evil-tutor&lt;/a&gt; 进行学习。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Emacs相关" scheme="http://finalhome.org/categories/Emacs%E7%9B%B8%E5%85%B3/"/>
+    
+    
+      <category term="Emacs" scheme="http://finalhome.org/tags/Emacs/"/>
+    
+      <category term="vim" scheme="http://finalhome.org/tags/vim/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Atom 插件推荐</title>
+    <link href="http://finalhome.org/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/Atom%E6%8F%92%E4%BB%B6%E6%8E%A8%E8%8D%90/"/>
+    <id>http://finalhome.org/开发工具/Atom插件推荐/</id>
+    <published>2016-11-18T08:03:27.000Z</published>
+    <updated>2016-11-20T07:38:58.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近将主要的编辑器从 Sublime 切换为 Atom 了。对 Atom 的插件系统还是很满意的，但是速度还是 sublime 快。配置了一段时间，列举一些有用的插件给大家。<br><a id="more"></a></p>
+<p>atom 官方自带了一些插件，可以在 <code>Settings-&gt;Package-&gt;Core Package</code> 中查看，比如 <code>linter</code>, <code>language-html</code> 等都自带安装了。</p>
+<h1 id="language"><a href="#language" class="headerlink" title="language"></a>language</h1><ul>
+<li><a href="https://atom.io/packages/language-markdown" target="_blank" rel="external">language-markdown</a></li>
+<li><a href="https://atom.io/packages/language-babel" target="_blank" rel="external">language-babel</a></li>
+<li><a href="https://atom.io/packages/language-source" target="_blank" rel="external">language-source</a>: Adds basic comment, indent, and outdent patterns used as a fallback by all source files in Atom.</li>
+<li><a href="https://atom.io/packages/language-vue" target="_blank" rel="external">language-vue</a>: Adds syntax highlighting and snippets to Vue component files in Atom.</li>
+</ul>
+<h1 id="linter"><a href="#linter" class="headerlink" title="linter"></a>linter</h1><ul>
+<li><a href="https://atom.io/packages/linter" target="_blank" rel="external">linter</a></li>
+<li><a href="http://atomlinter.github.io/" target="_blank" rel="external">All linter</a>: 列举了所有的 linter</li>
+<li><a href="https://atom.io/packages/linter-markdown" target="_blank" rel="external">linter-markdown</a></li>
+<li><a href="https://atom.io/packages/linter-csslint" target="_blank" rel="external">linter-csslint</a></li>
+<li><a href="https://atom.io/packages/linter-eslint" target="_blank" rel="external">linter-eslint</a></li>
+<li><a href="https://atom.io/packages/linter-htmlhint" target="_blank" rel="external">linter-htmlhint</a></li>
+</ul>
+<h1 id="autocomplete"><a href="#autocomplete" class="headerlink" title="autocomplete"></a>autocomplete</h1><ul>
+<li><a href="https://atom.io/packages/atom-ternjs" target="_blank" rel="external">atom-ternjs</a></li>
+<li><a href="https://atom.io/packages/emmet" target="_blank" rel="external">emmet</a></li>
+<li><a href="https://atom.io/packages/autocomplete-plus" target="_blank" rel="external">autocomplete-plus</a>: 内置的插件</li>
+<li><a href="https://atom.io/packages/autocomplete-paths" target="_blank" rel="external">autocomplete-paths</a>: 文件路径补全</li>
+<li><a href="https://atom.io/packages/autocomplete-modules" target="_blank" rel="external">autocomplete-modules</a></li>
+</ul>
+<h1 id="markdown"><a href="#markdown" class="headerlink" title="markdown"></a>markdown</h1><ul>
+<li><a href="https://atom.io/packages/markdown-preview" target="_blank" rel="external">markdown-preview</a>: atom 自带的预览插件，可以用下面的替换</li>
+<li><a href="https://atom.io/packages/markdown-preview-plus" target="_blank" rel="external">markdown-preview-plus</a>: Markdown Preview Plus (MPP) is a fork of Markdown Preview that provides a real-time preview of markdown documents.</li>
+<li><a href="https://atom.io/packages/markdown-writer" target="_blank" rel="external">markdown-writer</a>: 提供书写时的一些辅助特性</li>
+<li><a href="https://atom.io/packages/tidy-markdown" target="_blank" rel="external">Tidy Markdown</a>: 文件保存的时候，帮助纠正书写错误</li>
+<li><a href="https://atom.io/packages/markdown-assistant" target="_blank" rel="external">markdown-assistant</a>: 拖拽图片，自动上传云服务上。</li>
+<li><a href="https://atom.io/packages/markdown-scroll-sync" target="_blank" rel="external">markdown-scroll-sync</a>: 编辑和预览同步滚动</li>
+<li><a href="https://atom.io/packages/markdown-pdf" target="_blank" rel="external">markdown-pdf</a>: 生成pdf, png, jpeg 图片</li>
+</ul>
+<h1 id="代码书写辅助类"><a href="#代码书写辅助类" class="headerlink" title="代码书写辅助类"></a>代码书写辅助类</h1><ul>
+<li><a href="https://atom.io/packages/dash" target="_blank" rel="external">dash</a>: Simple Dash documentation integration for Atom.可在 windows 下使用，客户端用 zeal 即可。</li>
+<li><a href="https://atom.io/packages/docblockr" target="_blank" rel="external">docblockr</a>: 注释书写插件</li>
+<li><a href="https://atom.io/packages/atom-beautify" target="_blank" rel="external">atom-beautify</a>: 代码格式化</li>
+<li><a href="https://atom.io/packages/color-picker" target="_blank" rel="external">color-picker</a>: 颜色选取插件</li>
+<li><a href="https://atom.io/packages/pigments" target="_blank" rel="external">pigments</a>: 颜色可视化插件</li>
+<li><a href="https://atom.io/packages/elastic-tabstops" target="_blank" rel="external">elastic-tabstops</a>: An experimental implementation of Elastic tabstops for Atom</li>
+<li><a href="https://atom.io/packages/hyperclick" target="_blank" rel="external">hyperclick</a>: Pluggable text-clicking UI for Atom.</li>
+<li><a href="https://atom.io/packages/js-hyperclick" target="_blank" rel="external">js-hyperclick</a>: 配合上面一个插件使用</li>
+<li><a href="https://atom.io/packages/regex-railroad-diagram" target="_blank" rel="external">regex-railroad-diagram</a>: 正则表达式可视化</li>
+</ul>
+<h1 id="适合前端的"><a href="#适合前端的" class="headerlink" title="适合前端的"></a>适合前端的</h1><ul>
+<li><a href="https://atom.io/packages/atom-html-preview" target="_blank" rel="external">atom-html-preview</a></li>
+<li><a href="https://atom.io/packages/open-in-browsers" target="_blank" rel="external">open-in-browsers</a></li>
+<li><a href="https://atom.io/packages/css-comb" target="_blank" rel="external">css-comb</a>: 这个插件支持读取 <code>.csscomb.json</code></li>
+</ul>
+<h1 id="git-相关"><a href="#git-相关" class="headerlink" title="git 相关"></a>git 相关</h1><ul>
+<li><a href="https://atom.io/packages/git-time-machine" target="_blank" rel="external">git-time-machine</a>: 可视化查看提交记录</li>
+</ul>
+<h1 id="编辑器辅助类"><a href="#编辑器辅助类" class="headerlink" title="编辑器辅助类"></a>编辑器辅助类</h1><ul>
+<li><a href="https://atom.io/packages/sync-settings" target="_blank" rel="external">sync-settings</a>: 通过 gist 同步 Atom 配置</li>
+<li><a href="https://atom.io/packages/editor-settings" target="_blank" rel="external">Editor-setting</a>: 不同文件打开不同扩展</li>
+<li><a href="https://atom.io/packages/open-recent" target="_blank" rel="external">open-recent</a>: 查看最近打开的文件</li>
+<li><a href="https://atom.io/packages/project-plus" target="_blank" rel="external">project-plus</a>: 快速切换 project</li>
+<li><a href="https://atom.io/packages/advanced-open-file" target="_blank" rel="external">advanced-open-file</a>: Open and create files and directories easily.</li>
+<li><a href="https://atom.io/packages/file-icons" target="_blank" rel="external">file-icons</a>: 增加文件图标的显示</li>
+<li><a href="https://atom.io/packages/file-icon-supplement" target="_blank" rel="external">file-icon-supplement</a>: file-icons 的提升</li>
+<li><a href="https://atom.io/packages/minimap" target="_blank" rel="external">minimap</a>: 增加右侧代码预览</li>
+<li><a href="https://atom.io/packages/minimap-highlight-selected" target="_blank" rel="external">minimal-highlight-selected</a>: 在右侧minimap视图中标明高亮部分</li>
+<li><a href="https://atom.io/packages/tool-bar" target="_blank" rel="external">tool-bar</a>: 增加快速导航栏，类似vs code 右侧那个</li>
+<li><a href="https://atom.io/packages/search?utf8=%E2%9C%93&amp;q=keyword%3Atool-bar" target="_blank" rel="external">tool-bar plugin</a>: 上面的插件只是提供功能，还需要安装对应的插件，展示具体的内容</li>
+<li><a href="https://atom.io/packages/typewriter" target="_blank" rel="external">typewriter</a>: A better writing experience for Atom</li>
+<li><a href="https://atom.io/packages/Zen" target="_blank" rel="external">Zen</a>: 书写的勿扰模式</li>
+<li><a href="https://atom.io/packages/highlight-selected" target="_blank" rel="external">highlight-selected</a>: 高亮所选择内容</li>
+<li><a href="https://atom.io/packages/highlight-line" target="_blank" rel="external">highlight-line</a>: 高亮当前行</li>
+<li><a href="https://atom.io/packages/editorconfig" target="_blank" rel="external">editorconfig</a>: 编辑器格式统一插件，借助 <code>.editorconfig</code> 文件，团队开发必备</li>
+<li><a href="https://atom.io/packages/vim-mode-plus" target="_blank" rel="external">vim-mode-plus</a>: vim-mode improved. 替代官方的 vim-mode</li>
+<li><a href="https://atom.io/packages/vim-mode-plus-ex-mode" target="_blank" rel="external">vim-mode-plus-ex-mode</a>: 提供<code>:w</code> 类似功能，按键快捷键需要自己定义</li>
+<li><a href="https://atom.io/packages/smalls" target="_blank" rel="external">smalls</a>: 光标快速跳转插件</li>
+<li><a href="https://atom.io/packages/easy-motion-redux" target="_blank" rel="external">easy-motion-redux</a>: 可是区域内光标快速跳转插件</li>
+<li><a href="https://atom.io/packages/wakatime" target="_blank" rel="external">wakatime</a>: 记录使用编辑器的时间，很多编辑器或IDE都有这个插件</li>
+<li><a href="https://atom.io/packages/package-generator" target="_blank" rel="external">package-generator</a>: Generates and opens a new sample package or syntax theme in Atom.</li>
+<li><a href="https://atom.io/packages/spacemacs-evil-keys" target="_blank" rel="external">spacemacs-evil-keys</a>: 模拟 spacemacs evil 模式, 不建议使用，如果喜欢还是直接使用spacemacs 吧</li>
+<li><a href="https://atom.io/packages/proton-mode" target="_blank" rel="external">proton-mode</a>: spacemacs and sublimious style editing in Atom. (效果和上面类似，功能应该更强大)，不建议使用，如果喜欢还是直接使用spacemacs 吧。因为这个插件会建立自己的插件系统，对你以后的配置会做修改。</li>
+</ul>
+<h1 id="funny"><a href="#funny" class="headerlink" title="funny"></a>funny</h1><ul>
+<li><a href="https://github.com/JoelBesada/activate-power-mode" target="_blank" rel="external">Activate Power Mode</a>: 打字效果，配合tickeys音效，不用买机械键盘了。</li>
+</ul>
+<h1 id="优秀的插件开发者"><a href="#优秀的插件开发者" class="headerlink" title="优秀的插件开发者"></a>优秀的插件开发者</h1><ul>
+<li><a href="https://atom.io/users/atom" target="_blank" rel="external">atom</a>: atom 官方, 应该基本都是内置的插件</li>
+<li><a href="https://atom.io/users/atom-community" target="_blank" rel="external">atom-community</a>: atom 社区</li>
+<li><a href="https://atom.io/users/steelbrain/packages" target="_blank" rel="external">steelbrain’s Packages</a>: linter</li>
+<li><a href="https://atom.io/users/t9md" target="_blank" rel="external">t9md</a>: vim-mode-plus</li>
+</ul>
+<h1 id="管理配置"><a href="#管理配置" class="headerlink" title="管理配置"></a>管理配置</h1><h2 id="配置同步"><a href="#配置同步" class="headerlink" title="配置同步"></a>配置同步</h2><p>使用上述提到的 <a href="https://atom.io/packages/sync-settings" target="_blank" rel="external">sync-settings</a> 插件完成。步骤如下:</p>
+<ul>
+<li>安装 sync-settings 插件</li>
+<li>打开 <a href="https://github.com/settings/tokens/new" target="_blank" rel="external">Create a new personal access token</a>, 填入 <code>Token description</code> （如果快捷键或者某些配置在不同系统下不一致，建议分开多套备份）, 勾选 <code>gist</code>, 点击 <code>Generate token</code>, 完成后界面上有一串字符，可以拷贝。就是你的 <code>Personal Access Token</code></li>
+<li>打开 <a href="https://gist.github.com/" target="_blank" rel="external">Create new gist</a>, 在输入框中随便填入内容。点击 <code>Create secret gist</code>. （如果你想要分享你的配置，也可以点击 publish）。完成后，选择生成文件的后缀字符，<code>gitst:xxxxx</code>， <code>xxxxx</code> 就是你的 <code>Gist Id</code>。</li>
+<li>将上述两个内容，填入 <code>sync-settings</code> 中对应字段</li>
+<li>通过 <code>Command Palette</code> 打开 <code>sync-settings:backup</code> 完成备份，其他功能也都是在 <code>sync-settings:</code> 命令下。</li>
+<li>备份成功，Atom 右上角会有绿色弹框提示，如果失败，可以打开 <code>Toggle Developer Tools</code> 查看控制台，看是否是网络原因报错，可能需要设置代理，可以参考： <a href="https://github.com/atom-community/sync-settings/issues/273" target="_blank" rel="external">issue: Uncaught SyntaxError: Unexpected token c </a> ， 其中有人提及。</li>
+</ul>
+<h2 id="配置恢复"><a href="#配置恢复" class="headerlink" title="配置恢复"></a>配置恢复</h2><p>安装 <a href="https://atom.io/packages/sync-settings" target="_blank" rel="external">sync-settings</a> 插件完成后，将 settings 设置完成，通过命令 <code>sync settings: restore</code> 即可开始恢复配置，在其恢复过程中，可切换开启 <code>Toggle Developer Tools</code> 查看过程，以及是否有 package 安装失败。</p>
+<h2 id="Atom-默认的配置文件"><a href="#Atom-默认的配置文件" class="headerlink" title="Atom 默认的配置文件"></a>Atom 默认的配置文件</h2><ul>
+<li>init.coffee</li>
+<li>config.cson</li>
+<li>keymap.cson</li>
+<li>snippets.cson</li>
+<li>style.less</li>
+</ul>
+<p>但是其实还有些是插件自身的配置，比如:</p>
+<ul>
+<li>projects.cson: 管理切换 project 的</li>
+<li>toolbar.cson: toolbar 管理</li>
+<li>project.json: sync-settings 添加的</li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近将主要的编辑器从 Sublime 切换为 Atom 了。对 Atom 的插件系统还是很满意的，但是速度还是 sublime 快。配置了一段时间，列举一些有用的插件给大家。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="开发工具" scheme="http://finalhome.org/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
+    
+    
+      <category term="Atom" scheme="http://finalhome.org/tags/Atom/"/>
+    
+  </entry>
   
   <entry>
     <title>vim下如何共享系统剪切板</title>
@@ -1182,146 +1500,6 @@
       <category term="nodejs" scheme="http://finalhome.org/tags/nodejs/"/>
     
       <category term="commander" scheme="http://finalhome.org/tags/commander/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>解决跨域问题</title>
-    <link href="http://finalhome.org/JavaScript/%E8%A7%A3%E5%86%B3%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98/"/>
-    <id>http://finalhome.org/JavaScript/解决跨域问题/</id>
-    <published>2014-06-06T03:53:20.000Z</published>
-    <updated>2016-08-29T13:58:52.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>服务器端不存在跨域问题，客户端ajax请求的时候，如果报错:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">XMLHttpRequest cannot load xxxxx. Origin http://localhost is not allowed by Access-Control-Allow-Origin.</div></pre></td></tr></table></figure>
-<p>恭喜你，这就出现了跨域问题。<br><a id="more"></a></p>
-<h2 id="问题来源"><a href="#问题来源" class="headerlink" title="问题来源"></a>问题来源</h2><p>微信开发模式下，需要验证TOKEN。我使用的后台环境是nodejs。网上没有很直接的教程，所以我自己写了一个验证代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">var http = require(&apos;http&apos;);</div><div class="line">var url = require(&apos;url&apos;);</div><div class="line">var crypto = require(&apos;crypto&apos;);</div><div class="line"></div><div class="line">function sha1(str) &#123;</div><div class="line">    var md5sum = crypto.createHash(&apos;sha1&apos;);</div><div class="line">    md5sum.update(str);</div><div class="line">    str = md5sum.digest(&apos;hex&apos;);</div><div class="line">    return str;</div><div class="line">&#125;</div><div class="line">http.createServer(function(req, res) &#123;</div><div class="line">    res.writeHead(200, &#123;&apos;Content-Type&apos;: &apos;text/plain&apos;&#125;);</div><div class="line"></div><div class="line">    var url_parts = url.parse(req.url, true);</div><div class="line">    var query = url_parts.query;</div><div class="line"></div><div class="line">    var signature = query.signature;</div><div class="line">    var echostr = query.echostr;</div><div class="line">    var timestamp = query.timestamp;</div><div class="line">    var nonce = query.nonce;</div><div class="line"></div><div class="line">    var oriArray = new Array();</div><div class="line">    oriArray[0] = nonce;</div><div class="line">    oriArray[1] = timestamp;</div><div class="line">    oriArray[2] = &quot;XXXXX&quot;; // your token  </div><div class="line">    oriArray.sort();</div><div class="line">    var original = oriArray[0] + oriArray[1] + oriArray[2];</div><div class="line">    var scyptoString = sha1(original);</div><div class="line">    if (signature == scyptoString) &#123;</div><div class="line">        console.log(&apos;True&apos;)</div><div class="line">        res.end(echostr);</div><div class="line">    &#125; else &#123;</div><div class="line">        console.log(&apos;False&apos;)</div><div class="line">        res.end(&quot;Bad Token!&quot;);</div><div class="line">    &#125;</div><div class="line">&#125;).listen(5000);</div><div class="line">console.log(&apos;Server running at http::5000/&apos;);</div></pre></td></tr></table></figure></p>
-<p>注意，这里我绑定的是<code>5000</code>端口，但是微信必须是<code>80</code>端口，所以我在服务器端使用了<code>nginx</code>代理，设置的主要代码如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">upstream nodejs__upstream2 &#123;</div><div class="line">     server 127.0.0.1:5000;</div><div class="line">     keepalive 64;</div><div class="line">&#125;</div><div class="line">server &#123;</div><div class="line">     listen 80;</div><div class="line">     # server_name为你的主机IP</div><div class="line">     server_name 128.199.209.206; </div><div class="line">     location / &#123;</div><div class="line">         proxy_set_header   X-Real-IP            $remote_addr;</div><div class="line">         proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;</div><div class="line">         proxy_set_header   Host                   $http_host;</div><div class="line">         proxy_set_header   X-NginX-Proxy    true;</div><div class="line">         proxy_set_header   Connection &quot;&quot;;</div><div class="line">         proxy_http_version 1.1;</div><div class="line">         proxy_pass         http://nodejs__upstream2;</div><div class="line">     &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>理所当然的我会首先在本地进行下测试，首先想到了利用Ajax请求。测试代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">&lt;!doctype html&gt;</div><div class="line">&lt;html lang=&quot;en&quot;&gt;</div><div class="line"></div><div class="line">&lt;head&gt;</div><div class="line">    &lt;meta charset=&quot;UTF-8&quot;&gt;</div><div class="line">    &lt;title&gt;Test Get&lt;/title&gt;</div><div class="line">&lt;/head&gt;</div><div class="line"></div><div class="line">&lt;body&gt;</div><div class="line"></div><div class="line">    &lt;script src=&quot;http://cdn.staticfile.org/jquery/2.1.1-rc2/jquery.min.js&quot;&gt;&lt;/script&gt;</div><div class="line"></div><div class="line">    &lt;script&gt;</div><div class="line">    $(function() &#123;</div><div class="line"></div><div class="line">        var data = &#123;</div><div class="line">            signature: &apos;7032b0ab6a41f2fb382d782d1dd8a65e12b2dfb2&apos;,</div><div class="line">            echostr: &apos;5904622633625829580&apos;,</div><div class="line">            timestamp: &apos;1375715532&apos;,</div><div class="line">            nonce: &apos;1374777116&apos;</div><div class="line">        &#125;;</div><div class="line"></div><div class="line">        $.ajax(&#123;</div><div class="line">            type: &quot;GET&quot;,</div><div class="line">            url: &quot;http://localhost:5000&quot;,</div><div class="line">            data: data</div><div class="line">        &#125;).done(function(data) &#123;</div><div class="line">            console.log(&apos;success:&apos;,data);</div><div class="line">        &#125;);</div><div class="line">    &#125;)</div><div class="line">    &lt;/script&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure></p>
-<p>Chrome下打开开发者工具，看到报错信息如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">GET http://localhost:5000/?signature=7032b0ab6a41f2fb382d782d1dd8a65e12b2dfb2&amp;echostr=5904622633625829580&amp;timestamp=1375715532&amp;nonce=1374777116 net::ERR_CONNECTION_REFUSED jquery.js:8617</div></pre></td></tr></table></figure></p>
-<p>说明一下，我这里返回的是字符串，而不是json数据。所以我没有使用getJSON方法。</p>
-<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><h3 id="JSONP"><a href="#JSONP" class="headerlink" title="JSONP"></a>JSONP</h3><p>JSONP是一个非官方的协议，它允许在服务器端集成Script tags返回至客户端，通过javascript callback的形式实现跨域访问（这仅仅是JSONP简单的实现形式）。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">var http = require(&apos;http&apos;);</div><div class="line">var url = require(&apos;url&apos;);</div><div class="line">var crypto = require(&apos;crypto&apos;);</div><div class="line"></div><div class="line">function sha1(str) &#123;</div><div class="line">    var md5sum = crypto.createHash(&apos;sha1&apos;);</div><div class="line">    md5sum.update(str);</div><div class="line">    str = md5sum.digest(&apos;hex&apos;);</div><div class="line">    return str;</div><div class="line">&#125;</div><div class="line">http.createServer(function(req, res) &#123;</div><div class="line">    res.writeHead(200, &#123;&apos;Content-Type&apos;: &apos;text/plain&apos;&#125;);</div><div class="line"></div><div class="line">    var url_parts = url.parse(req.url, true);</div><div class="line">    var query = url_parts.query;</div><div class="line"></div><div class="line">    var signature = query.signature;</div><div class="line">    var echostr = query.echostr;</div><div class="line">    var timestamp = query.timestamp;</div><div class="line">    var nonce = query.nonce;</div><div class="line">    var jsoncallback = query.callback;</div><div class="line"></div><div class="line">    console.log(query)</div><div class="line">    var oriArray = new Array();</div><div class="line">    oriArray[0] = nonce;</div><div class="line">    oriArray[1] = timestamp;</div><div class="line">    oriArray[2] = &quot;XXXXX&quot;; // your token  </div><div class="line">    oriArray.sort();</div><div class="line">    var original = oriArray[0] + oriArray[1] + oriArray[2];</div><div class="line">    var scyptoString = sha1(original);</div><div class="line">    if (signature == scyptoString) &#123;</div><div class="line">        console.log(&apos;True&apos;)</div><div class="line">        res.end(jsoncallback+&quot;(&quot;+ echostr +&quot;)&quot;);</div><div class="line">    &#125; else &#123;</div><div class="line">        console.log(&apos;False&apos;)</div><div class="line">        res.end(jsoncallback+&quot;(&apos;Bad Token!&apos;)&quot;);</div><div class="line">    &#125;</div><div class="line">&#125;).listen(5000);</div><div class="line">console.log(&apos;Server running at http::5000/&apos;);</div></pre></td></tr></table></figure>
-<p>客户端代码修改为:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$.ajax(&#123;</div><div class="line">    type: &quot;GET&quot;,</div><div class="line">    url: &quot;http://localhost:5000&quot;,</div><div class="line">    data: data,</div><div class="line">    dataType:&apos;JSONP&apos;</div><div class="line">&#125;).done(function(data) &#123;</div><div class="line">    console.log(&apos;success:&apos;,data);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<p>JSONP是用一个callback包裹所要传递的数据，本地指定了<code>dataType</code>的话，就能正常访问了。</p>
-<h3 id="设置服务器端的Header"><a href="#设置服务器端的Header" class="headerlink" title="设置服务器端的Header"></a>设置服务器端的Header</h3><p>主要是这一段，<code>Access-Control-Allow-Origin：*</code>。</p>
-<p>服务器端的程序如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">var http = require(&apos;http&apos;);</div><div class="line">var url = require(&apos;url&apos;);</div><div class="line">var crypto = require(&apos;crypto&apos;);</div><div class="line"></div><div class="line">function sha1(str) &#123;</div><div class="line">    var md5sum = crypto.createHash(&apos;sha1&apos;);</div><div class="line">    md5sum.update(str);</div><div class="line">    str = md5sum.digest(&apos;hex&apos;);</div><div class="line">    return str;</div><div class="line">&#125;</div><div class="line">http.createServer(function(req, res) &#123;</div><div class="line">    res.writeHead(200, &#123;&apos;Content-Type&apos;: &apos;text/plain&apos;,</div><div class="line">                        &apos;Access-Control-Allow-Origin&apos;: &apos;*&apos;&#125;);</div><div class="line"></div><div class="line">    var url_parts = url.parse(req.url, true);</div><div class="line">    var query = url_parts.query;</div><div class="line"></div><div class="line">    var signature = query.signature;</div><div class="line">    var echostr = query.echostr;</div><div class="line">    var timestamp = query.timestamp;</div><div class="line">    var nonce = query.nonce;</div><div class="line">    var jsoncallback = query.jsonpcallback;</div><div class="line"></div><div class="line">    var oriArray = new Array();</div><div class="line">    oriArray[0] = nonce;</div><div class="line">    oriArray[1] = timestamp;</div><div class="line">    oriArray[2] = &quot;XXXXX&quot;; // your token  </div><div class="line">    oriArray.sort();</div><div class="line">    var original = oriArray[0] + oriArray[1] + oriArray[2];</div><div class="line">    var scyptoString = sha1(original);</div><div class="line">    if (signature == scyptoString) &#123;</div><div class="line">        console.log(&apos;True&apos;)</div><div class="line">        // res.end(jsoncallback+&quot;(&quot;+ echostr +&quot;)&quot;);</div><div class="line">        res.end(echostr);</div><div class="line">    &#125; else &#123;</div><div class="line">        console.log(&apos;False&apos;)</div><div class="line">        // res.end(jsoncallback+&quot;(&apos;Bad Token!&apos;)&quot;);</div><div class="line">        res.end(&quot;Bad Token!&quot;);</div><div class="line">    &#125;</div><div class="line">&#125;).listen(5000);</div><div class="line">console.log(&apos;Server running at http::5000/&apos;);</div></pre></td></tr></table></figure></p>
-<p>客户端还是那样访问:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$.ajax(&#123;</div><div class="line">    type: &quot;GET&quot;,</div><div class="line">    url: &quot;http://localhost:5000&quot;,</div><div class="line">    data: data</div><div class="line">&#125;).done(function(data) &#123;</div><div class="line">    console.log(&apos;success:&apos;,data);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<h3 id="服务器端处理"><a href="#服务器端处理" class="headerlink" title="服务器端处理"></a>服务器端处理</h3><p>服务器端处理请求的话不存在跨域问题，所以我使用Nodejs充当了客户端的角色:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">var http = require(&quot;http&quot;);</div><div class="line"></div><div class="line">var options = &#123;</div><div class="line">    &quot;host&quot;: &quot;localhost&quot;,</div><div class="line">    &quot;port&quot;: &quot;5000&quot;,</div><div class="line">    &quot;path&quot;: &quot;/&quot;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">http.get(options, function(res) &#123;</div><div class="line">    console.log(&quot;Site Status:&quot;, res.statusCode);</div><div class="line">    console.log(res.headers);</div><div class="line">    res.on(&apos;data&apos;, function (chunk) &#123;</div><div class="line">        console.log(&apos;Data:&apos; + chunk);</div><div class="line">      &#125;);</div><div class="line"></div><div class="line">    if (res.statusCode == 200) &#123;</div><div class="line">        console.log(&quot;The site is up!\n&quot;);</div><div class="line">    &#125; else &#123;</div><div class="line">        console.log(&quot;The site is down!\n&quot;);</div><div class="line">    &#125;</div><div class="line">&#125;).on(&quot;error&quot;, function(e) &#123;</div><div class="line">    console.log(&quot;There was an error:&quot;, e.message);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li><a href="http://developer.yahoo.com/javascript/howto-proxy.html" target="_blank" rel="external">JS通过服务器代理解决跨域问题</a></li>
-</ul>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;服务器端不存在跨域问题，客户端ajax请求的时候，如果报错:&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;XMLHttpRequest cannot load xxxxx. Origin http://localhost is not allowed by Access-Control-Allow-Origin.&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;恭喜你，这就出现了跨域问题。&lt;br&gt;
-    
-    </summary>
-    
-      <category term="JavaScript" scheme="http://finalhome.org/categories/JavaScript/"/>
-    
-    
-      <category term="JavaScript" scheme="http://finalhome.org/tags/JavaScript/"/>
-    
-      <category term="nodejs" scheme="http://finalhome.org/tags/nodejs/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>nginx安装与反向代理</title>
-    <link href="http://finalhome.org/%E6%9C%8D%E5%8A%A1%E5%99%A8/nginx%E5%AE%89%E8%A3%85%E4%B8%8E%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/"/>
-    <id>http://finalhome.org/服务器/nginx安装与反向代理/</id>
-    <published>2014-05-19T09:50:55.000Z</published>
-    <updated>2016-08-29T13:58:52.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>想要在服务器上搭配N多站点，使用反向代理，监听80端口是个好方法，并且Nginx的效率很高。</p>
-<a id="more"></a>
-<h2 id="Window"><a href="#Window" class="headerlink" title="Window"></a>Window</h2><p><a href="http://nginx.org/en/download.html" target="_blank" rel="external">下载地址</a>.选择<code>nginx/Windows-1.7.0</code>下载。</p>
-<p>解压缩到本地，这里我选择<code>D:\Servers</code>下，解压之后完整路径为<code>D:\Servers\nginx-1.7.0</code>。</p>
-<p>在<code>D:\Servers\nginx-1.7.0</code>下,启动使用<code>start nginx</code>。</p>
-<p>是否启动可以通过<code>tasklist | grep nginx</code>查看。记住，不要多次启动，不然后台会挂很多nginx的。</p>
-<h2 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h2><p><code>sudo apt-get install nginx</code>安装即可。安装完毕默认启动。</p>
-<h2 id="设置反向代理"><a href="#设置反向代理" class="headerlink" title="设置反向代理"></a>设置反向代理</h2><p>这里举个例子，就是通过本机ip访问的转到3000端口，localhost访问的转到4000端口。下面看具体设置。</p>
-<h3 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h3><p>配置文件目录在<code>D:\Servers\nginx-1.7.0\conf</code>下， 修改<code>nginx.conf</code>文件，去除其中的server配置，添加上<code>include    vhosts/*.conf;</code>。</p>
-<p>在<code>D:\Servers\nginx-1.7.0\conf</code>下创建<code>vhosts</code>目录，里面方式各个server配置即可。</p>
-<p>这里给一个我的配置（使用localhost访问4000端口， 192.168.1.60访问3000端口）的例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">upstream nodejs__upstream &#123;</div><div class="line">     server 127.0.0.1:3000;</div><div class="line">     keepalive 64;</div><div class="line">&#125;</div><div class="line">server &#123;</div><div class="line">     listen 80;</div><div class="line">     server_name 192.168.1.60;</div><div class="line">     location / &#123;</div><div class="line">         proxy_set_header   X-Real-IP            $remote_addr;</div><div class="line">         proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;</div><div class="line">         proxy_set_header   Host                   $http_host;</div><div class="line">         proxy_set_header   X-NginX-Proxy    true;</div><div class="line">         proxy_set_header   Connection &quot;&quot;;</div><div class="line">         proxy_http_version 1.1;</div><div class="line">         proxy_pass         http://nodejs__upstream;</div><div class="line">     &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">upstream nodejs__upstream2 &#123;</div><div class="line">     server 127.0.0.1:4000;</div><div class="line">     keepalive 64;</div><div class="line">&#125;</div><div class="line">server &#123;</div><div class="line">     listen 80;</div><div class="line">     server_name localhost;</div><div class="line">     location / &#123;</div><div class="line">         proxy_set_header   X-Real-IP            $remote_addr;</div><div class="line">         proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;</div><div class="line">         proxy_set_header   Host                   $http_host;</div><div class="line">         proxy_set_header   X-NginX-Proxy    true;</div><div class="line">         proxy_set_header   Connection &quot;&quot;;</div><div class="line">         proxy_http_version 1.1;</div><div class="line">         proxy_pass         http://nodejs__upstream2;</div><div class="line">     &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h3 id="Linux-1"><a href="#Linux-1" class="headerlink" title="Linux"></a>Linux</h3><p>配置文件目录在<code>/etc/nginx</code>中。</p>
-<p>Linux下的配置文件结构和Windows略有不同，但是意义相似。修改<code>/etc/nginx/nginx.conf</code>文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">include /etc/nginx/conf.d/*.conf;</div><div class="line">include /etc/nginx/sites-enabled/*;</div><div class="line"></div><div class="line"># 修改为</div><div class="line">include /etc/nginx/conf.d/*.conf;</div><div class="line"># include /etc/nginx/sites-enabled/*;</div><div class="line">include /etc/nginx/vhosts/*.conf;</div></pre></td></tr></table></figure></p>
-<p>注意这里，我新建了个目录<code>vhosts</code>，如果不想新建，就把里面的配置文件放到<code>conf.d</code>或者<code>sites-enabled</code>中。</p>
-<p><code>vhosts</code>目录下我包含了两个文件，<code>default.conf</code>和<code>proxy-node.conf</code>。</p>
-<h4 id="default-conf"><a href="#default-conf" class="headerlink" title="default.conf"></a>default.conf</h4><p>此文件就是<code>sites-enabled</code>下的<code>defalut</code>文件。</p>
-<h4 id="proxy-node-conf"><a href="#proxy-node-conf" class="headerlink" title="proxy-node.conf"></a>proxy-node.conf</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">upstream nodejs__upstream &#123;</div><div class="line">     server 127.0.0.1:3000;</div><div class="line">     keepalive 64;</div><div class="line">&#125;</div><div class="line">server &#123;</div><div class="line">     listen 80;</div><div class="line">     server_name 192.168.1.60;</div><div class="line">     location / &#123;</div><div class="line">         proxy_set_header   X-Real-IP            $remote_addr;</div><div class="line">         proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;</div><div class="line">         proxy_set_header   Host                   $http_host;</div><div class="line">         proxy_set_header   X-NginX-Proxy    true;</div><div class="line">         proxy_set_header   Connection &quot;&quot;;</div><div class="line">         proxy_http_version 1.1;</div><div class="line">         proxy_pass         http://nodejs__upstream;</div><div class="line">     &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">upstream nodejs__upstream2 &#123;</div><div class="line">     server 127.0.0.1:4000;</div><div class="line">     keepalive 64;</div><div class="line">&#125;</div><div class="line">server &#123;</div><div class="line">     listen 80;</div><div class="line">     server_name localhost;</div><div class="line">     location / &#123;</div><div class="line">         proxy_set_header   X-Real-IP            $remote_addr;</div><div class="line">         proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;</div><div class="line">         proxy_set_header   Host                   $http_host;</div><div class="line">         proxy_set_header   X-NginX-Proxy    true;</div><div class="line">         proxy_set_header   Connection &quot;&quot;;</div><div class="line">         proxy_http_version 1.1;</div><div class="line">         proxy_pass         http://nodejs__upstream2;</div><div class="line">     &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>保存完毕之后，重启nginx。 <code>sudo nginx -s reload</code>。</p>
-<p>之后通过<code>localhost</code>和<code>192.168.1.60</code>访问就能对应分别的端口了。</p>
-<hr>
-<p>这里说下node做服务器时listen的设置，只绑定端口，无需绑定ip。如果像官网上写的:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">var http = require(&apos;http&apos;);</div><div class="line">http.createServer(function (req, res) &#123;</div><div class="line">  res.writeHead(200, &#123;&apos;Content-Type&apos;: &apos;text/plain&apos;&#125;);</div><div class="line">  res.end(&apos;Hello World\n&apos;);</div><div class="line">&#125;).listen(1337, &apos;127.0.0.1&apos;);</div><div class="line">console.log(&apos;Server running at http://127.0.0.1:1337/&apos;);</div></pre></td></tr></table></figure></p>
-<p>那么只能通过<code>localhost:1337</code>和<code>127.0.0.1:1337</code>访问。无法通过<code>192.168.1.60:1337</code>这样访问。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;想要在服务器上搭配N多站点，使用反向代理，监听80端口是个好方法，并且Nginx的效率很高。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="服务器" scheme="http://finalhome.org/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
-    
-    
-      <category term="nginx" scheme="http://finalhome.org/tags/nginx/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>搭建Node+Express+Mongodb环境</title>
-    <link href="http://finalhome.org/Nodejs/%E6%90%AD%E5%BB%BANode+Express+Mongodb%E7%8E%AF%E5%A2%83/"/>
-    <id>http://finalhome.org/Nodejs/搭建Node+Express+Mongodb环境/</id>
-    <published>2014-05-19T06:16:05.000Z</published>
-    <updated>2016-08-29T13:58:52.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>每次搭建都要查一遍，不如记录一下。<br><a id="more"></a></p>
-<h2 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h2><p>先说下Windows下必要的开发环境，最好安装上<code>Microsoft Visual Studio</code>， 保证系统有<code>python 2.7.x</code>。因为很多npm的包，需要这些编译环境。</p>
-<h3 id="Nodejs"><a href="#Nodejs" class="headerlink" title="Nodejs"></a>Nodejs</h3><p>window下node直接通过官网下载, <a href="http://nodejs.org/download/" target="_blank" rel="external">下载地址</a>。下载msi文件直接安装即可，它会自动添加<code>node</code>和<code>npm</code>到系统环境变量中。</p>
-<p>以后如果要切换版本，直接下载对应版本，重新安装即可。</p>
-<h3 id="Express"><a href="#Express" class="headerlink" title="Express"></a>Express</h3><p>截至2014年5月19日， Express的版本维持在4.X。不同于之前的express，4.x分割出去很多模块，比如<code>connect</code>和<code>generator</code>。</p>
-<p>安装方法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">npm install -g express</div><div class="line"></div><div class="line"># 如果需要安装之前的版本, 加个@符号和版本即可</div><div class="line">npm install -g express@3</div><div class="line"></div><div class="line"># 4.x版本无法直接通过express命名新建项目，所以需要安装</div><div class="line">npm install -g express-generator</div></pre></td></tr></table></figure></p>
-<h3 id="Mongodb"><a href="#Mongodb" class="headerlink" title="Mongodb"></a>Mongodb</h3><p>先给一个官方的文档：<a href="http://docs.mongodb.org/manual/" target="_blank" rel="external">点我</a>。里面有各个系统的安装方式。</p>
-<p>下面说说我的安装方式：</p>
-<p>第一，在<code>D:</code>根目录下创建一个<code>DB/MongoDB</code>文件夹， 把对应版本的mongodb文件加载到此目录下的一个目录中。比如我这里的<code>MongoDB-2.6.0</code>。然后分别建立两个目录存放数据库和日志:<code>MongoDB-2.6.0-db</code>和<code>MongoDB-2.6.0-log</code>。并且保证<code>MongoDB--2.6.0-log</code>下有一个<code>mongodb.log</code>文件。</p>
-<p>第二，使用管理员权限打开cmd， <code>win+X -&gt; A</code>。然后:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">echo logpath=D:\DB\MongoDB\MongoDB-2.6.0-log\mongo.log&gt; &quot;D:\DB\MongoDB\MongoDB-2.6.0\mongod.cfg&quot;</div><div class="line">echo dbpath=D:\DB\MongoDB\MongoDB-2.6.0-db&gt;&gt; &quot;D:\DB\MongoDB\MongoDB-2.6.0\mongod.cfg&quot;</div></pre></td></tr></table></figure></p>
-<p>这一步是写安装配置文件，正确处理后，会在<code>D:\DB\MongoDB\MongoDB-2.6.0</code>目录下多个<code>mongod.cfg</code>文件，里面内容如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">logpath=D:\DB\MongoDB\MongoDB-2.6.0-log\mongo.log</div><div class="line">dbpath=D:\DB\MongoDB\MongoDB-2.6.0-db</div></pre></td></tr></table></figure></p>
-<p>最后，安装使用命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sc.exe create MongoDB binPath= &quot;\&quot;E:\DB\MongoDB\MongoDB-2.6.0\bin\mongod.exe\&quot; --service --config=\&quot;E:\DB\MongoDB\MongoDB-2.6.0\mongod.cfg\&quot;&quot; DisplayName= &quot;MongoDB 2.6 Standard&quot; start= &quot;auto&quot;</div></pre></td></tr></table></figure></p>
-<p>安装结束会提示<code>[SC] CreateService SUCCESS</code>, 然后可以通过<code>net start MongoDB</code>启动。默认是会自动启动的。如果出问题，可以重启先看看，不行再重新安装。</p>
-<h4 id="默认的使用方法"><a href="#默认的使用方法" class="headerlink" title="默认的使用方法"></a>默认的使用方法</h4><p>如果不添加系统服务，启动<code>mongodb</code>的步骤是这样的：</p>
-<p>打开cmd命令行，进入D:/DB/MongoDB/MongoDB-2.6.0/bin目录，输入如下的命令启动mongodb服务， 需要指定数据库位置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">D:/DB/MongoDB/MongoDB-2.6.0/bin&gt;mongod.exe --dbpath D:/DB/MongoDB/MongoDB-2.6.0-db</div></pre></td></tr></table></figure></p>
-<p>保持这个cmd窗口不关闭，再打开一个cmd窗口， 输入：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">D:/DB/MongoDB/MongoDB-2.6.0/bin&gt;mongo</div></pre></td></tr></table></figure></p>
-<p>这样才能运行mongo服务。</p>
-<h2 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h2><p>Linux下首先需要必要的环境:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install -y dkms build-essential linux-headers-generic linux-headers-$(uname -r)</div><div class="line"></div><div class="line">sudo apt-get install python-software-properties python g++ make</div><div class="line"></div><div class="line">sudo apt-get install git</div></pre></td></tr></table></figure></p>
-<h3 id="Nodejs-1"><a href="#Nodejs-1" class="headerlink" title="Nodejs"></a>Nodejs</h3><p>通过 PPA 在 Ubuntu 上安装最新版本的 node.js：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install python-software-properties python g++ make</div><div class="line">sudo add-apt-repository ppa:chris-lea/node.js</div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install nodejs</div></pre></td></tr></table></figure></p>
-<p>可能会存在命名冲突，是的安装之后使用<code>nodejs</code>而非<code>node</code>，如果需要修改，创建链接：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo ln -s /usr/bin/nodejs /usr/bin/node</div></pre></td></tr></table></figure></p>
-<p>其实使用<code>nodejs</code>也没关系，我修改主要是想windows和linux下命名统一。</p>
-<h3 id="NPM"><a href="#NPM" class="headerlink" title="NPM"></a>NPM</h3><p>Linux下npm好像不是随着<code>node</code>安装的，需要:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install npm</div></pre></td></tr></table></figure></p>
-<h3 id="Express-1"><a href="#Express-1" class="headerlink" title="Express"></a>Express</h3><p>安装了<code>npm</code>之后，安装方式和windows下一致：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">npm install -g express</div><div class="line"></div><div class="line"># 如果需要安装之前的版本, 加个@符号和版本即可</div><div class="line">npm install -g express@3</div><div class="line"></div><div class="line"># 4.x版本无法直接通过express命名新建项目，所以需要安装</div><div class="line">npm install -g express-generator</div></pre></td></tr></table></figure></p>
-<h3 id="Mongodb-1"><a href="#Mongodb-1" class="headerlink" title="Mongodb"></a>Mongodb</h3><p>这个还是推荐看官方文档：<a href="http://docs.mongodb.org/manual/" target="_blank" rel="external">点我</a>。</p>
-<p>我的安装方式是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10</div><div class="line"></div><div class="line">echo &apos;deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen&apos; | sudo tee /etc/apt/sources.list.d/mongodb.list</div><div class="line"></div><div class="line">sudo apt-get update</div><div class="line"></div><div class="line"></div><div class="line">sudo apt-get install mongodb-org</div></pre></td></tr></table></figure></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;每次搭建都要查一遍，不如记录一下。&lt;br&gt;
-    
-    </summary>
-    
-      <category term="Nodejs" scheme="http://finalhome.org/categories/Nodejs/"/>
-    
-    
-      <category term="nodejs" scheme="http://finalhome.org/tags/nodejs/"/>
-    
-      <category term="express" scheme="http://finalhome.org/tags/express/"/>
-    
-      <category term="mongodb" scheme="http://finalhome.org/tags/mongodb/"/>
     
   </entry>
   

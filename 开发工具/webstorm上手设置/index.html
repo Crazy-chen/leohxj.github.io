@@ -1,0 +1,197 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>WebStorm 上手设置 | FinalHome | 最初的梦想</title>
+
+  
+  <meta name="author" content="Leo Hui">
+  
+
+  
+  <meta name="description" content="description by Leo">
+  
+
+  
+  
+  <meta name="keywords" content="JetBrains,WebStorm">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="WebStorm 上手设置"/>
+
+  <meta property="og:site_name" content="FinalHome"/>
+
+  
+  <meta property="og:image" content="/favicon.ico"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="FinalHome" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+</head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">FinalHome</a>
+    </h1>
+    <p class="site-description">最初的梦想</p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
+      
+        <li><a href="/">主页</a></li>
+      
+        <li><a href="/archives">归档</a></li>
+      
+        <li><a href="/about">关于</a></li>
+      
+        <li><a href="/projects">项目</a></li>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>WebStorm 上手设置</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/开发工具/webstorm上手设置/" rel="bookmark">
+        <time class="entry-date published" datetime="2016-11-20T14:26:46.000Z">
+          2016-11-20
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <p>WebStorm 是 JetBrains 出品的一个针对前端开发的 IDE，它们家的 IDE 插件系统其实是公用的，IDEA 通过插件也可以完成 前端开发。<br><a id="more"></a></p>
+<h2 id="配色设置"><a href="#配色设置" class="headerlink" title="配色设置"></a>配色设置</h2><p>其实内置的配色也不错，只是我个人喜欢灰蓝系列的，且和其他几个编辑器配色保持了统一，我使用的是： <a href="http://color-themes.com/?view=theme&amp;id=563a1a7880b4acf11273ae9b" target="_blank" rel="external">Base16 Ocean</a>。下载后，通过 <code>import settings</code> 导入，一般字体默认会比较小，我们需要再对这个配色方案 <code>Save As..</code> 存为一个自定义的配色，然后修改里面的字体，字号，以及比如 js 文件下全局变量名颜色（有的默认颜色比较刺眼）。字体推荐 <code>Source Code Pro</code>， 字号选择 16。</p>
+<h2 id="插件安装"><a href="#插件安装" class="headerlink" title="插件安装"></a>插件安装</h2><p>IDE 自身带了很大插件，不需要特殊安装就以及很好使用了。但是我是个折腾的人，比较注重效率问题，所以我安装了这样几个插件:</p>
+<ul>
+<li><a href="https://github.com/hsz/idea-gitignore" target="_blank" rel="external">.ignore</a>: 管理 ignore 文件</li>
+<li><a href="https://github.com/johnlindquist/AceJump" target="_blank" rel="external">AceJump</a>: 光标快速跳转</li>
+<li><a href="https://github.com/gdelmas/IntelliJDashPlugin" target="_blank" rel="external">Dash</a>: 调用 Dash 或 Zeal 文档查询工具</li>
+<li><a href="https://github.com/JetBrains/ideavim" target="_blank" rel="external">IdeaVim</a>: vim-mode, 需要共享剪切板的话，配置<code>~/.ideavimrc</code></li>
+<li><a href="http://www.jetbrains.com/" target="_blank" rel="external">Markdown Support</a>: 支持 Markdown 语法与预览</li>
+</ul>
+<h3 id="IdeaVim-设置"><a href="#IdeaVim-设置" class="headerlink" title="IdeaVim 设置"></a>IdeaVim 设置</h3><p>vim 快捷键与 WebStrom 自带的快捷键会有冲突，需要进行设置，决定在 vim-mode 下，冲突的快捷键，具体制定什么操作，具体的设置在 <code>Settings -&gt; Other Settings -&gt; Vim Emulation</code> 中。</p>
+<ul>
+<li><code>Ctrl + a/b/e/f/p/n</code> 保留为系统的光标移动。</li>
+<li><code>ctrl + h/o/d/u</code> 作为 vim 方式</li>
+</ul>
+<h2 id="安装设置"><a href="#安装设置" class="headerlink" title="安装设置"></a>安装设置</h2><h3 id="自定义快捷键"><a href="#自定义快捷键" class="headerlink" title="自定义快捷键"></a>自定义快捷键</h3><p>默认的快捷键，可以从 <a href="https://resources.jetbrains.com/assets/products/webstorm/WebStorm_ReferenceCard.pdf" target="_blank" rel="external">WebStorm_ReferenceCard</a> 查看。</p>
+<p>但是针对个人，我们可以优化这些快捷键，我优化了以下内容:</p>
+<ul>
+<li>Search Everything: <code>Alt+p</code></li>
+<li>Find Action: <code>Ctrl+Shift+p</code></li>
+<li>Close: <code>Ctrl+w</code></li>
+<li>Select Next Tab: <code>Ctrl+Tab</code></li>
+<li>Select Previous Tab: <code>Ctrl+Shift+Tab</code></li>
+</ul>
+<h3 id="常用快捷键"><a href="#常用快捷键" class="headerlink" title="常用快捷键"></a>常用快捷键</h3><ul>
+<li>Recent File: <code>cmd+e</code></li>
+<li><code>gd</code>: find definition</li>
+</ul>
+<h2 id="配置管理"><a href="#配置管理" class="headerlink" title="配置管理"></a>配置管理</h2><p>通过 <code>Export Settings</code> 即可导出配置，然后下次通过 <code>Import Settings</code> 完成导入。</p>
+
+      
+    </div>
+
+  </div>
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+      
+
+    <span class="post-categories">
+      <i class="icon-categories"></i>
+        <a href="/categories/开发工具/">开发工具</a>
+    </span>
+    
+
+    
+    
+
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/JetBrains/">JetBrains</a><a href="/tags/WebStorm/">WebStorm</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+  
+	<div id="comment">
+	
+	
+	<!-- 多说评论框 start -->
+	 <div class="ds-thread" data-thread-key="/开发工具/webstorm上手设置/" data-title="WebStorm 上手设置" data-url="http://finalhome.org/开发工具/webstorm上手设置/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"leohxj"};
+	  (function() {
+	    var ds = document.createElement('script');
+	    ds.type = 'text/javascript';ds.async = true;
+	    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+	    ds.charset = 'UTF-8';
+	    (document.getElementsByTagName('head')[0] 
+	     || document.getElementsByTagName('body')[0]).appendChild(ds);
+	  })();
+	  </script>
+	<!-- 多说公共JS代码 end -->
+	
+	</div>
+
+
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    </br>
+    
+    &copy; 2016 Leo Hui
+    
+  </p>
+</footer>
+    
+    
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5563232'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/stat.php%3Fid%3D5563232%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,278 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>spacemacs 下 vim 基本命令 | FinalHome | 最初的梦想</title>
+
+  
+  <meta name="author" content="Leo Hui">
+  
+
+  
+  <meta name="description" content="description by Leo">
+  
+
+  
+  
+  <meta name="keywords" content="Emacs,vim">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="spacemacs 下 vim 基本命令"/>
+
+  <meta property="og:site_name" content="FinalHome"/>
+
+  
+  <meta property="og:image" content="/favicon.ico"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="FinalHome" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+</head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">FinalHome</a>
+    </h1>
+    <p class="site-description">最初的梦想</p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
+      
+        <li><a href="/">主页</a></li>
+      
+        <li><a href="/archives">归档</a></li>
+      
+        <li><a href="/about">关于</a></li>
+      
+        <li><a href="/projects">项目</a></li>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>spacemacs 下 vim 基本命令</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/Emacs相关/spacemacs-vim基本命令/" rel="bookmark">
+        <time class="entry-date published" datetime="2016-11-19T13:00:00.000Z">
+          2016-11-19
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <p>spacemacs 使用的是 <a href="https://gitorious.org/evil/pages/Home" target="_blank" rel="external">emacs: evil</a> 插件。主要是以 vim 光标移动为主，向导可以参考 vimtutor, 或者 <a href="https://github.com/syl20bnr/evil-tutor" target="_blank" rel="external">evil-tutor</a> 进行学习。<br><a id="more"></a></p>
+<h2 id="vim-模式"><a href="#vim-模式" class="headerlink" title="vim 模式"></a>vim 模式</h2><h3 id="普通模式-normal-mode"><a href="#普通模式-normal-mode" class="headerlink" title="普通模式(normal-mode)"></a>普通模式(normal-mode)</h3><p>Vim启动后的默认模式, 主要移动光标，和对字符删除与替换。通过 <code>i</code> 等命令进入插入模式。</p>
+<h3 id="插入模式-insert-mode"><a href="#插入模式-insert-mode" class="headerlink" title="插入模式(insert-mode)"></a>插入模式(insert-mode)</h3><p>在这个模式中，大多数按键都会向文本缓冲中插入文本。大多数新用户希望文本编辑器编辑过程中一直保持这个模式。在插入模式中，可以按ESC键回到普通模式。</p>
+<h3 id="可视模式-visual-mode"><a href="#可视模式-visual-mode" class="headerlink" title="可视模式(visual-mode)"></a>可视模式(visual-mode)</h3><p>这个模式与普通模式比较相似。但是移动命令会扩大高亮的文本区域。高亮区域可以是字符、行或者是一块文本。当执行一个非移动命令时，命令会被执行到这块高亮的区域上。Vim的”文本对象”也能和移动命令一样用在这个模式中。</p>
+<h3 id="选择模式-select-mode"><a href="#选择模式-select-mode" class="headerlink" title="选择模式(select-mode)"></a>选择模式(select-mode)</h3><p>这个模式和无模式编辑器的行为比较相似（Windows标准文本控件的方式）。这个模式中，可以用鼠标或者光标键高亮选择文本，不过输入任何字符的话，Vim会用这个字符替换选择的高亮文本块，并且自动进入插入模式。</p>
+<h3 id="命令模式-command-mode"><a href="#命令模式-command-mode" class="headerlink" title="命令模式(command-mode)"></a>命令模式(command-mode)</h3><p>在命令行模式中可以输入会被解释成并执行的文本。例如执行命令（”:”键），搜索（”/“和”?”键）或者过滤命令（”!”键）。在命令执行之后，Vim返回到命令行模式之前的模式，通常是普通模式。</p>
+<h3 id="EX-模式-ex-mode"><a href="#EX-模式-ex-mode" class="headerlink" title="EX-模式(ex-mode)"></a>EX-模式(ex-mode)</h3><p>这和命令行模式比较相似，在使用”:visual”命令离开Ex模式前，可以一次执行多条命令。</p>
+<h2 id="vim-基本命令"><a href="#vim-基本命令" class="headerlink" title="vim 基本命令"></a>vim 基本命令</h2><ul>
+<li><code>:</code>: 进入命令模式</li>
+<li><code>esc</code>: 返回普通模式</li>
+<li><code>Ctrl-o</code>: 进入衍生模式，比如插入模式下，<code>ctrl-o</code> 输入一个普通模式下的命令，执行完毕后，自动返回 插入模式。</li>
+</ul>
+<h3 id="光标移动"><a href="#光标移动" class="headerlink" title="光标移动"></a>光标移动</h3><ul>
+<li><code>h,j,k,l</code>: 普通模式下，光标移动，左，下，上，右。（逆时针）</li>
+<li><code>5h</code>: 重复执行5次h, 光标左移5位</li>
+<li><code>0</code>: 行首</li>
+<li><code>^</code>: 行首第一个非空白字符</li>
+<li><code>$</code>: 行尾</li>
+<li><p><code>g_</code>: 行尾最后一个非空白字符</p>
+</li>
+<li><p><code>w,e,b</code>: 普通模式下，光标以单词纬度移动。</p>
+</li>
+<li><p><code>W,E,B</code>: 同上，但是移动的单词可以包含标点。比如连字符<code>-</code></p>
+</li>
+<li><p><code>Ctrl-d</code>, <code>Ctrl-u</code>: 半个屏幕向下，向上滚动。</p>
+</li>
+<li><code>Ctrl-B, Ctrl-F</code>: 滚动一个屏幕，通常会被我覆盖，我用来定义 emacs 光标移动方式。</li>
+<li><code>zt,zz,zm</code>: 使当前行，处于屏幕的顶部，中间，底部。</li>
+<li><p><code>H,M,L</code>: 光标定位到当前屏幕的，顶部，中间，底部。</p>
+</li>
+<li><p><code>gg</code>: 定位到文本开始处</p>
+</li>
+<li><code>G</code>: 定位到文本最后一行</li>
+<li><code>5G</code>: 移动到第五行</li>
+<li><code>:5</code>: 同上，移动到指定行</li>
+<li><p><code>gd</code>: 找到当前变量定义处。</p>
+</li>
+<li><p><code>%</code>: 跳转匹配的括号, (,{,[,],},)</p>
+</li>
+<li><code>()</code>: back, forword</li>
+<li><code>{}</code>: back,forword paragraph</li>
+<li><p><code>[{</code>,<code>]}</code>: back, forword block</p>
+</li>
+<li><p><code>fx,Fx</code>: x是一个字符，向后跳到x字符出现的位置</p>
+</li>
+<li><code>tx,Tx</code>: x是一个字符，向前跳到x字符出现的位置</li>
+<li><code>*</code>: 向后跳转到当前字符相同处, spacemacs 中无效</li>
+<li><code>#</code>: 向前跳转到当前字符相同处，spacemacs 中无效</li>
+</ul>
+<h3 id="编辑模式"><a href="#编辑模式" class="headerlink" title="编辑模式"></a>编辑模式</h3><ul>
+<li><code>i</code>: 当前光标前插入</li>
+<li><code>a</code>: 当前光标后插入</li>
+<li><code>I</code>: 当前行首插入</li>
+<li><code>A</code>: 当前行尾插入</li>
+<li><code>o</code>: 当前行后插入</li>
+<li><code>O</code>: 当前行前插入</li>
+<li><p><code>wi</code>, <code>bi</code>, <code>ea</code>: 下一个单词前，单词后插入</p>
+</li>
+<li><p><code>r</code>: 重写当前一个字符</p>
+</li>
+<li><p><code>R</code>: 重写多个字符，需要手动退出</p>
+</li>
+<li><p><code>J</code>: 何必当前行和下一行</p>
+</li>
+<li><p><code>xp</code>: 交换当前和下一个字符位置</p>
+</li>
+<li><p><code>u</code>: undo</p>
+</li>
+<li><code>Ctrl+r</code>: redo</li>
+<li><code>.</code>: repeat last command, 可用于 redo</li>
+</ul>
+<h3 id="复制，粘贴，裁切"><a href="#复制，粘贴，裁切" class="headerlink" title="复制，粘贴，裁切"></a>复制，粘贴，裁切</h3><ul>
+<li><code>x</code>: 删除当前光标字符</li>
+<li><code>X</code>: 删除当前光标前字符</li>
+<li><code>D</code>: 删除当前行后字符</li>
+<li><code>C</code>: 重写当前行后字符，就是执行了 <code>D</code>， <code>a</code></li>
+<li><code>cc</code>: 重写当前行，相当于 <code>dd</code>, <code>i</code></li>
+<li><code>cw</code>: 重写当前词，相当于 <code>dw</code>, <code>i</code></li>
+<li><code>s</code>: 重写当前字符</li>
+<li><code>S</code>: 相当于 <code>cc</code></li>
+<li><code>d</code>: 执行关于删除的引导键, 比如 <code>d0</code>, <code>d$</code></li>
+<li><code>dd</code>: 删除当前行</li>
+<li><code>dw</code>: 向后删除当前词</li>
+<li><code>db</code>: 向前删除当前词</li>
+<li><p><code>ndw</code>: n表示重复执行</p>
+</li>
+<li><p><code>yy</code>: yank 就是拷贝的意思，拷贝当前行</p>
+</li>
+<li><code>yw</code>: 复制当前光标到当前词尾的字符</li>
+<li><p><code>yb</code>: 复制当前光标到当前词首的字符</p>
+</li>
+<li><p><code>p</code>: 当前光标后粘贴</p>
+</li>
+<li><p><code>P</code>: 当前光标前粘贴</p>
+</li>
+<li><p><code>v</code>: 进入 visual 模式</p>
+</li>
+<li><code>V</code>: 进入visual 模式，选取单位位行</li>
+<li><code>Ctrl+v</code>: 进入 visual 模式，选取单位为块</li>
+<li><code>&lt;</code>: 进入 visual 模式后， 向左进行 index</li>
+<li><code>&gt;</code>: 进入 visual 模式后， 向右进行 index</li>
+<li><code>y</code>: 进入 visual 模式后，复制选中字符</li>
+<li><code>x</code>: 进入 visual 模式后， 裁切选中字符</li>
+<li><code>d</code>: 进入 visual 模式后，删除选中字符， 效果同上</li>
+<li><code>~</code>: 进入 visual 模式后，将选中字符大小写交换</li>
+</ul>
+<h3 id="小技巧"><a href="#小技巧" class="headerlink" title="小技巧"></a>小技巧</h3><ul>
+<li>插入3个 go, 可使用 <code>3i go {esc}</code></li>
+<li>查找当前光标后，第三个s, 可使用 <code>3fs</code></li>
+</ul>
+
+      
+    </div>
+
+  </div>
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+      
+
+    <span class="post-categories">
+      <i class="icon-categories"></i>
+        <a href="/categories/Emacs相关/">Emacs相关</a>
+    </span>
+    
+
+    
+    
+
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/Emacs/">Emacs</a><a href="/tags/vim/">vim</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+  
+	<div id="comment">
+	
+	
+	<!-- 多说评论框 start -->
+	 <div class="ds-thread" data-thread-key="/Emacs相关/spacemacs-vim基本命令/" data-title="spacemacs 下 vim 基本命令" data-url="http://finalhome.org/Emacs相关/spacemacs-vim基本命令/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"leohxj"};
+	  (function() {
+	    var ds = document.createElement('script');
+	    ds.type = 'text/javascript';ds.async = true;
+	    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+	    ds.charset = 'UTF-8';
+	    (document.getElementsByTagName('head')[0] 
+	     || document.getElementsByTagName('body')[0]).appendChild(ds);
+	  })();
+	  </script>
+	<!-- 多说公共JS代码 end -->
+	
+	</div>
+
+
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    </br>
+    
+    &copy; 2016 Leo Hui
+    
+  </p>
+</footer>
+    
+    
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5563232'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/stat.php%3Fid%3D5563232%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+  </div>
+</div>
+</body>
+</html>
