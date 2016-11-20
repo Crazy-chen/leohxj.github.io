@@ -1,0 +1,46 @@
+title: WebStorm 上手设置
+date: 2016-11-20 22:26:46
+categories: [开发工具]
+tags: [JetBrains, WebStorm]
+---
+
+WebStorm 是 JetBrains 出品的一个针对前端开发的 IDE，它们家的 IDE 插件系统其实是公用的，IDEA 通过插件也可以完成 前端开发。
+<!--more-->
+
+## 配色设置
+其实内置的配色也不错，只是我个人喜欢灰蓝系列的，且和其他几个编辑器配色保持了统一，我使用的是： [Base16 Ocean](http://color-themes.com/?view=theme&id=563a1a7880b4acf11273ae9b)。下载后，通过 `import settings` 导入，一般字体默认会比较小，我们需要再对这个配色方案 `Save As..` 存为一个自定义的配色，然后修改里面的字体，字号，以及比如 js 文件下全局变量名颜色（有的默认颜色比较刺眼）。字体推荐 `Source Code Pro`， 字号选择 16。
+
+## 插件安装
+IDE 自身带了很大插件，不需要特殊安装就以及很好使用了。但是我是个折腾的人，比较注重效率问题，所以我安装了这样几个插件:
+
+- [.ignore](https://github.com/hsz/idea-gitignore): 管理 ignore 文件
+- [AceJump](https://github.com/johnlindquist/AceJump): 光标快速跳转
+- [Dash](https://github.com/gdelmas/IntelliJDashPlugin): 调用 Dash 或 Zeal 文档查询工具
+- [IdeaVim](https://github.com/JetBrains/ideavim): vim-mode, 需要共享剪切板的话，配置`~/.ideavimrc`
+- [Markdown Support](http://www.jetbrains.com/): 支持 Markdown 语法与预览
+
+### IdeaVim 设置
+vim 快捷键与 WebStrom 自带的快捷键会有冲突，需要进行设置，决定在 vim-mode 下，冲突的快捷键，具体制定什么操作，具体的设置在 `Settings -> Other Settings -> Vim Emulation` 中。
+
+- `Ctrl + a/b/e/f/p/n` 保留为系统的光标移动。
+- `ctrl + h/o/d/u` 作为 vim 方式
+
+
+## 安装设置
+### 自定义快捷键
+默认的快捷键，可以从 [WebStorm_ReferenceCard](https://resources.jetbrains.com/assets/products/webstorm/WebStorm_ReferenceCard.pdf) 查看。
+
+但是针对个人，我们可以优化这些快捷键，我优化了以下内容:
+
+- Search Everything: `Alt+p`
+- Find Action: `Ctrl+Shift+p`
+- Close: `Ctrl+w`
+- Select Next Tab: `Ctrl+Tab`
+- Select Previous Tab: `Ctrl+Shift+Tab`
+
+### 常用快捷键
+- Recent File: `cmd+e`
+- `gd`: find definition
+
+## 配置管理
+通过 `Export Settings` 即可导出配置，然后下次通过 `Import Settings` 完成导入。
