@@ -1,0 +1,200 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Vim 和 spf13-vim 配置安装 | FinalHome | 最初的梦想</title>
+
+  
+  <meta name="author" content="Leo Hui">
+  
+
+  
+  <meta name="description" content="description by Leo">
+  
+
+  
+  
+  <meta name="keywords" content="Vim">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="Vim 和 spf13-vim 配置安装"/>
+
+  <meta property="og:site_name" content="FinalHome"/>
+
+  
+  <meta property="og:image" content="/favicon.ico"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="FinalHome" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+</head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">FinalHome</a>
+    </h1>
+    <p class="site-description">最初的梦想</p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
+      
+        <li><a href="/">主页</a></li>
+      
+        <li><a href="/archives">归档</a></li>
+      
+        <li><a href="/about">关于</a></li>
+      
+        <li><a href="/projects">项目</a></li>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>Vim 和 spf13-vim 配置安装</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/开发工具/vim和spf13-vim配置安装/" rel="bookmark">
+        <time class="entry-date published" datetime="2016-11-27T08:03:27.000Z">
+          2016-11-27
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <p>前几周折腾 spacemacs 后，发现内置的 vim 模式很值得学习，所以干脆先折腾折腾 Vim 吧。也不想从零开始了，直接 github 搜了下，发现 <a href="https://github.com/spf13/spf13-vim" target="_blank" rel="external">spf13-vim</a> 是一个比较不错的配置。<br><a id="more"></a></p>
+<h1 id="Vim"><a href="#Vim" class="headerlink" title="Vim"></a>Vim</h1><p><a href="http://www.vim.org" target="_blank" rel="external">Vim</a>, Download 页面中有各个系统的安装说明，vim 和 emacs 一样，都是提供源码，自己去编译。所以一般都会有第三方提供编译过的各个系统版本，适合安装或直接使用。</p>
+<h2 id="windows"><a href="#windows" class="headerlink" title="windows"></a>windows</h2><ul>
+<li><a href="https://github.com/vim/vim/releases" target="_blank" rel="external">Vim github 源码</a></li>
+<li><a href="http://wyw.dcweb.cn/index.htm#download" target="_blank" rel="external">Yongwei’s Programming Page</a>: 他人编译的版本</li>
+<li><a href="https://tuxproject.de/projects/vim/" target="_blank" rel="external">Vim builds for Windows</a>: 一个日本人编译的版本</li>
+<li><a href="https://github.com/vim/vim-win32-installer/releases" target="_blank" rel="external">vim/vim-win32-installer</a>: 对官方进行编译的一个版本，我个人在使用，推荐</li>
+</ul>
+<h2 id="Mac"><a href="#Mac" class="headerlink" title="Mac"></a>Mac</h2><ul>
+<li><a href="https://github.com/macvim-dev/macvim" target="_blank" rel="external">MacVim</a>: 建议通过 brew 安装</li>
+<li><a href="http://stackoverflow.com/questions/21961872/update-osx-vim-using-macvim" target="_blank" rel="external">如何替换终端中的vim版本</a>: brew 安装时候增加 <code>--override-system-vim</code> 选项。</li>
+</ul>
+<h2 id="如何选择带-lua-版本"><a href="#如何选择带-lua-版本" class="headerlink" title="如何选择带 lua 版本"></a>如何选择带 lua 版本</h2><p>进入 vim 后，使用 <code>:lua print(&#39;x&#39;)</code> 测试是否支持 lua。如果编译的版本支持，会提示你是否缺少依赖，比如在 windows 下，会提示缺少 <code>lua53.dll</code>, 然后你需要这个根据你的系统，去 (Lua Binaries 找对应lua版本, 再进入（比如 64位 windows ） Browse /5.3.3/Windows Libraries/Dynamic at SourceForge.net 找到 lua-5.3.3_Win64_dll10_lib.zip 或 lua-5.3.3_Win64_dllw4_lib.zip 下载 （区别在页面下面有解释）。</p>
+<p>解压缩后，将对应的 lua53.dll 放入在 gvim.exe 同级目录中，再次运行 gvim.exe, 查看 <code>:echo has(&quot;lua&quot;)</code> 这时应该返回就为1了。</p>
+<h1 id="spf13-vim"><a href="#spf13-vim" class="headerlink" title="spf13-vim"></a>spf13-vim</h1><p>这是一个配置文件，整合了许多插件和配置，比较适合大众使用，如果你之前没接触过 vim ，不如用它来上手。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="windows-1"><a href="#windows-1" class="headerlink" title="windows"></a>windows</h3><p>任何开源工具在 windows 下的安装，都是比较麻烦的。。。spf13-vim 需要依赖：</p>
+<ul>
+<li>vim-with-lua: 带 lua 的vim 版本，因为内置了 neocomplete 插件</li>
+<li>git: 需要git clone 配置文件仓库</li>
+<li>curl: 命令，需要下载安装文件</li>
+</ul>
+<p>spf13-vim 提供了一个批处理，<a href="https://github.com/spf13/spf13-vim/blob/3.0/spf13-vim-windows-install.cmd" target="_blank" rel="external">spf13-vim-windows-install.cmd</a>, 可以下载下来通过管理员权限运行。</p>
+<p>安装过程会下载插件，使用的是 vundle 管理插件的。你可以中断安装，进入 vim 后，<code>:PluginInstall</code> 进行安装。</p>
+<h3 id="Mac-1"><a href="#Mac-1" class="headerlink" title="Mac"></a>Mac</h3><p><code>curl https://j.mp/spf13-vim3 -L &gt; spf13-vim.sh &amp;&amp; sh spf13-vim.sh</code> 即可。</p>
+<h1 id="配置管理"><a href="#配置管理" class="headerlink" title="配置管理"></a>配置管理</h1><p>vim本身的配置会被 spf13-vim 通过软链接管理，我们自定义的配置，推荐维护：</p>
+<ul>
+<li>.vimrc.local</li>
+<li>.gvimrc.local</li>
+<li>.vimrc.before.local</li>
+<li>.vimrc-bundles.local</li>
+</ul>
+<p>可以将这些文件，放置到你的 dotfiles 中管理。</p>
+
+      
+    </div>
+
+  </div>
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+      
+
+    <span class="post-categories">
+      <i class="icon-categories"></i>
+        <a href="/categories/开发工具/">开发工具</a>
+    </span>
+    
+
+    
+    
+
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/Vim/">Vim</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+  
+	<div id="comment">
+	
+	
+	<!-- 多说评论框 start -->
+	 <div class="ds-thread" data-thread-key="/开发工具/vim和spf13-vim配置安装/" data-title="Vim 和 spf13-vim 配置安装" data-url="http://finalhome.org/开发工具/vim和spf13-vim配置安装/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"leohxj"};
+	  (function() {
+	    var ds = document.createElement('script');
+	    ds.type = 'text/javascript';ds.async = true;
+	    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+	    ds.charset = 'UTF-8';
+	    (document.getElementsByTagName('head')[0] 
+	     || document.getElementsByTagName('body')[0]).appendChild(ds);
+	  })();
+	  </script>
+	<!-- 多说公共JS代码 end -->
+	
+	</div>
+
+
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    </br>
+    
+    &copy; 2016 Leo Hui
+    
+  </p>
+</footer>
+    
+    
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5563232'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/stat.php%3Fid%3D5563232%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+  </div>
+</div>
+</body>
+</html>

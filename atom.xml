@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://finalhome.org/"/>
-  <updated>2016-11-20T09:16:23.000Z</updated>
+  <updated>2016-11-27T12:48:50.000Z</updated>
   <id>http://finalhome.org/</id>
   
   <author>
@@ -14,6 +14,60 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Vim 和 spf13-vim 配置安装</title>
+    <link href="http://finalhome.org/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/vim%E5%92%8Cspf13-vim%E9%85%8D%E7%BD%AE%E5%AE%89%E8%A3%85/"/>
+    <id>http://finalhome.org/开发工具/vim和spf13-vim配置安装/</id>
+    <published>2016-11-27T08:03:27.000Z</published>
+    <updated>2016-11-27T12:48:50.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>前几周折腾 spacemacs 后，发现内置的 vim 模式很值得学习，所以干脆先折腾折腾 Vim 吧。也不想从零开始了，直接 github 搜了下，发现 <a href="https://github.com/spf13/spf13-vim" target="_blank" rel="external">spf13-vim</a> 是一个比较不错的配置。<br><a id="more"></a></p>
+<h1 id="Vim"><a href="#Vim" class="headerlink" title="Vim"></a>Vim</h1><p><a href="http://www.vim.org" target="_blank" rel="external">Vim</a>, Download 页面中有各个系统的安装说明，vim 和 emacs 一样，都是提供源码，自己去编译。所以一般都会有第三方提供编译过的各个系统版本，适合安装或直接使用。</p>
+<h2 id="windows"><a href="#windows" class="headerlink" title="windows"></a>windows</h2><ul>
+<li><a href="https://github.com/vim/vim/releases" target="_blank" rel="external">Vim github 源码</a></li>
+<li><a href="http://wyw.dcweb.cn/index.htm#download" target="_blank" rel="external">Yongwei’s Programming Page</a>: 他人编译的版本</li>
+<li><a href="https://tuxproject.de/projects/vim/" target="_blank" rel="external">Vim builds for Windows</a>: 一个日本人编译的版本</li>
+<li><a href="https://github.com/vim/vim-win32-installer/releases" target="_blank" rel="external">vim/vim-win32-installer</a>: 对官方进行编译的一个版本，我个人在使用，推荐</li>
+</ul>
+<h2 id="Mac"><a href="#Mac" class="headerlink" title="Mac"></a>Mac</h2><ul>
+<li><a href="https://github.com/macvim-dev/macvim" target="_blank" rel="external">MacVim</a>: 建议通过 brew 安装</li>
+<li><a href="http://stackoverflow.com/questions/21961872/update-osx-vim-using-macvim" target="_blank" rel="external">如何替换终端中的vim版本</a>: brew 安装时候增加 <code>--override-system-vim</code> 选项。</li>
+</ul>
+<h2 id="如何选择带-lua-版本"><a href="#如何选择带-lua-版本" class="headerlink" title="如何选择带 lua 版本"></a>如何选择带 lua 版本</h2><p>进入 vim 后，使用 <code>:lua print(&#39;x&#39;)</code> 测试是否支持 lua。如果编译的版本支持，会提示你是否缺少依赖，比如在 windows 下，会提示缺少 <code>lua53.dll</code>, 然后你需要这个根据你的系统，去 (Lua Binaries 找对应lua版本, 再进入（比如 64位 windows ） Browse /5.3.3/Windows Libraries/Dynamic at SourceForge.net 找到 lua-5.3.3_Win64_dll10_lib.zip 或 lua-5.3.3_Win64_dllw4_lib.zip 下载 （区别在页面下面有解释）。</p>
+<p>解压缩后，将对应的 lua53.dll 放入在 gvim.exe 同级目录中，再次运行 gvim.exe, 查看 <code>:echo has(&quot;lua&quot;)</code> 这时应该返回就为1了。</p>
+<h1 id="spf13-vim"><a href="#spf13-vim" class="headerlink" title="spf13-vim"></a>spf13-vim</h1><p>这是一个配置文件，整合了许多插件和配置，比较适合大众使用，如果你之前没接触过 vim ，不如用它来上手。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="windows-1"><a href="#windows-1" class="headerlink" title="windows"></a>windows</h3><p>任何开源工具在 windows 下的安装，都是比较麻烦的。。。spf13-vim 需要依赖：</p>
+<ul>
+<li>vim-with-lua: 带 lua 的vim 版本，因为内置了 neocomplete 插件</li>
+<li>git: 需要git clone 配置文件仓库</li>
+<li>curl: 命令，需要下载安装文件</li>
+</ul>
+<p>spf13-vim 提供了一个批处理，<a href="https://github.com/spf13/spf13-vim/blob/3.0/spf13-vim-windows-install.cmd" target="_blank" rel="external">spf13-vim-windows-install.cmd</a>, 可以下载下来通过管理员权限运行。</p>
+<p>安装过程会下载插件，使用的是 vundle 管理插件的。你可以中断安装，进入 vim 后，<code>:PluginInstall</code> 进行安装。</p>
+<h3 id="Mac-1"><a href="#Mac-1" class="headerlink" title="Mac"></a>Mac</h3><p><code>curl https://j.mp/spf13-vim3 -L &gt; spf13-vim.sh &amp;&amp; sh spf13-vim.sh</code> 即可。</p>
+<h1 id="配置管理"><a href="#配置管理" class="headerlink" title="配置管理"></a>配置管理</h1><p>vim本身的配置会被 spf13-vim 通过软链接管理，我们自定义的配置，推荐维护：</p>
+<ul>
+<li>.vimrc.local</li>
+<li>.gvimrc.local</li>
+<li>.vimrc.before.local</li>
+<li>.vimrc-bundles.local</li>
+</ul>
+<p>可以将这些文件，放置到你的 dotfiles 中管理。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;前几周折腾 spacemacs 后，发现内置的 vim 模式很值得学习，所以干脆先折腾折腾 Vim 吧。也不想从零开始了，直接 github 搜了下，发现 &lt;a href=&quot;https://github.com/spf13/spf13-vim&quot;&gt;spf13-vim&lt;/a&gt; 是一个比较不错的配置。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="开发工具" scheme="http://finalhome.org/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
+    
+    
+      <category term="Vim" scheme="http://finalhome.org/tags/Vim/"/>
+    
+  </entry>
   
   <entry>
     <title>WebStorm 上手设置</title>
@@ -1433,73 +1487,6 @@
     
     
       <category term="SublimeText" scheme="http://finalhome.org/tags/SublimeText/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>nodejs开发命名行工具</title>
-    <link href="http://finalhome.org/Nodejs/nodejs%E5%BC%80%E5%8F%91%E5%91%BD%E5%90%8D%E8%A1%8C%E5%B7%A5%E5%85%B7/"/>
-    <id>http://finalhome.org/Nodejs/nodejs开发命名行工具/</id>
-    <published>2014-07-02T06:31:46.000Z</published>
-    <updated>2016-08-29T13:58:52.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>受启发的缘由一个是<a href="https://github.com/Edmeral/nodecup" target="_blank" rel="external">nodecup</a>项目，可以命令行形式查看世界杯赛程。另一个是<a href="https://visionmedia.github.io/commander.js/" target="_blank" rel="external">commander</a>, 方便编写命令行工具的库。</p>
-<p>结合起来，我觉得对以后的自动化部署会有帮助，所以先尝试去写一个获取天气的命令行工具。<br><a id="more"></a></p>
-<h2 id="项目分析"><a href="#项目分析" class="headerlink" title="项目分析"></a>项目分析</h2><p>我想要做的是通过命名行的方式，直接查询当前时刻的天气，以及最近几天的天气情况。命名行下我预测会出现的问题就是获取当前位置，所以默认情况还是需要手动输入一个城市名称。</p>
-<p>项目我放在了github上，使用的是Node.js完成。项目地址:<a href="https://github.com/leohxj/nodeweather" target="_blank" rel="external">nodeweather</a>。</p>
-<h2 id="天气API"><a href="#天气API" class="headerlink" title="天气API"></a>天气API</h2><p>关于天气的API，知乎上有一个讨论<a href="http://www.zhihu.com/question/20575288" target="_blank" rel="external">网上的天气 API 哪一个更加可靠？</a>。</p>
-<p>我相信中国天气的API比较官方，但是个人使用需要申请验证，<a href="http://smart.weather.com.cn/wzfw/smart/weatherapi.shtml" target="_blank" rel="external">验证方式</a>。使用过程中，也是需要根据城市查询到对应的城市代码才可以查询，不是很方便，因为网上没有直接查询这些城市代码的接口。我可能需要自行建立数据库。</p>
-<p>接下来我想到了Yahoo Weather， 目前很多天气源也是引用的雅虎数据。它的在线手册是:<a href="https://developer.yahoo.com/weather/#response" target="_blank" rel="external">yahoo weather</a>。使用雅虎天气的API，需要有一个<code>woeid</code>，这个正常情况下需要申请yahoo的Developer API。但是幸运的是我发现一个地址可以通过城市名称查询这个<code>woeid</code>，在线地址<code>http://query.yahooapis.com/v1/public/yql?q=select*from%20geo.places%20where%20text=%22%22&amp;format=xml</code>，传入的城市名称设置在<code>text=%22%22</code>两个<code>%22</code>中。返回的是XML格式数据。里面会有响应的<code>woeid</code>。</p>
-<p>获取到了<code>woeid</code>之后，我们可以通过雅虎天气的API查询天气了，查询方式如下：<code>http://weather.yahooapis.com/forecastrss?w=615702&amp;u=c</code>。参数<code>woeid</code>就是城市对应的代码，<code>u=c</code>代表查询的是摄氏温度。当然，返回的对象依旧是XML格式。</p>
-<h2 id="处理XML"><a href="#处理XML" class="headerlink" title="处理XML"></a>处理XML</h2><p>因为是在服务器端处理，并且使用的是node.js环境。我还是习惯性的使用<code>jQuery</code>去解析XML。</p>
-<p>在nodejs中使用jQuery，会有一个问题就是缺少window变量。需要引入<code>jsdom</code>帮助创建<code>window</code>对象。</p>
-<p>官方的使用方式如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">In Node.JS you may also create separate window instances</div><div class="line"> </div><div class="line">    var jsdom = require(&apos;jsdom&apos;).jsdom</div><div class="line">      , myWindow = jsdom().createWindow()</div><div class="line">      , $ = require(&apos;jQuery&apos;)</div><div class="line">      , jq = require(&apos;jQuery&apos;).create()</div><div class="line">      , jQuery = require(&apos;jQuery&apos;).create(myWindow)</div><div class="line">      ;</div><div class="line"> </div><div class="line">    $(&quot;&lt;h1&gt;test passes&lt;/h1&gt;&quot;).appendTo(&quot;body&quot;);</div><div class="line">    console.log($(&quot;body&quot;).html());</div><div class="line"> </div><div class="line">    jq(&quot;&lt;h2&gt;other test passes&lt;/h2&gt;&quot;).appendTo(&quot;body&quot;);</div><div class="line">    console.log(jq(&quot;body&quot;).html());</div><div class="line"> </div><div class="line">    jQuery(&quot;&lt;h3&gt;third test passes&lt;/h3&gt;&quot;).appendTo(&quot;body&quot;);</div><div class="line">    console.log(jQuery(&quot;body&quot;).html());</div></pre></td></tr></table></figure></p>
-<p>我个人创建window使用的方式如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">var jsdom = require(&quot;jsdom&quot;);</div><div class="line">var $ = require(&quot;jquery&quot;)(jsdom.jsdom().createWindow());</div></pre></td></tr></table></figure></p>
-<p>nodejs处理网络请求使用的模块是<code>request</code>, 具体使用参考文档即可。</p>
-<h2 id="脚本的编写"><a href="#脚本的编写" class="headerlink" title="脚本的编写"></a>脚本的编写</h2><p>这里如要提及一下脚本的编写问题，我是在windows下写的程序，但是为了保证程序在unix下正常工作，我需要在文件头部声明好系统的环境变量，nodejs写的脚本应该为:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">#!usr/bin/env node</div></pre></td></tr></table></figure>
-<p>sublimetext编辑器需要注意设置<code>view-&gt;line-coding</code>为<code>unix</code>模式，如果模式是<code>windows</code>，在unix下，换行会多出<code>/r</code>字符，报错信息大致为<code>ERROE env: node/r</code>。</p>
-<p>本地测试的使用，你使用的是<code>node xxx</code>形式，只要你在<code>package.json</code>中指定了:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&quot;main&quot;: &quot;./nodeweather&quot;,</div><div class="line">  &quot;bin&quot;: &#123;</div><div class="line">    &quot;nodeweather&quot;: &quot;./nodeweather.js&quot;</div><div class="line">  &#125;</div></pre></td></tr></table></figure></p>
-<p>上传至npm之后，再下载就可以直接使用xxx形式。</p>
-<h2 id="上传NPM"><a href="#上传NPM" class="headerlink" title="上传NPM"></a>上传NPM</h2><p>首先，你需要拥有一个npm的账号，然后正确的设置好<code>package.json</code>。</p>
-<p>使用<code>npm adduser</code>进行验证，使用<code>npm publish</code>上传文件至npm。</p>
-<p>完成之后，就可以在任意环境下使用<code>npm install xxx</code>安装了。</p>
-<h2 id="不借助commander的情况"><a href="#不借助commander的情况" class="headerlink" title="不借助commander的情况"></a>不借助commander的情况</h2><p>有时候我们只是写一段脚本，想要在全局运行，那么也很简单。</p>
-<p>首先确保项目中存在<code>package.json</code>文件，如果没有，自行<code>npm init</code>一个，比如:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  &quot;name&quot;: &quot;sayhi&quot;,</div><div class="line">  &quot;version&quot;: &quot;1.0.0&quot;,</div><div class="line">  &quot;description&quot;: &quot;&quot;,</div><div class="line">  &quot;main&quot;: &quot;index.js&quot;,</div><div class="line">  &quot;scripts&quot;: &#123;</div><div class="line">    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;</div><div class="line">  &#125;,</div><div class="line">  &quot;bin&quot;: &#123;</div><div class="line">    &quot;hw&quot;: &quot;index.js&quot;</div><div class="line">  &#125;,</div><div class="line">  &quot;author&quot;: &quot;&quot;,</div><div class="line">  &quot;license&quot;: &quot;ISC&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>其中特别要注意的是:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&quot;bin&quot;: &#123;</div><div class="line">  &quot;hw&quot;: &quot;index.js&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这段，标明了希望使用<code>hw</code>达到<code>node index.js</code>的目的。</p>
-<p>其次我们要在脚本文件的开头，加上:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">#!usr/bin/env node</div></pre></td></tr></table></figure>
-<h3 id="全局安装"><a href="#全局安装" class="headerlink" title="全局安装"></a>全局安装</h3><p>使用<code>npm install -g</code>或者<code>npm link</code>即可。<br>然后全局下就可以使用了。</p>
-<p>这里区分一下<code>npm install -g</code>与<code>npm link</code>的区别：</p>
-<ul>
-<li><code>npm install -g</code>安装的相当于硬链接，只保留当前版本，本地修改项目不会同步到命令中。</li>
-<li><code>npm link</code>其实就是一个软连接，本地的任何修改都能同步到命令之中。</li>
-</ul>
-<h3 id="撤销全局安装"><a href="#撤销全局安装" class="headerlink" title="撤销全局安装"></a>撤销全局安装</h3><p><code>npm uninstall -g &lt;name&gt;</code></p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li><a href="https://developer.yahoo.com/weather" target="_blank" rel="external">Yahoo Weather API</a></li>
-<li><a href="http://android-er.blogspot.jp/2012/03/search-woeid-from-httpqueryyahooapiscom.html" target="_blank" rel="external">获取城市WOEID代码方式</a></li>
-<li><a href="https://github.com/Edmeral/nodecup" target="_blank" rel="external">nodecup</a></li>
-<li><a href="https://visionmedia.github.io/commander.js/" target="_blank" rel="external">commander</a></li>
-</ul>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;受启发的缘由一个是&lt;a href=&quot;https://github.com/Edmeral/nodecup&quot;&gt;nodecup&lt;/a&gt;项目，可以命令行形式查看世界杯赛程。另一个是&lt;a href=&quot;https://visionmedia.github.io/commander.js/&quot;&gt;commander&lt;/a&gt;, 方便编写命令行工具的库。&lt;/p&gt;
-&lt;p&gt;结合起来，我觉得对以后的自动化部署会有帮助，所以先尝试去写一个获取天气的命令行工具。&lt;br&gt;
-    
-    </summary>
-    
-      <category term="Nodejs" scheme="http://finalhome.org/categories/Nodejs/"/>
-    
-    
-      <category term="nodejs" scheme="http://finalhome.org/tags/nodejs/"/>
-    
-      <category term="commander" scheme="http://finalhome.org/tags/commander/"/>
     
   </entry>
   
