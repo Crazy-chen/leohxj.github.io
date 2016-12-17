@@ -115,6 +115,11 @@
 <p>这货的安装比较麻烦，自身的安装包就200M+, 下载后比较简单，双击 <code>install.bat</code> 即可，但是注意，不能配置 <code>HOME</code> 环境变量，这个和 Emacs 会有冲突。所以针对 Emacs ，建议大家在 <code>.emacs</code> 配置文件中，自行加入环境变量，然后 load 配置文件：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(setenv &quot;HOME&quot; &quot;c:/User/xxx/&quot;)</div><div class="line">(load &quot;~/.emacs.d/init.el&quot;)</div></pre></td></tr></table></figure>
 <p>安装完成后，系统右键菜单也会多一个 <code>open babun here</code>, 你就当作另一个 <code>cmd.exe</code> 用呗。</p>
+<p><strong> Update: 2016-12-17 </strong><br>发现可设置 HOME, 但是 upgrade_oh_my_zsh 可能存在问题，具体解决方法可参加 <a href="https://github.com/babun/babun/issues/211" target="_blank" rel="external">Can’t update oh-my-zsh on start</a>,设置:</p>
+<ul>
+<li><code>git config core.filemode false</code></li>
+<li><code>.oh-my-zsh</code> 下执行 <code>git rebase --skip</code>。</li>
+</ul>
 <h3 id="Mac-平台"><a href="#Mac-平台" class="headerlink" title="Mac 平台"></a>Mac 平台</h3><h4 id="iTerm"><a href="#iTerm" class="headerlink" title="iTerm"></a>iTerm</h4><p><a href="http://iterm2.com/" target="_blank" rel="external">iTerm</a>: macOS Terminal Replace</p>
 <p>强烈推荐安装的终端工具。不用说什么，用了都说好。</p>
 <h3 id="oh-my-zsh"><a href="#oh-my-zsh" class="headerlink" title="oh-my-zsh"></a>oh-my-zsh</h3><p><a href="https://github.com/robbyrussell/oh-my-zsh" target="_blank" rel="external">oh-my-zsh</a>: 社区驱动的 zsh 配置，反正我一直在用，没看出不好。</p>
